@@ -1,10 +1,64 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { GmClientService, OrderSide } from '@staratlas/factory';
+import { useWallet } from 'solana-wallets-vue';
+import { useGlobalStore } from 'stores/globalStore';
+import { Connection, PublicKey } from '@solana/web3.js';
+import { GM_PROGRAM_ID } from 'stores/globalFactoryStore';
+import { useGlobalUserStore } from 'stores/globalUserStore';
+import { handle_confirmation } from 'stores/handle_confirmation';
+import { Notify } from 'quasar';
+import { handle_wallet_connected } from 'stores/handle_wallet_connected';
 
 const tab1 = ref('buy');
 
 const input_price = ref(0);
 const input_amount = ref(0);
+
+async function create_order(side: OrderSide) {
+  if (!useWallet().publicKey.value) {
+    Notify.create({
+      color: 'yellow',
+      textColor: 'black',
+      message: 'Wallet not connected!',
+    });
+    return;
+  }
+
+  let gmClient = new GmClientService();
+
+  const price = await gmClient.getBnPriceForCurrency(
+    useGlobalStore().connection as Connection,
+    input_price.value,
+    new PublicKey(useGlobalUserStore().selected_nft.mint_pair),
+    GM_PROGRAM_ID
+  );
+
+  const tx = await gmClient.getInitializeOrderTransaction(
+    useGlobalStore().connection as Connection,
+    useWallet().publicKey.value!,
+    new PublicKey(useGlobalUserStore().selected_nft.mint_asset),
+    new PublicKey(useGlobalUserStore().selected_nft.mint_pair),
+    input_amount.value,
+    price,
+    GM_PROGRAM_ID,
+    side
+  );
+
+  try {
+    const signature = await useWallet().sendTransaction(
+      tx.transaction,
+      useGlobalStore().connection
+    );
+    await handle_confirmation(signature);
+  } catch (err) {
+    Notify.create({
+      color: 'red',
+      message: `${err}`,
+      timeout: 5000,
+    });
+  }
+}
 </script>
 
 <template>
@@ -38,6 +92,7 @@ const input_amount = ref(0);
       />
     </div>
     <q-btn
+      @click="create_order(tab1 == 'buy' ? OrderSide.Buy : OrderSide.Sell)"
       square
       class="full-width"
       :class="tab1 == 'buy' ? 'buy' : 'sell'"
