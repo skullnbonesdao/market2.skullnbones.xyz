@@ -17,11 +17,11 @@ import { Dark } from 'quasar';
         :symbol="useGlobalUserStore().selected_nft.symbol"
       />
 
-      <q-card class="col-3 q-ml-sm">
+      <div class="col-3 q-ml-sm q-gutter-y-sm">
         <MarketInput />
-        <q-separator />
+
         <MarketOrders class="col" />
-      </q-card>
+      </div>
     </div>
   </q-page>
 </template>

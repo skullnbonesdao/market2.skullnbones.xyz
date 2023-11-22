@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { Order } from '@staratlas/factory';
+import { GmClientService, Order } from '@staratlas/factory';
 import { format_address } from '../../stores/format_address';
 import { computed, ref } from 'vue';
+import { useWallet } from 'solana-wallets-vue';
+import { Notify } from 'quasar';
+import { useGlobalStore } from 'stores/globalStore';
+import { Connection } from '@solana/web3.js';
+import { GM_PROGRAM_ID } from 'stores/globalFactoryStore';
+import { handle_confirmation } from 'stores/handle_confirmation';
 
 const props = defineProps({
   order: {
@@ -17,6 +23,43 @@ const size = computed(() => {
 });
 
 const input_size = ref(size.value);
+
+async function fill_order() {
+  if (!useWallet().publicKey.value) {
+    Notify.create({
+      color: 'yellow',
+      textColor: 'black',
+      message: 'Wallet not connected!',
+    });
+    return;
+  }
+
+  let gmClient = new GmClientService();
+
+  if (props.order && input_size.value) {
+    const tx = await gmClient.getCreateExchangeTransaction(
+      useGlobalStore().connection as Connection,
+      props.order,
+      useWallet().publicKey.value!,
+      input_size.value,
+      GM_PROGRAM_ID
+    );
+
+    try {
+      const signature = await useWallet().sendTransaction(
+        tx.transaction,
+        useGlobalStore().connection
+      );
+      await handle_confirmation(signature);
+    } catch (err) {
+      Notify.create({
+        color: 'red',
+        message: `${err}`,
+        timeout: 5000,
+      });
+    }
+  }
+}
 </script>
 
 <template>
@@ -38,6 +81,7 @@ const input_size = ref(size.value);
       hide-hint
     />
     <q-btn
+      @click="fill_order()"
       square
       class="full-width"
       :class="order.orderType == 'buy' ? 'buy' : 'sell'"

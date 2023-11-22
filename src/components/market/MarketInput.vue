@@ -62,43 +62,45 @@ async function create_order(side: OrderSide) {
 </script>
 
 <template>
-  <q-tabs v-model="tab1" indicator-color="transparent">
-    <q-tab :class="tab1 == 'buy' ? 'buy' : ''" name="buy" label="Buy" />
-    <q-separator vertical />
-    <q-tab :class="tab1 == 'sell' ? 'sell' : ''" name="sell" label="Sell" />
-  </q-tabs>
+  <q-card flat>
+    <q-tabs v-model="tab1" indicator-color="transparent">
+      <q-tab :class="tab1 == 'buy' ? 'buy' : ''" name="buy" label="Buy" />
+      <q-separator vertical />
+      <q-tab :class="tab1 == 'sell' ? 'sell' : ''" name="sell" label="Sell" />
+    </q-tabs>
 
-  <q-separator />
+    <q-separator />
 
-  <div class="col q-pa-sm q-gutter-y-xs">
-    <div>
-      <q-input
-        dense
+    <div class="col q-pa-sm q-gutter-y-xs">
+      <div>
+        <q-input
+          dense
+          square
+          filled
+          label="Price"
+          v-model="input_price"
+          type="number"
+        />
+      </div>
+      <div>
+        <q-input
+          dense
+          square
+          filled
+          label="Amount"
+          v-model="input_amount"
+          type="number"
+        />
+      </div>
+      <q-btn
+        @click="create_order(tab1 == 'buy' ? OrderSide.Buy : OrderSide.Sell)"
         square
-        filled
-        label="Price"
-        v-model="input_price"
-        type="number"
+        class="full-width"
+        :class="tab1 == 'buy' ? 'buy' : 'sell'"
+        :label="tab1"
       />
     </div>
-    <div>
-      <q-input
-        dense
-        square
-        filled
-        label="Amount"
-        v-model="input_amount"
-        type="number"
-      />
-    </div>
-    <q-btn
-      @click="create_order(tab1 == 'buy' ? OrderSide.Buy : OrderSide.Sell)"
-      square
-      class="full-width"
-      :class="tab1 == 'buy' ? 'buy' : 'sell'"
-      :label="tab1"
-    />
-  </div>
+  </q-card>
 </template>
 
 <style scoped></style>

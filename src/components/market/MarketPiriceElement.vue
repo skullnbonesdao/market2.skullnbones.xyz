@@ -34,6 +34,9 @@ watch(
       style="height: 20px; width: 20px"
       :currency="CURRENCIES.find((c) => c.mint == data[0].currency)"
     />
+    <q-tooltip transition-show="scale" transition-hide="scale">
+      Last traded price
+    </q-tooltip>
   </q-btn>
 </template>
 
