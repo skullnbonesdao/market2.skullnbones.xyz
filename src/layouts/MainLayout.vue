@@ -1,0 +1,105 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import 'src/css/wallet_connect.css';
+import { WalletMultiButton } from 'solana-wallets-vue';
+import SwitchThemeButton from 'components/buttons/SwitchThemeButton.vue';
+import { useQuasar } from 'quasar';
+import TpsElement from 'components/elements/TpsElement.vue';
+import BuyACoffee from 'components/buttons/BuyACoffee.vue';
+
+const links = computed(() => {
+  let data = [
+    { icon: 'fa-solid fa-house', text: 'Home', to: '/' },
+    { icon: 'fa-solid fa-arrow-trend-up', text: 'Market', to: '/market' },
+    { icon: 'fa-solid fa-compass', text: 'Explorer', to: '/explorer' },
+    { icon: 'fa-solid fa-table', text: 'Table', to: '/table' },
+    { icon: 'fa-solid fa-wallet', text: 'Wallet', to: '/wallet' },
+  ];
+
+  return data;
+});
+
+const drawer = ref(true);
+const miniState = ref(true);
+</script>
+
+<template>
+  <q-layout view="hHh Lpr lff" class="">
+    <q-header class="row q-pr-xs bg-image" bordered>
+      <div class="row full-width items-center" style="padding-right: 0">
+        <q-btn
+          class="q-ml-sm"
+          flat
+          @click="drawer = !drawer"
+          round
+          dense
+          icon="menu"
+        />
+
+        <div class="row bg-transparent">
+          <q-avatar size="40px" class="col">
+            <img src="logo.png" />
+          </q-avatar>
+        </div>
+
+        <q-toolbar-title class="q-ml-md">RogueMarket</q-toolbar-title>
+
+        <TpsElement />
+        <BuyACoffee />
+        <!--        <SwitchThemeButton />-->
+
+        <q-btn class="q-mr-xs" square flat icon="settings" />
+
+        <WalletMultiButton dark />
+      </div>
+    </q-header>
+
+    <q-drawer
+      show-if-above
+      v-model="drawer"
+      :mini="miniState"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+      :width="200"
+      bordered
+      :breakpoint="500"
+    >
+      <q-list padding>
+        <q-item
+          :to="link.to"
+          v-for="link in links"
+          :key="link.text"
+          clickable
+          v-ripple
+          show-if-above
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" :name="link.icon"> </q-icon>
+          </q-item-section>
+
+          <q-item-section> {{ link.text }} </q-item-section>
+        </q-item>
+      </q-list>
+
+      <!--      <div class="absolute-top q-pt-sm" style="height: 60px">-->
+      <!--        <div class="row bg-transparent">-->
+      <!--          <q-avatar size="40px" class="col">-->
+      <!--            <img src="logo.png" />-->
+      <!--          </q-avatar>-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<style>
+.bg-image {
+  background-image: url(public/background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
