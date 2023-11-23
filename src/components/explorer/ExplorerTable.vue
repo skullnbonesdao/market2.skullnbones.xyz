@@ -122,7 +122,9 @@ const columns = ref([
           </q-badge>
         </q-td>
 
-        <q-td class="text-overline" key="fee" :props="props"> </q-td>
+        <q-td class="text-overline" key="fee" :props="props">
+          {{ props.row.fee }}
+        </q-td>
         <q-td class="text-overline" key="size" :props="props">
           <AssetElement :mint="props.row.asset" :value="props.row.size" />
         </q-td>

@@ -45,7 +45,13 @@ const columns = [
     align: 'right',
     sortable: true,
   },
-
+  {
+    name: 'spread',
+    required: true,
+    label: 'Spread',
+    align: 'center',
+    sortable: true,
+  },
   {
     name: 'sell_orders',
     required: true,
@@ -103,32 +109,42 @@ function prepare_data() {
         },
         orderbok: {
           buy: {
-            atlas:
-              useGlobalFactoryStore().order_book_service.getBuyOrdersByCurrencyAndItem(
+            atlas: useGlobalFactoryStore()
+              .order_book_service.getBuyOrdersByCurrencyAndItem(
                 CURRENCIES.find((c) => c.name == 'ATLAS')?.mint ?? '',
                 d.mint
-              )[0]?.uiPrice,
-            usdc: useGlobalFactoryStore().order_book_service.getBuyOrdersByCurrencyAndItem(
-              CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
-              d.mint
-            )[0]?.uiPrice,
+              )
+              .sort((a, b) => a.price - b.price)
+              .reverse()[0]?.uiPrice,
+            usdc: useGlobalFactoryStore()
+              .order_book_service.getBuyOrdersByCurrencyAndItem(
+                CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
+                d.mint
+              )
+              .sort((a, b) => a.price - b.price)
+              .reverse()[0]?.uiPrice,
           },
           sell: {
-            atlas:
-              useGlobalFactoryStore().order_book_service.getSellOrdersByCurrencyAndItem(
+            atlas: useGlobalFactoryStore()
+              .order_book_service.getSellOrdersByCurrencyAndItem(
                 CURRENCIES.find((c) => c.name == 'ATLAS')?.mint ?? '',
                 d.mint
-              )[0]?.uiPrice,
-            usdc: useGlobalFactoryStore().order_book_service.getSellOrdersByCurrencyAndItem(
-              CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
-              d.mint
-            )[0]?.uiPrice,
+              )
+              .sort((a, b) => a.price - b.price)[0]?.uiPrice,
+            usdc: useGlobalFactoryStore()
+              .order_book_service.getSellOrdersByCurrencyAndItem(
+                CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
+                d.mint
+              )
+              .sort((a, b) => a.price - b.price)[0]?.uiPrice,
           },
         },
       });
     });
 }
-
+function calc_spread(buy: number, sell: number) {
+  return buy - sell < 0 ? ((buy - sell) / sell).toFixed(2) + '%' : 0;
+}
 // we generate lots of rows here
 </script>
 
@@ -206,14 +222,33 @@ function prepare_data() {
             />
             <PirceElement label="USDC" :value="props.row.orderbok.buy?.usdc" />
           </q-td>
+          <q-td key="spread" :props="props" class="q-gutter-y-sm buy">
+            <div>
+              {{
+                calc_spread(
+                  props.row.orderbok.buy?.atlas,
+                  props.row.orderbok.sell?.atlas
+                )
+              }}
+            </div>
+            <div>
+              {{
+                calc_spread(
+                  props.row.orderbok.buy?.usdc,
+                  props.row.orderbok.sell?.usdc
+                )
+              }}
+            </div>
+          </q-td>
+
           <q-td key="sell_orders" :props="props" class="q-gutter-y-sm sell">
             <PirceElement
               label="ATLAS"
-              :value="props.row.orderbok.sell?.usdc"
+              :value="props.row.orderbok.sell?.atlas"
             />
             <PirceElement
               label="USDC"
-              :value="props.row.orderbok?.sell?.atlas"
+              :value="props.row.orderbok?.sell?.usdc"
             />
           </q-td>
 
