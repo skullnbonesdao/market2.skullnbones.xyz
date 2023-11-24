@@ -36,14 +36,15 @@ const miniState = ref(true);
           icon="menu"
         />
 
-        <div class="row bg-transparent">
-          <q-avatar size="40px" class="col">
-            <img src="logo.png" />
-          </q-avatar>
-        </div>
-
-        <q-toolbar-title class="q-ml-md">RogueMarket</q-toolbar-title>
-
+        <q-toolbar-title class="row items-center q-gutter-x-md">
+          <q-img class="q-my-sm" width="45px" fit="cover" src="logo.png" />
+          <q-separator class="q-my-sm" vertical />
+          <q-img
+            width="75px"
+            fit="contain"
+            src="sa-powered_by_the_people.png"
+          />
+        </q-toolbar-title>
         <TpsElement />
         <BuyACoffee />
         <!--        <SwitchThemeButton />-->

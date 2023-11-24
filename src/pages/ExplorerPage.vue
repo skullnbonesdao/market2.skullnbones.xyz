@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as api from 'src/api/gen/APIClient';
 import { APIClient } from 'src/api/gen/APIClient';
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
 import ExplorerTable from 'components/explorer/ExplorerTable.vue';
 import { API_URL, useGlobalStore } from 'stores/globalStore';
 import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
@@ -9,6 +9,7 @@ import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 const data = ref();
 const timeout = 60000;
 const reload_percentage = ref(100);
+const loop = ref();
 
 async function load_trades() {
   data.value = await useGlobalStore().api_client.trades.getTrades(
@@ -18,10 +19,14 @@ async function load_trades() {
   );
 }
 
-// onMounted(async () => {
-//   await load_trades();
-// });
-//
+onMounted(async () => {
+  loop.value = setInterval(update_timer, 1000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(loop.value);
+});
+
 function update_timer() {
   if (reload_percentage.value >= 100) {
     load_trades().then(() => {
@@ -33,7 +38,7 @@ function update_timer() {
 }
 
 // Set the interval to 200 milliseconds
-var interval = setInterval(update_timer, 1000);
+// var interval = setInterval(update_timer, 1000);
 </script>
 
 <template>

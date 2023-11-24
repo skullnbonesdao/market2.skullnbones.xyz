@@ -11,7 +11,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "api": "openapi --input ./src/api/api-doc.json --output ./src/api/gen --client axios --name APIClient"
+    "api": "openapi --input ./src/api/api-doc.json --output ./src/api/gen --client axios --name APIClient",
+    "icon" : "text-h6"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",

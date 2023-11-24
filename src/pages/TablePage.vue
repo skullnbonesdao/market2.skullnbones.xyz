@@ -5,43 +5,54 @@ import { CURRENCIES } from 'stores/const';
 import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
 import AsssetIcon from 'components/elements/AsssetIcon.vue';
 import { Order } from '@staratlas/factory';
-import { ItemType } from 'stores/I_StarAtlasNFT';
+import { Attributes, ItemType, Rarity } from 'stores/I_StarAtlasNFT';
 import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 import PirceElement from 'components/elements/PirceElement.vue';
+import RarityBadge from 'components/elements/RarityBadge.vue';
 
 const pagination = ref({
   rowsPerPage: 0,
 });
 
+const filter = ref();
+
 const columns = [
   {
     name: 'name',
     required: true,
-    label: 'Name',
+    label: 'Asset',
     field: 'name',
     align: 'left',
     sortable: true,
   },
+
   {
-    name: 'symbol',
+    name: 'market_atlas',
     required: true,
-    label: 'Symbol',
-    field: 'symbol',
-    align: 'left',
-    sortable: true,
-  },
-  {
-    name: 'market',
-    required: true,
-    label: 'Market',
+    label: 'Market [ATLAS]',
     align: 'center',
     sortable: true,
   },
 
   {
-    name: 'buy_orders',
+    name: 'market_usdc',
     required: true,
-    label: 'Buy',
+    label: 'Market [USDC]',
+    align: 'center',
+    sortable: true,
+  },
+
+  {
+    name: 'buy_orders_atlas',
+    required: true,
+    label: 'BUY [ATLAS]',
+    align: 'right',
+    sortable: true,
+  },
+  {
+    name: 'buy_orders_usdc',
+    required: true,
+    label: 'BUY [USDC]',
     align: 'right',
     sortable: true,
   },
@@ -53,9 +64,16 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'sell_orders',
+    name: 'sell_orders_atlas',
     required: true,
-    label: 'Sell',
+    label: 'Sell [ATLAS]',
+    align: 'left',
+    sortable: true,
+  },
+  {
+    name: 'sell_orders_usdc',
+    required: true,
+    label: 'SELL [USDC]',
     align: 'left',
     sortable: true,
   },
@@ -65,6 +83,7 @@ interface TableData {
   name: string;
   url: string;
   symbol: string;
+  rarity: Attributes;
   market: TableMarketPrices;
   orderbok: TableMarketOrders;
 }
@@ -101,6 +120,7 @@ function prepare_data() {
       data.value.push({
         name: d.name.toString(),
         mint: d.mint.toString(),
+        attributes: d.attributes,
         symbol: d.symbol,
         url: 'sa_files/webp/' + d.mint.toString() + '.webp',
         market: {
@@ -149,7 +169,6 @@ function calc_spread(buy: number, sell: number) {
 </script>
 
 <template>
-  {{ itemType_selected.toString() }}
   <div class="q-pa-md">
     <q-table
       flat
@@ -160,6 +179,7 @@ function calc_spread(buy: number, sell: number) {
       row-key="index"
       :pagination="pagination"
       :rows-per-page-options="[0]"
+      :filter="filter"
     >
       <template v-slot:top>
         <q-space />
@@ -173,12 +193,14 @@ function calc_spread(buy: number, sell: number) {
             :color="itemType_selected == itemType ? 'accent' : 'secondary'"
             :label="itemType"
             :key="itemType"
-            v-for="itemType in useGlobalStaratlasAPIStore().get_itemTypes"
+            v-for="itemType in useGlobalStaratlasAPIStore().get_itemTypes.filter(
+              (t) => t != 'currency'
+            )"
           />
         </div>
 
         <q-space />
-        <q-input filled dense>
+        <q-input filled dense v-model="filter">
           <template v-slot:after>
             <q-icon size="sm" name="fa-solid fa-magnifying-glass" />
           </template>
@@ -188,41 +210,44 @@ function calc_spread(buy: number, sell: number) {
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="name" :props="props" class="">
-            <div class="row items-center q-gutter-x-sm">
-              <q-avatar>
+            <q-item-section side class="row">
+              <q-avatar rounded size="48px">
                 <q-img
                   height="50px"
-                  width="50px"
                   fetchpriority="low"
                   :src="props.row.url"
                 ></q-img>
+                <RarityBadge :rarity="props.row.attributes.rarity" />
               </q-avatar>
-              <div class="text-subtitle1">
-                {{ props.row.name }}
-              </div>
-            </div>
+            </q-item-section>
+            <q-item-section class="">
+              <q-item-label class="text-overline">{{
+                props.row.symbol
+              }}</q-item-label>
+            </q-item-section>
           </q-td>
 
-          <q-td key="symbol" :props="props">
-            <div class="text-subtitle1">
-              {{ props.row.symbol }}
-            </div>
-          </q-td>
-
-          <q-td key="market" :props="props" class="q-gutter-y-sm">
+          <q-td key="market_atlas" :props="props" class="q-gutter-y-sm market">
             <PirceElement label="ATLAS" :value="props.row.market?.atlas" />
+          </q-td>
+
+          <q-td key="market_usdc" :props="props" class="q-gutter-y-sm market">
             <PirceElement label="USDC" :value="props.row.market?.usdc" />
           </q-td>
 
-          <q-td key="buy_orders" :props="props" class="q-gutter-y-sm buy">
+          <q-td key="buy_orders_atlas" :props="props" class="q-gutter-y-sm buy">
             <PirceElement
               class=""
               label="ATLAS"
               :value="props.row.orderbok.buy?.sell"
             />
+          </q-td>
+
+          <q-td key="buy_orders_usdc" :props="props" class="q-gutter-y-sm buy">
             <PirceElement label="USDC" :value="props.row.orderbok.buy?.usdc" />
           </q-td>
-          <q-td key="spread" :props="props" class="q-gutter-y-sm buy">
+
+          <q-td key="spread" class="market" :props="props">
             <div>
               {{
                 calc_spread(
@@ -241,11 +266,22 @@ function calc_spread(buy: number, sell: number) {
             </div>
           </q-td>
 
-          <q-td key="sell_orders" :props="props" class="q-gutter-y-sm sell">
+          <q-td
+            key="sell_orders_atlas"
+            :props="props"
+            class="q-gutter-y-sm sell"
+          >
             <PirceElement
               label="ATLAS"
               :value="props.row.orderbok.sell?.atlas"
             />
+          </q-td>
+
+          <q-td
+            key="sell_orders_usdc"
+            :props="props"
+            class="q-gutter-y-sm sell"
+          >
             <PirceElement
               label="USDC"
               :value="props.row.orderbok?.sell?.usdc"

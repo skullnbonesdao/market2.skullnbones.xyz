@@ -1,9 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+function myTweak(offset: any) {
+  // "offset" is a Number (pixels) that refers to the total
+  // height of header + footer that occupies on screen,
+  // based on the QLayout "view" prop configuration
+
+  // this is actually what the default style-fn does in Quasar
+  return { minHeight: offset ? `calc(100vh - ${offset}px)` : '100vh' };
+}
+</script>
 
 <template>
-  <q-page class="col">
-    <q-img fit="cover" height="95vh" src="background.webp">
-      <div class="absolute-full text-h1 flex flex-center">RogueMarket</div>
-    </q-img>
+  <q-page :style-fn="myTweak" class="row bg-image items-center justify-center">
+    <q-img class="q-ma-sm" src="logo.png" fit="contain" height="60vh" />
   </q-page>
 </template>
+
+<style scoped>
+.bg-image {
+  background-image: url(public/background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
