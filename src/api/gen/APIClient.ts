@@ -6,15 +6,15 @@ import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
-import { TodoService } from './services/TodoService';
 import { TradesService } from './services/TradesService';
+import { UdfService } from './services/UdfService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
 export class APIClient {
 
-    public readonly todo: TodoService;
     public readonly trades: TradesService;
+    public readonly udf: UdfService;
 
     public readonly request: BaseHttpRequest;
 
@@ -31,8 +31,8 @@ export class APIClient {
             ENCODE_PATH: config?.ENCODE_PATH,
         });
 
-        this.todo = new TodoService(this.request);
         this.trades = new TradesService(this.request);
+        this.udf = new UdfService(this.request);
     }
 }
 

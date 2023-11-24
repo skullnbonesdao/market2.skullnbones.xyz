@@ -10,8 +10,15 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export type { Todo } from './models/Todo';
+export type { Exchange } from './models/Exchange';
+export type { Price } from './models/Price';
+export type { PriceChange } from './models/PriceChange';
+export type { SymbolsType } from './models/SymbolsType';
 export type { Trade } from './models/Trade';
+export type { UdfConfig } from './models/UdfConfig';
+export type { UdfHistory } from './models/UdfHistory';
+export type { UdfSearchSymbol } from './models/UdfSearchSymbol';
+export type { UdfSymbolInfo } from './models/UdfSymbolInfo';
 
-export { TodoService } from './services/TodoService';
 export { TradesService } from './services/TradesService';
+export { UdfService } from './services/UdfService';

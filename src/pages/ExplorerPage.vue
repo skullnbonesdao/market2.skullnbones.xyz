@@ -12,11 +12,9 @@ const reload_percentage = ref(100);
 const loop = ref();
 
 async function load_trades() {
-  data.value = await useGlobalStore().api_client.trades.getTrades(
-    null,
-    null,
-    100
-  );
+  await useGlobalStore()
+    .api_client.trades.getTrades(null, null, 50)
+    .then((d) => (data.value = d));
 }
 
 onMounted(async () => {
@@ -25,6 +23,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   clearInterval(loop.value);
+  loop.value = null;
 });
 
 function update_timer() {

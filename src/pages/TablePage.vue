@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
-import { CURRENCIES } from 'stores/const';
+import { CURRENCIES, E_Currency } from 'stores/const';
 import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
-import AsssetIcon from 'components/elements/AsssetIcon.vue';
-import { Order } from '@staratlas/factory';
-import { Attributes, ItemType, Rarity } from 'stores/I_StarAtlasNFT';
+import { Attributes, ItemType } from 'stores/I_StarAtlasNFT';
 import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 import PirceElement from 'components/elements/PirceElement.vue';
 import RarityBadge from 'components/elements/RarityBadge.vue';
+import { useGlobalStore } from 'stores/globalStore';
 
 const pagination = ref({
   rowsPerPage: 0,
@@ -89,8 +88,8 @@ interface TableData {
 }
 
 interface TableMarketPrices {
-  atlas: number;
-  usdc: number;
+  atlas: number | undefined;
+  usdc: number | undefined;
 }
 interface TableMarketOrders {
   buy: TableMarketPrices;
@@ -111,56 +110,72 @@ watch(
   }
 );
 
-function prepare_data() {
+async function prepare_data() {
   data.value = [];
 
-  useGlobalStaratlasAPIStore()
-    .raw.filter((r) => r.attributes.itemType == itemType_selected.value)
-    .forEach((d) => {
-      data.value.push({
-        name: d.name.toString(),
-        mint: d.mint.toString(),
-        attributes: d.attributes,
-        symbol: d.symbol,
-        url: 'sa_files/webp/' + d.mint.toString() + '.webp',
-        market: {
-          atlas: 0,
-          usdc: 0,
+  for (const d of useGlobalStaratlasAPIStore().raw.filter(
+    (r) => r.attributes.itemType == itemType_selected.value
+  )) {
+    console.log();
+
+    data.value.push({
+      name: d.name.toString(),
+      mint: d.mint.toString(),
+      attributes: d.attributes,
+      symbol: d.symbol,
+      url: 'sa_files/webp/' + d.mint.toString() + '.webp',
+      market: {
+        atlas:
+          (
+            await useGlobalStore().api_client.trades.getTrades(
+              CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint,
+              d.mint,
+              1
+            )
+          )[0]?.price ?? undefined,
+        usdc:
+          (
+            await useGlobalStore().api_client.trades.getTrades(
+              CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint,
+              d.mint,
+              1
+            )
+          )[0]?.price ?? undefined,
+      },
+      orderbok: {
+        buy: {
+          atlas: useGlobalFactoryStore()
+            .order_book_service.getBuyOrdersByCurrencyAndItem(
+              CURRENCIES.find((c) => c.name == 'ATLAS')?.mint ?? '',
+              d.mint
+            )
+            .sort((a, b) => a.price - b.price)
+            .reverse()[0]?.uiPrice,
+          usdc: useGlobalFactoryStore()
+            .order_book_service.getBuyOrdersByCurrencyAndItem(
+              CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
+              d.mint
+            )
+            .sort((a, b) => a.price - b.price)
+            .reverse()[0]?.uiPrice,
         },
-        orderbok: {
-          buy: {
-            atlas: useGlobalFactoryStore()
-              .order_book_service.getBuyOrdersByCurrencyAndItem(
-                CURRENCIES.find((c) => c.name == 'ATLAS')?.mint ?? '',
-                d.mint
-              )
-              .sort((a, b) => a.price - b.price)
-              .reverse()[0]?.uiPrice,
-            usdc: useGlobalFactoryStore()
-              .order_book_service.getBuyOrdersByCurrencyAndItem(
-                CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
-                d.mint
-              )
-              .sort((a, b) => a.price - b.price)
-              .reverse()[0]?.uiPrice,
-          },
-          sell: {
-            atlas: useGlobalFactoryStore()
-              .order_book_service.getSellOrdersByCurrencyAndItem(
-                CURRENCIES.find((c) => c.name == 'ATLAS')?.mint ?? '',
-                d.mint
-              )
-              .sort((a, b) => a.price - b.price)[0]?.uiPrice,
-            usdc: useGlobalFactoryStore()
-              .order_book_service.getSellOrdersByCurrencyAndItem(
-                CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
-                d.mint
-              )
-              .sort((a, b) => a.price - b.price)[0]?.uiPrice,
-          },
+        sell: {
+          atlas: useGlobalFactoryStore()
+            .order_book_service.getSellOrdersByCurrencyAndItem(
+              CURRENCIES.find((c) => c.name == 'ATLAS')?.mint ?? '',
+              d.mint
+            )
+            .sort((a, b) => a.price - b.price)[0]?.uiPrice,
+          usdc: useGlobalFactoryStore()
+            .order_book_service.getSellOrdersByCurrencyAndItem(
+              CURRENCIES.find((c) => c.name == 'USDC')?.mint ?? '',
+              d.mint
+            )
+            .sort((a, b) => a.price - b.price)[0]?.uiPrice,
         },
-      });
+      },
     });
+  }
 }
 function calc_spread(buy: number, sell: number) {
   return buy - sell < 0 ? ((buy - sell) / sell).toFixed(2) + '%' : 0;
