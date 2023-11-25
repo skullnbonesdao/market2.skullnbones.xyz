@@ -24,26 +24,26 @@ const miniState = ref(true);
 </script>
 
 <template>
-  <q-layout view="hHh Lpr lff" class="">
-    <q-header class="row q-pr-xs bg-image" bordered>
+  <q-layout view="lHh Lpr lff" class="">
+    <q-header class="row q-pr-xs bg-image q-pt-sm q-pr-sm">
       <div class="row full-width items-center" style="padding-right: 0">
-        <q-btn
-          class="q-ml-sm"
-          flat
-          @click="drawer = !drawer"
-          round
-          dense
-          icon="menu"
-        />
+        <!--        <q-btn-->
+        <!--          class="q-ml-sm"-->
+        <!--          flat-->
+        <!--          @click="drawer = !drawer"-->
+        <!--          round-->
+        <!--          dense-->
+        <!--          icon="menu"-->
+        <!--        />-->
 
-        <q-toolbar-title class="row items-center q-gutter-x-md">
-          <q-img class="q-my-sm" width="45px" fit="cover" src="logo.png" />
-          <q-separator class="q-my-sm" vertical />
-          <q-img
-            width="75px"
-            fit="contain"
-            src="sa-powered_by_the_people.png"
-          />
+        <q-toolbar-title class="row items-center">
+          <!--          <q-img width="60px" fit="cover" src="rm_logo.png" />-->
+          <!--          <q-separator class="q-my-sm" vertical />-->
+          <!--          <q-img-->
+          <!--            width="75px"-->
+          <!--            fit="contain"-->
+          <!--            src="sa-powered_by_the_people.png"-->
+          <!--          />-->
         </q-toolbar-title>
         <TpsElement />
         <BuyACoffee />
@@ -65,6 +65,10 @@ const miniState = ref(true);
       bordered
       :breakpoint="500"
     >
+      <div class="row items-center justify-center q-gutter-y-xs">
+        <q-img width="75px" fit="cover" src="rm_logo.png" />
+        <q-img width="70px" fit="contain" src="sa-powered_by_the_people.png" />
+      </div>
       <q-list padding>
         <q-item
           :to="link.to"

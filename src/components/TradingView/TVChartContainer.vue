@@ -21,7 +21,7 @@ const props = defineProps({
     type: String,
   },
   interval: {
-    default: 'D',
+    default: '3D',
     type: String,
   },
   datafeedUrl: {
@@ -63,7 +63,7 @@ const props = defineProps({
   },
   theme: {
     type: String,
-    default: 'light',
+    default: 'dark',
   },
 });
 
@@ -82,7 +82,7 @@ function create_chart() {
     locale: getLanguageFromURL() || 'en',
     disabled_features: [
       'use_localstorage_for_settings',
-      'header_widget',
+
       'edit_buttons_in_legend',
       'left_toolbar',
       'timeframes_toolbar',
@@ -99,7 +99,6 @@ function create_chart() {
     overrides: {
       'paneProperties.background': '#16213e',
       'scalesProperties.textColor': '#FFF',
-
       'paneProperties.backgroundType': 'solid',
     },
   };

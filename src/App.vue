@@ -21,6 +21,7 @@ useGlobalStaratlasAPIStore()
 
 onMounted(async () => {
   await useGlobalFactoryStore().init();
+  await useGlobalStore().load_token_list();
 });
 
 watch(

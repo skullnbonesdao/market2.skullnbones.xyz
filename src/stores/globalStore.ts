@@ -3,6 +3,8 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { useLocalStorage } from '@vueuse/core';
 import { useQuasar } from 'quasar';
 import { APIClient } from 'src/api/gen';
+import { I_Token, I_TokenList } from 'stores/interfaces/I_TokenList';
+import axios from 'axios';
 
 export const RPC_NETWORKS = [
   {
@@ -20,6 +22,7 @@ export const useGlobalStore = defineStore('globalstore', {
   state: () => ({
     is_dark: useLocalStorage('dark_saved', false),
     rpc_selected: useLocalStorage('rpc_selected', RPC_NETWORKS[0]),
+    token_list: [] as I_Token[],
     connection: {} as Connection,
     api_client: new APIClient({
       BASE: import.meta.env.VITE_SMB_API,
@@ -35,6 +38,16 @@ export const useGlobalStore = defineStore('globalstore', {
       this.connection = new Connection(this.rpc_selected.url, {
         commitment: 'confirmed',
       });
+    },
+    async load_token_list() {
+      axios
+        .get(
+          'https://cdn.jsdelivr.net/gh/solflare-wallet/token-list@latest/solana-tokenlist.json'
+        )
+        .then((response) => {
+          const data: I_TokenList = response.data;
+          this.token_list = data.tokens;
+        });
     },
   },
 });

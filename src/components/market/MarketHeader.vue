@@ -28,7 +28,7 @@ function filterFn(val, update) {
 <template>
   <q-card class="row items-center q-px-sm" flat>
     <q-select
-      class="col"
+      class="col text-h6"
       borderless
       use-input
       input-debounce="0"
