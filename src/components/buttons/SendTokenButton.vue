@@ -12,7 +12,7 @@ import {
 import * as spl from '@solana/spl-token';
 import { useWallet } from 'solana-wallets-vue';
 import { Notify } from 'quasar';
-import { handle_confirmation } from 'components/messages/handle_confirmation';
+import { handle_confirmation } from 'stores/handle_confirmation';
 
 const show_modal = ref(false);
 
@@ -25,26 +25,27 @@ async function send_token() {
 
   const reciever_ata = await getAssociatedTokenAddress(
     new PublicKey(props.mint),
-    new PublicKey(input_receiver.value),
+    new PublicKey(input_receiver.value)
   );
 
   console.log(reciever_ata);
 
   const sender_ata = await getAssociatedTokenAddress(
     new PublicKey(props.mint),
-    useWallet().publicKey.value,
+    useWallet().publicKey.value
   );
 
-  const receiverAccount =
-    await useGlobalStore().connection.getAccountInfo(reciever_ata);
+  const receiverAccount = await useGlobalStore().connection.getAccountInfo(
+    reciever_ata
+  );
   if (receiverAccount === null) {
     tx.add(
       createAssociatedTokenAccountInstruction(
         useWallet().publicKey.value,
         reciever_ata,
         new PublicKey(input_receiver.value),
-        new PublicKey(props.mint),
-      ),
+        new PublicKey(props.mint)
+      )
     );
   }
 
@@ -53,14 +54,14 @@ async function send_token() {
       sender_ata,
       reciever_ata,
       useWallet().publicKey.value,
-      input_amount.value * Math.pow(10, props.decimals),
-    ),
+      input_amount.value * Math.pow(10, props.decimals)
+    )
   );
 
   try {
     const signature = await useWallet().sendTransaction(
       tx,
-      useGlobalStore().connection as Connection,
+      useGlobalStore().connection as Connection
     );
     await handle_confirmation(signature);
   } catch (err) {
@@ -76,7 +77,7 @@ async function send_token() {
 <template>
   <q-btn
     square
-    color="primary"
+    color="secondary"
     size="sm"
     icon="send"
     @click="show_modal = true"

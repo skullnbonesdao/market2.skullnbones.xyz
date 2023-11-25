@@ -6,9 +6,9 @@ const props = defineProps(['address']);
 
 <template>
   <q-btn
+    class="full-width"
     square
-    flat
-    color="secondary"
+    color="primary"
     size="sm"
     icon="link"
     target="_blank"

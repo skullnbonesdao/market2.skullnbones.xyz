@@ -86,8 +86,13 @@ function create_chart() {
       'edit_buttons_in_legend',
       'left_toolbar',
       'timeframes_toolbar',
+      'header_symbol_search',
+      'header_compare',
+      'header_saveload',
+      'header_settings',
+      'study_templates',
     ],
-    enabled_features: ['study_templates'],
+    enabled_features: [''],
     charts_storage_url: props.chartsStorageUrl,
     charts_storage_api_version: props.chartsStorageApiVersion,
     client_id: props.clientId,
@@ -100,29 +105,30 @@ function create_chart() {
       'paneProperties.background': '#16213e',
       'scalesProperties.textColor': '#FFF',
       'paneProperties.backgroundType': 'solid',
+      'mainSeriesProperties.style': 3,
     },
   };
   chartWidget = new widget(widgetOptions);
 
   chartWidget.onChartReady(() => {
     chartWidget.headerReady().then(() => {
-      const button = chartWidget.createButton();
-
-      button.setAttribute('title', 'Click to show a notification popup');
-      button.classList.add('apply-common-tooltip');
-
-      button.addEventListener('click', () =>
-        chartWidget.showNoticeDialog({
-          title: 'Notification',
-          body: 'TradingView Charting Library API works correctly',
-          callback: () => {
-            // eslint-disable-next-line no-console
-            console.log('Noticed!');
-          },
-        })
-      );
-
-      button.innerHTML = 'Check API';
+      // const button = chartWidget.createButton();
+      //
+      // button.setAttribute('title', 'Click to show a notification popup');
+      // button.classList.add('apply-common-tooltip');
+      //
+      // button.addEventListener('click', () =>
+      //   chartWidget.showNoticeDialog({
+      //     title: 'Notification',
+      //     body: 'TradingView Charting Library API works correctly',
+      //     callback: () => {
+      //       // eslint-disable-next-line no-console
+      //       console.log('Noticed!');
+      //     },
+      //   })
+      // );
+      //
+      // button.innerHTML = 'Check API';
     });
   });
 }

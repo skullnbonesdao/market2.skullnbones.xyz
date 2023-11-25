@@ -120,7 +120,6 @@ async function close_account() {
 
 <template>
   <q-btn
-    flat
     square
     color="primary"
     size="sm"

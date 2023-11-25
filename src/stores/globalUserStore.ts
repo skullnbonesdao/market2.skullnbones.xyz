@@ -14,12 +14,21 @@ import { useWallet } from 'solana-wallets-vue';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import axios from 'axios';
 import { I_AccountNFT } from 'stores/interfaces/I_AccountNFT';
+import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 
 export interface I_TokenMap {
   pubkey: string;
   meta: I_Token;
   info: I_AccountParsedInfo;
   account: AccountInfo<ParsedAccountData>;
+}
+
+export interface I_TokenMapSA {
+  pubkey: string;
+  meta: I_Token;
+  info: I_AccountParsedInfo;
+  account: AccountInfo<ParsedAccountData>;
+  staratlas: I_StarAtlasNFT;
 }
 
 export interface I_NFTMap {
@@ -55,6 +64,30 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
           ),
         } as I_TokenMap;
       });
+    },
+
+    get_account_map_staratlas(state) {
+      return state.token_accounts
+        .filter((a) =>
+          useGlobalStaratlasAPIStore().raw.some(
+            (d) => d.mint == a.account.data.parsed.info.mint
+          )
+        )
+
+        .map((account) => {
+          const info = account.account.data.parsed.info as I_AccountParsedInfo;
+          return {
+            pubkey: account.pubkey.toString(),
+            info: info,
+            account: account,
+            meta: useGlobalStore().token_list.find(
+              (token) => token.address === info.mint
+            ),
+            staratlas: useGlobalStaratlasAPIStore().raw.find(
+              (t) => t.mint == info.mint
+            ),
+          } as I_TokenMapSA;
+        });
     },
   },
   actions: {

@@ -12,10 +12,13 @@
     "dev": "quasar dev",
     "build": "quasar build",
     "api": "openapi --input ./src/api/api-doc.json --output ./src/api/gen --client axios --name APIClient",
-    "icon" : "text-h6"
+    "icon": "icongenie generate -i public/rm_logo.png"
   },
   "dependencies": {
+    "@nfteyez/sol-rayz": "^0.10.2",
     "@quasar/extras": "^1.16.4",
+    "@quasar/icongenie": "^3.1.1",
+    "@solana/spl-token": "^0.3.9",
     "@solana/wallet-adapter-wallets": "^0.19.23",
     "@staratlas/factory": "^0.6.0",
     "axios": "^1.2.1",

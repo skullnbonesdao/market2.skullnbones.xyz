@@ -8,7 +8,9 @@ const props = defineProps(['label', 'value']);
 
 <template>
   <div class="row q-gutter-x-sm q-pa-xs bordered items-center">
-    <div class="col text-subtitle2 text-right">{{ value ?? '-' }}</div>
+    <div style="width: 100px" class="col text-subtitle2 text-right">
+      {{ value ?? '-' }}
+    </div>
     <q-separator vertical />
     <CurrencyIcon
       width="20px"

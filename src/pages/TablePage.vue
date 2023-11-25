@@ -17,6 +17,15 @@ const filter = ref();
 
 const columns = [
   {
+    name: 'image',
+    required: true,
+    label: '',
+    field: 'image',
+    align: 'left',
+    sortable: true,
+    style: 'width: 50px',
+  },
+  {
     name: 'name',
     required: true,
     label: 'Asset',
@@ -31,6 +40,7 @@ const columns = [
     label: 'Market [ATLAS]',
     align: 'center',
     sortable: true,
+    style: 'width: 100px',
   },
 
   {
@@ -39,6 +49,7 @@ const columns = [
     label: 'Market [USDC]',
     align: 'center',
     sortable: true,
+    style: 'width: 100px',
   },
 
   {
@@ -47,6 +58,7 @@ const columns = [
     label: 'BUY [ATLAS]',
     align: 'right',
     sortable: true,
+    style: 'width: 100px',
   },
   {
     name: 'buy_orders_usdc',
@@ -54,6 +66,7 @@ const columns = [
     label: 'BUY [USDC]',
     align: 'right',
     sortable: true,
+    style: 'width: 100px',
   },
   {
     name: 'spread',
@@ -61,6 +74,7 @@ const columns = [
     label: 'Spread',
     align: 'center',
     sortable: true,
+    style: 'width: 20px',
   },
   {
     name: 'sell_orders_atlas',
@@ -68,6 +82,7 @@ const columns = [
     label: 'Sell [ATLAS]',
     align: 'left',
     sortable: true,
+    style: 'width: 100px',
   },
   {
     name: 'sell_orders_usdc',
@@ -75,6 +90,7 @@ const columns = [
     label: 'SELL [USDC]',
     align: 'left',
     sortable: true,
+    style: 'width: 100px',
   },
 ];
 
@@ -126,21 +142,23 @@ async function prepare_data() {
       url: 'sa_files/webp/' + d.mint.toString() + '.webp',
       market: {
         atlas:
-          (
-            await useGlobalStore().api_client.trades.getTrades(
-              CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint,
-              d.mint,
-              1
-            )
-          )[0]?.price ?? undefined,
+          // (
+          //   await useGlobalStore().api_client.trades.getTrades(
+          //     CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint,
+          //     d.mint,
+          //     1
+          //   )
+          // )[0]?.price ?? undefined,
+          0,
         usdc:
-          (
-            await useGlobalStore().api_client.trades.getTrades(
-              CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint,
-              d.mint,
-              1
-            )
-          )[0]?.price ?? undefined,
+          // (
+          //   await useGlobalStore().api_client.trades.getTrades(
+          //     CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint,
+          //     d.mint,
+          //     1
+          //   )
+          // )[0]?.price ?? undefined,
+          0,
       },
       orderbok: {
         buy: {
@@ -185,6 +203,15 @@ function calc_spread(buy: number, sell: number) {
 
 <template>
   <div class="q-pa-md">
+    <q-tabs align="justify" v-model="itemType_selected">
+      <q-tab
+        :name="itemType"
+        :label="itemType"
+        :key="itemType"
+        v-for="itemType in useGlobalStaratlasAPIStore().get_itemTypes"
+      />
+    </q-tabs>
+
     <q-table
       flat
       bordered
@@ -198,23 +225,6 @@ function calc_spread(buy: number, sell: number) {
     >
       <template v-slot:top>
         <q-space />
-        <div v-if="$q.screen.gt.xs" class="row q-gutter-x-md">
-          <q-btn
-            @click="
-              () => {
-                itemType_selected = itemType;
-              }
-            "
-            :color="itemType_selected == itemType ? 'accent' : 'secondary'"
-            :label="itemType"
-            :key="itemType"
-            v-for="itemType in useGlobalStaratlasAPIStore().get_itemTypes.filter(
-              (t) => t != 'currency'
-            )"
-          />
-        </div>
-
-        <q-space />
         <q-input filled dense v-model="filter">
           <template v-slot:after>
             <q-icon size="sm" name="fa-solid fa-magnifying-glass" />
@@ -224,7 +234,7 @@ function calc_spread(buy: number, sell: number) {
 
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td key="name" :props="props" class="">
+          <q-td key="image" :props="props">
             <q-item-section side class="row">
               <q-avatar rounded size="48px">
                 <q-img
@@ -235,22 +245,21 @@ function calc_spread(buy: number, sell: number) {
                 <RarityBadge :rarity="props.row.attributes.rarity" />
               </q-avatar>
             </q-item-section>
-            <q-item-section class="">
-              <q-item-label class="text-overline">{{
-                props.row.symbol
-              }}</q-item-label>
-            </q-item-section>
+          </q-td>
+          <q-td key="name" :props="props">
+            <div class="text-h6">{{ props.row.symbol }}</div>
+            <div class="text-subtitle2">{{ props.row.name }}</div>
           </q-td>
 
-          <q-td key="market_atlas" :props="props" class="q-gutter-y-sm market">
+          <q-td key="market_atlas" :props="props" class="">
             <PirceElement label="ATLAS" :value="props.row.market?.atlas" />
           </q-td>
 
-          <q-td key="market_usdc" :props="props" class="q-gutter-y-sm market">
+          <q-td key="market_usdc" :props="props" class="q-gutter-y-sm">
             <PirceElement label="USDC" :value="props.row.market?.usdc" />
           </q-td>
 
-          <q-td key="buy_orders_atlas" :props="props" class="q-gutter-y-sm buy">
+          <q-td key="buy_orders_atlas" :props="props" class="buy">
             <PirceElement
               class=""
               label="ATLAS"
@@ -258,7 +267,7 @@ function calc_spread(buy: number, sell: number) {
             />
           </q-td>
 
-          <q-td key="buy_orders_usdc" :props="props" class="q-gutter-y-sm buy">
+          <q-td key="buy_orders_usdc" :props="props" class="buy">
             <PirceElement label="USDC" :value="props.row.orderbok.buy?.usdc" />
           </q-td>
 
@@ -281,22 +290,14 @@ function calc_spread(buy: number, sell: number) {
             </div>
           </q-td>
 
-          <q-td
-            key="sell_orders_atlas"
-            :props="props"
-            class="q-gutter-y-sm sell"
-          >
+          <q-td key="sell_orders_atlas" :props="props" class="sell">
             <PirceElement
               label="ATLAS"
               :value="props.row.orderbok.sell?.atlas"
             />
           </q-td>
 
-          <q-td
-            key="sell_orders_usdc"
-            :props="props"
-            class="q-gutter-y-sm sell"
-          >
+          <q-td key="sell_orders_usdc" :props="props" class="sell">
             <PirceElement
               label="USDC"
               :value="props.row.orderbok?.sell?.usdc"
@@ -314,20 +315,6 @@ function calc_spread(buy: number, sell: number) {
           <!--            />-->
           <!--          </div>-->
           <!--        </q-td>-->
-
-          <q-td key="price" :props="props" class="">
-            <div class="row items-center q-gutter-x-xs justify-end">
-              <div>
-                {{ props.row.price ?? 0 }}
-              </div>
-              <CurrencyIcon
-                style="width: 14px; height: 14px"
-                :currency="
-                  CURRENCIES.find((c) => c.mint === props.row.currency)
-                "
-              />
-            </div>
-          </q-td>
         </q-tr>
       </template>
     </q-table>

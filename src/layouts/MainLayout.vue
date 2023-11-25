@@ -66,8 +66,13 @@ const miniState = ref(true);
       :breakpoint="500"
     >
       <div class="row items-center justify-center q-gutter-y-xs">
-        <q-img width="75px" fit="cover" src="rm_logo.png" />
-        <q-img width="70px" fit="contain" src="sa-powered_by_the_people.png" />
+        <q-img width="100px" fit="cover" src="rm_logo.png" />
+        <q-img
+          class="q-mx-xs"
+          width="100px"
+          fit="contain"
+          src="sa-powered_by_the_people.png"
+        />
       </div>
       <q-list padding>
         <q-item
