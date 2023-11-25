@@ -22,6 +22,7 @@ export const useGlobalStore = defineStore('globalstore', {
   state: () => ({
     is_dark: useLocalStorage('dark_saved', false),
     rpc_selected: useLocalStorage('rpc_selected', RPC_NETWORKS[0]),
+    enable_grid_orders: useLocalStorage('enable_grid_orders', false),
     token_list: [] as I_Token[],
     connection: {} as Connection,
     api_client: new APIClient({

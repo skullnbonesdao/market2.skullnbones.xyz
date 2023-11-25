@@ -6,6 +6,8 @@ import MarketInput from 'components/market/MarketInput.vue';
 import { useGlobalUserStore } from '../stores/globalUserStore';
 import { Dark } from 'quasar';
 import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
+import MarketInputGrid from 'components/market/MarketInputGrid.vue';
+import { useGlobalStore } from 'stores/globalStore';
 </script>
 
 <template>
@@ -23,6 +25,7 @@ import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 
       <div class="col-3 q-ml-sm q-gutter-y-sm">
         <MarketInput />
+        <MarketInputGrid v-if="useGlobalStore().enable_grid_orders" />
 
         <MarketOrders class="col" />
       </div>

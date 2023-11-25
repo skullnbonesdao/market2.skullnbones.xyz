@@ -6,6 +6,7 @@ import SwitchThemeButton from 'components/buttons/SwitchThemeButton.vue';
 import { useQuasar } from 'quasar';
 import TpsElement from 'components/elements/TpsElement.vue';
 import BuyACoffee from 'components/buttons/BuyACoffee.vue';
+import SettingsButton from 'components/buttons/SettingsButton.vue';
 
 const links = computed(() => {
   let data = [
@@ -48,8 +49,7 @@ const miniState = ref(true);
         <TpsElement />
         <BuyACoffee />
         <!--        <SwitchThemeButton />-->
-
-        <q-btn class="q-mr-xs" square flat icon="settings" />
+        <SettingsButton />
 
         <WalletMultiButton dark />
       </div>

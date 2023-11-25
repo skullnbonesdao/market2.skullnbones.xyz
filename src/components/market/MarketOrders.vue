@@ -10,6 +10,11 @@ const tab = ref('book');
 
 <template>
   <q-card flat>
+    <div class="q-pt-xs">
+      <div class="text-center text-subtitle1">Market</div>
+      <q-separator />
+    </div>
+
     <q-tabs v-model="tab">
       <q-tab name="book" label="Book">
         <q-tooltip transition-show="scale" transition-hide="scale">

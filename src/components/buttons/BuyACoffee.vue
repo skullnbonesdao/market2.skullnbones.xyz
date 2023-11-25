@@ -8,6 +8,7 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
 
 <template>
   <q-btn
+    flat
     square
     icon="fa-solid fa-mug-hot"
     label="Buy a Coffee"
