@@ -1,13 +1,13 @@
 <template>
   <div class="row">
     <AsssetIcon
-      style="height: 45px; width: 45px"
+      :size="size"
       class="relative-position q-ml-md"
       :url="asset_image_url"
     >
     </AsssetIcon>
     <CurrencyIcon
-      style="height: 45px; width: 45px"
+      :size="size"
       class="absolute q-mr-md"
       :currency="props.currency"
     />
@@ -26,6 +26,9 @@ const props = defineProps({
   },
   currency: {
     type: Object as PropType<I_Currency>,
+  },
+  size: {
+    default: 'md',
   },
 });
 </script>

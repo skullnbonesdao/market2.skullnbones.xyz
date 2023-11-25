@@ -7,7 +7,7 @@ const props = defineProps(['label', 'value']);
 </script>
 
 <template>
-  <q-btn class="row items-center">
+  <q-btn color="primary" dense class="row items-center">
     <div style="width: 100px" class="col text-subtitle2 text-right">
       {{ value ?? '-' }}
     </div>

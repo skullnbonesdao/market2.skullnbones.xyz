@@ -12,10 +12,14 @@ import { handle_wallet_connected } from 'stores/handle_wallet_connected';
 
 const tab1 = ref('buy');
 
+const is_loading = ref(false);
+
 const input_price = ref(0);
 const input_amount = ref(0);
 
 async function create_order(side: OrderSide) {
+  is_loading.value = true;
+
   if (!useWallet().publicKey.value) {
     Notify.create({
       color: 'yellow',
@@ -58,6 +62,7 @@ async function create_order(side: OrderSide) {
       timeout: 5000,
     });
   }
+  is_loading.value = false;
 }
 </script>
 
@@ -97,6 +102,7 @@ async function create_order(side: OrderSide) {
         />
       </div>
       <q-btn
+        :loading="is_loading"
         @click="create_order(tab1 == 'buy' ? OrderSide.Buy : OrderSide.Sell)"
         square
         class="full-width"

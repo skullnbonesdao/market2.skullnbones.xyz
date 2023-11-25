@@ -87,7 +87,7 @@ export class TradesService {
      * @throws ApiError
      */
     public search(
-        by: 'signature' | 'asset' | 'currency' | 'buyer' | 'seller' | 'buyer_and_seller',
+        by: 'signature' | 'asset' | 'currency' | 'maker' | 'taker' | 'maker_and_taker',
         search: string,
         limit?: number | null,
     ): CancelablePromise<Array<Trade>> {
