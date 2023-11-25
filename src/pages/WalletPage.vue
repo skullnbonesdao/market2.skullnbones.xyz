@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import AccountWalletAccountsToken from 'components/accounts/AccountWalletAccountsToken.vue';
 import { useGlobalUserStore } from '../stores/globalUserStore';
 import { onMounted, ref } from 'vue';
-import { useGlobalStore } from 'stores/globalStore';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
-import AccountWalletAccountsTable from 'components/accounts/AccountWalletAccountsTable.vue';
+import AccountWalletAccountsTable from 'components/wallet/WalletAccountsTable.vue';
 
 const tab_selected = ref('all');
 

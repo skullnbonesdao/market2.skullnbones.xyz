@@ -25,7 +25,7 @@ const miniState = ref(true);
 
 <template>
   <q-layout view="lHh Lpr lff" class="">
-    <q-header class="row q-pr-xs bg-image q-pt-sm q-pr-sm">
+    <q-header class="row q-pa-xs">
       <div class="row full-width items-center" style="padding-right: 0">
         <!--        <q-btn-->
         <!--          class="q-ml-sm"-->
@@ -64,6 +64,7 @@ const miniState = ref(true);
       :width="200"
       bordered
       :breakpoint="500"
+      class="q-gutter-y-md"
     >
       <div class="row items-center justify-center q-gutter-y-xs">
         <q-img width="100px" fit="cover" src="rm_logo.png" />
