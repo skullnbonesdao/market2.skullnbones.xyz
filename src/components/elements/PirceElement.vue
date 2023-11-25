@@ -7,17 +7,17 @@ const props = defineProps(['label', 'value']);
 </script>
 
 <template>
-  <div class="row q-gutter-x-sm q-pa-xs bordered items-center">
+  <q-btn class="row items-center">
     <div style="width: 100px" class="col text-subtitle2 text-right">
       {{ value ?? '-' }}
     </div>
-    <q-separator vertical />
+    <q-separator vertical class="q-ma-xs" />
     <CurrencyIcon
       width="20px"
       height="20px"
       :currency="CURRENCIES.find((c) => c.symbol == label)"
     />
-  </div>
+  </q-btn>
 </template>
 
 <style scoped lang="sass">

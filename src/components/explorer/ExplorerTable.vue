@@ -50,14 +50,14 @@ const columns = ref([
   },
   {
     name: 'size',
-    align: 'center',
+    align: 'right',
     label: 'Size',
     field: 'size',
     sortable: true,
   },
   {
     name: 'volume',
-    align: 'center',
+    align: 'right',
     label: 'Volume',
 
     field: 'volume',
@@ -65,7 +65,7 @@ const columns = ref([
   },
   {
     name: 'price',
-    align: 'center',
+    align: 'right',
     label: 'Price',
     field: (row: any) => row.price.toFixed(2),
     sortable: true,
@@ -85,45 +85,51 @@ const columns = ref([
     <template v-slot:body="props">
       <q-tr :props="props" class="">
         <q-td key="info" :props="props">
-          <div class="row q-gutter-sm items-center">
+          <q-btn class="row items-center">
             <PairIcon
               :currency="CURRENCIES.find((c) => c.mint === props.row.currency)"
               :asset_image_url="'sa_files/webp/' + props.row.asset + '.webp'"
+              class="q-mr-sm"
             />
-            <div class="col">
-              <div>{{ props.row.timestamp }}</div>
-              <div>{{ format_address(props.row.signature, 10) }}</div>
+            <div class="col text-caption">
+              <div class="text-weight-thin">{{ props.row.timestamp }}</div>
+              <div>{{ format_address(props.row.signature, 5) }}</div>
             </div>
             <q-btn
+              class="q-ml-sm"
               size="sm"
               icon="link"
               :href="'https://solscan.io/tx/' + props.row.signature"
               target="_blank"
             ></q-btn>
-          </div>
+          </q-btn>
         </q-td>
 
         <q-td key="accounts" :props="props">
-          <div class="row q-gutter-x-sm">
-            <div>
+          <q-btn class="row">
+            <div class="text-caption text-weight-thin q-mr-sm">
               <div>Buyer:</div>
               <div>Seller:</div>
             </div>
-            <div>
+            <div class="text-caption">
               <div>{{ props.row.buyer ?? 0 }}</div>
               <div>{{ props.row.seller ?? 0 }}</div>
             </div>
-          </div>
+          </q-btn>
         </q-td>
 
         <q-td key="side" :props="props">
-          <q-badge :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
-            {{ props.row.side }}
-          </q-badge>
+          <q-btn>
+            <q-badge :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
+              {{ props.row.side }}
+            </q-badge>
+          </q-btn>
         </q-td>
 
         <q-td class="text-overline" key="fee" :props="props">
-          {{ props.row.fee }}
+          <q-btn>
+            {{ ((props.row.fee / props.row.volume) * 100).toFixed(1) }}%
+          </q-btn>
         </q-td>
         <q-td class="text-overline" key="size" :props="props">
           <AssetElement :mint="props.row.asset" :value="props.row.size" />

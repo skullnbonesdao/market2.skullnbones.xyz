@@ -8,15 +8,17 @@ const props = defineProps(['mint', 'value']);
 </script>
 
 <template>
-  <div class="row q-gutter-x-sm q-pa-xs bordered items-center">
-    <div class="col text-subtitle2 text-right">{{ value ?? '-' }}</div>
-    <q-separator vertical />
+  <q-btn class="row items-center">
+    <div style="width: 100px" class="col text-subtitle2 text-right">
+      {{ value ?? '-' }}
+    </div>
+    <q-separator vertical class="q-ma-xs" />
     <AsssetIcon
       width="20px"
       height="20px"
       :url="'sa_files/webp/' + props.mint + '.webp'"
     />
-  </div>
+  </q-btn>
 </template>
 
 <style scoped lang="sass">
