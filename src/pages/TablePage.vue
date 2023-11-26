@@ -2,12 +2,11 @@
 import { onMounted, ref, watch } from 'vue';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import { CURRENCIES, E_Currency } from 'stores/const';
-import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
 import { Attributes, ItemType } from 'stores/I_StarAtlasNFT';
 import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 import PirceElement from 'components/elements/PirceElement.vue';
 import RarityBadge from 'components/elements/RarityBadge.vue';
-import { useGlobalStore } from 'stores/globalStore';
+import MarketTrendElement from 'components/elements/MarketTrendElement.vue';
 
 const pagination = ref({
   rowsPerPage: 0,
@@ -272,22 +271,29 @@ function calc_spread(buy: number, sell: number) {
           </q-td>
 
           <q-td key="spread" class="market" :props="props">
-            <div>
-              {{
-                calc_spread(
-                  props.row.orderbok.buy?.atlas,
-                  props.row.orderbok.sell?.atlas
-                )
-              }}
-            </div>
-            <div>
-              {{
-                calc_spread(
-                  props.row.orderbok.buy?.usdc,
-                  props.row.orderbok.sell?.usdc
-                )
-              }}
-            </div>
+            <q-btn class="text-caption" color="primary">
+              <div class="col">
+                <MarketTrendElement
+                  :currency="CURRENCIES.find((c) => c.type == E_Currency.ATLAS)"
+                  :percentage="
+                    calc_spread(
+                      props.row.orderbok.buy?.atlas,
+                      props.row.orderbok.sell?.atlas
+                    )
+                  "
+                />
+                <q-separator />
+                <MarketTrendElement
+                  :currency="CURRENCIES.find((c) => c.type == E_Currency.USDC)"
+                  :percentage="
+                    calc_spread(
+                      props.row.orderbok.buy?.usdc,
+                      props.row.orderbok.sell?.usdc
+                    )
+                  "
+                />
+              </div>
+            </q-btn>
           </q-td>
 
           <q-td key="sell_orders_atlas" :props="props" class="sell">

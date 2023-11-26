@@ -194,7 +194,11 @@ async function close_order(order: Order) {
           </q-td>
           <q-td key="price" :props="props">
             <div class="row justify-end q-gutter-x-sm">
-              <div>{{ props.row.price }}</div>
+              <div>
+                {{
+                  props.row.price * Math.pow(10, -props.row.currencyDecimals)
+                }}
+              </div>
               <CurrencyIcon
                 :currency="
                   CURRENCIES.find((c) => c.mint == props.row.currencyMint)
@@ -203,7 +207,10 @@ async function close_order(order: Order) {
             </div>
           </q-td>
           <q-td key="volume" :props="props">
-            {{ props.row.orderOriginationQty * props.row.price }}
+            {{
+              props.row.orderOriginationQty *
+              (props.row.price * Math.pow(10, -props.row.currencyDecimals))
+            }}
           </q-td>
 
           <q-td key="size" :props="props">

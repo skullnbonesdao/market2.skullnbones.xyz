@@ -8,6 +8,8 @@ import TpsElement from 'components/elements/TpsElement.vue';
 import BuyACoffee from 'components/buttons/BuyACoffee.vue';
 import SettingsButton from 'components/buttons/SettingsButton.vue';
 
+import { version } from 'src/../package.json';
+
 const links = computed(() => {
   let data = [
     { icon: 'fa-solid fa-house', text: 'Home', to: '/' },
@@ -15,10 +17,13 @@ const links = computed(() => {
     { icon: 'fa-solid fa-compass', text: 'Explorer', to: '/explorer' },
     { icon: 'fa-solid fa-table', text: 'Table', to: '/table' },
     { icon: 'fa-solid fa-wallet', text: 'Wallet', to: '/wallet' },
+    { icon: 'fa-solid fa-circle-info', text: 'About', to: '/about' },
   ];
 
   return data;
 });
+
+const display_version = ref(version);
 
 const drawer = ref(true);
 const miniState = ref(true);
@@ -49,6 +54,7 @@ const miniState = ref(true);
         <TpsElement />
         <BuyACoffee />
         <!--        <SwitchThemeButton />-->
+
         <SettingsButton />
 
         <WalletMultiButton dark />
@@ -99,6 +105,12 @@ const miniState = ref(true);
       <!--          </q-avatar>-->
       <!--        </div>-->
       <!--      </div>-->
+
+      <div class="absolute-bottom items-center row q-mb-sm">
+        <q-space />
+        <q-badge :label="display_version" />
+        <q-space />
+      </div>
     </q-drawer>
 
     <q-page-container>

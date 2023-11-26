@@ -3,10 +3,11 @@ import { PropType, ref } from 'vue';
 import { Trade } from 'src/api/gen/models/Trade';
 import PairIcon from 'components/elements/PairIcon.vue';
 import { CURRENCIES } from 'stores/const';
-import { format_address } from '../../stores/format_address';
-import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
+import { format_address } from 'stores/format_address';
 import PirceElement from 'components/elements/PirceElement.vue';
 import AssetElement from 'components/elements/AssetElement.vue';
+import AsssetIcon from 'components/elements/AsssetIcon.vue';
+import { calc_passed_time } from 'stores/calc_passed_time';
 
 const pagination = ref({
   rowsPerPage: 0,
@@ -77,7 +78,7 @@ const columns = ref([
   <q-table
     flat
     :rows="props.data"
-    :columns="columns"
+    :columns="columns as any"
     :pagination="pagination"
     :rows-per-page-options="[0]"
     row-key="name"
@@ -92,9 +93,14 @@ const columns = ref([
               class="q-mr-sm"
               size="lg"
             />
-            <div class="col text-caption">
-              <div class="text-weight-thin">{{ props.row.timestamp }}</div>
-              <div>{{ format_address(props.row.signature, 5) }}</div>
+            <div class="col text-caption" style="width: 100px">
+              <div class="text-weight-thin">
+                {{ format_address(props.row.signature, 5) }}
+              </div>
+              <!--              <div class="text-weight-thin">{{ props.row.timestamp }}</div>-->
+              <div>
+                {{ calc_passed_time(props.row.timestamp) }}
+              </div>
             </div>
             <q-btn
               class="q-ml-sm"

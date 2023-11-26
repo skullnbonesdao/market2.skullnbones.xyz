@@ -5,10 +5,10 @@ p {
 
 :root {
   /* buttons. */
-  --swv-button-background-color: #2d2d2d;
+  --swv-button-background-color: rgba(45, 45, 45, 0);
   --swv-button-text-color: white;
   --swv-button-outline-color: #3f3f3f;
-  --swv-button-hover-background-color: #383838;
+  --swv-button-hover-background-color: #16213e;
   --swv-button-disabled-background-color: #475569;
   --swv-button-disabled-text-color: #94a3b8;
 
