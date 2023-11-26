@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import 'src/css/wallet_connect.css';
 import { WalletMultiButton } from 'solana-wallets-vue';
 import SwitchThemeButton from 'components/buttons/SwitchThemeButton.vue';
@@ -9,6 +9,7 @@ import BuyACoffee from 'components/buttons/BuyACoffee.vue';
 import SettingsButton from 'components/buttons/SettingsButton.vue';
 
 import { version } from 'src/../package.json';
+import { useGlobalStore } from 'stores/globalStore';
 
 const links = computed(() => {
   let data = [
@@ -23,10 +24,16 @@ const links = computed(() => {
   return data;
 });
 
+const sync_status = ref();
 const display_version = ref(version);
-
 const drawer = ref(true);
 const miniState = ref(true);
+
+onMounted(async () => {
+  const block_hight = await useGlobalStore().connection.getBlockHeight();
+  const cursor = await useGlobalStore().api_client.cursor.getCursor();
+  sync_status.value = (cursor[0].block_num / block_hight).toFixed(4);
+});
 </script>
 
 <template>
@@ -109,8 +116,15 @@ const miniState = ref(true);
       <div
         class="col absolute-bottom items-center justify-center row q-mb-sm q-gutter-y-sm"
       >
-        <div v-if="!miniState">Driven by</div>
+        <div v-if="!miniState" class="text-weight-thin text-body2">
+          Driven by
+        </div>
         <q-img src="streamingfast.png" />
+        <q-linear-progress :value="sync_status" :size="miniState ? '' : '25px'">
+          <div v-if="!miniState" class="absolute-full flex flex-center">
+            <q-badge :label="sync_status * 100 + '%'" />
+          </div>
+        </q-linear-progress>
 
         <q-badge class="" :label="display_version" />
       </div>

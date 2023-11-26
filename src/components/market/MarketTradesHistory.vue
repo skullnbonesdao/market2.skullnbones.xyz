@@ -91,7 +91,6 @@ watch(
     flat
     virtual-scroll
     :columns="columns"
-    class="my-sticky-virtscroll-table"
     :pagination="pagination"
     :rows-per-page-options="[0]"
     :virtual-scroll-sticky-size-start="48"
@@ -163,7 +162,7 @@ watch(
 <style lang="sass">
 .my-sticky-virtscroll-table
   /* height or max-height is important */
-  height: 550px
+  //height: 50vh
 
   .q-table__top,
   .q-table__bottom,

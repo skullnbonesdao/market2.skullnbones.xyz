@@ -78,43 +78,42 @@ watch(
     </div>
     <div class="text-overline">SELL</div>
   </div>
-  <q-scroll-area style="height: 500px">
-    <div class="row">
-      <q-table
-        flat
-        class="buy col"
-        dense
-        square
-        :pagination="pagination"
-        :rows-per-page-options="[0]"
-        :rows="buy_orders"
-        :columns="columns"
-        row-key="id"
-        hide-bottom
-        selection="single"
-        v-model:selected="selected_order"
-      >
-      </q-table>
 
-      <q-separator vertical />
+  <div class="row">
+    <q-table
+      flat
+      class="buy col"
+      dense
+      square
+      :pagination="pagination"
+      :rows-per-page-options="[0]"
+      :rows="buy_orders"
+      :columns="columns"
+      row-key="id"
+      hide-bottom
+      selection="single"
+      v-model:selected="selected_order"
+    >
+    </q-table>
 
-      <q-table
-        flat
-        dense
-        square
-        class="sell col"
-        :pagination="pagination"
-        :rows-per-page-options="[0]"
-        :rows="sell_orders"
-        :columns="columns"
-        row-key="id"
-        hide-bottom
-        selection="single"
-        v-model:selected="selected_order"
-      >
-      </q-table>
-    </div>
-  </q-scroll-area>
+    <q-separator vertical />
+
+    <q-table
+      flat
+      dense
+      square
+      class="sell col"
+      :pagination="pagination"
+      :rows-per-page-options="[0]"
+      :rows="sell_orders"
+      :columns="columns"
+      row-key="id"
+      hide-bottom
+      selection="single"
+      v-model:selected="selected_order"
+    >
+    </q-table>
+  </div>
 </template>
 
 <style scoped></style>

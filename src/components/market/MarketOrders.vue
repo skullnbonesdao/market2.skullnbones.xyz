@@ -4,8 +4,19 @@ import { useGlobalFactoryStore } from '../../stores/globalFactoryStore';
 import MarketOrderbookTable from 'components/market/MarketOrderbookTable.vue';
 import MarketTradesHistory from 'components/market/MarketTradesHistory.vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
+import { dom } from 'quasar';
+import height = dom.height;
 
 const tab = ref('book');
+
+function myTweak(offset: any) {
+  // "offset" is a Number (pixels) that refers to the total
+  // height of header + footer that occupies on screen,
+  // based on the QLayout "view" prop configuration
+
+  // this is actually what the default style-fn does in Quasar
+  return { minHeight: offset ? `calc(100vh - ${offset}px)` : '100vh' };
+}
 </script>
 
 <template>
@@ -30,9 +41,14 @@ const tab = ref('book');
         </q-tooltip>
       </q-tab>
     </q-tabs>
-    <q-separator />
 
-    <q-tab-panels v-model="tab" animated class="text-bold">
+    <q-separator />
+    <q-tab-panels
+      style="max-height: calc(100vh - 45vh)"
+      v-model="tab"
+      animated
+      class="text-bold"
+    >
       <q-tab-panel name="book" class="q-pa-none">
         <q-spinner-cube
           v-if="useGlobalFactoryStore().is_loading"

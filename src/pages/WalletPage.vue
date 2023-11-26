@@ -9,6 +9,7 @@ import {
   WalletMultiButton,
 } from 'solana-wallets-vue';
 import WalletAccountInput from 'components/wallet/WalletAccountInput.vue';
+import WalletAccountHistory from 'components/wallet/WalletAccountHistory.vue';
 
 const tab_selected = ref('all');
 
@@ -30,7 +31,7 @@ onMounted(async () => {
           v-for="itemType in useGlobalStaratlasAPIStore().get_itemTypes"
         />
       </q-tabs>
-
+      <WalletAccountHistory />
       <div v-if="useGlobalUserStore().is_loading" class="row">
         <q-space />
         <q-spinner-cube class="row" color="primary" size="3rem" />
