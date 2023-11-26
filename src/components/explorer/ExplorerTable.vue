@@ -31,7 +31,6 @@ const columns = ref([
     label: 'Accounts',
     align: 'left',
     field: 'accounts',
-    sortable: true,
   },
   {
     name: 'side',
@@ -103,7 +102,8 @@ const columns = ref([
               </div>
             </div>
             <q-btn
-              class="q-ml-sm"
+              color="secondary"
+              class="q-ml-md"
               size="sm"
               icon="link"
               :href="'https://solscan.io/tx/' + props.row.signature"
@@ -119,8 +119,8 @@ const columns = ref([
               <div class="">Taker:</div>
             </div>
             <div class="text-caption">
-              <div>{{ props.row.maker ?? 0 }}</div>
-              <div>{{ props.row.taker ?? 0 }}</div>
+              <div>{{ format_address(props.row.maker ?? '', 3) }}</div>
+              <div>{{ format_address(props.row.taker ?? '', 3) }}</div>
             </div>
           </div>
         </q-td>

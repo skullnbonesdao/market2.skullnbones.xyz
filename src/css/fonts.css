@@ -7,3 +7,13 @@
   font-family: "opensans";
   src: url(./fonts/OpenSans.ttf);
 }
+@font-face {
+  font-family: "opensans2";
+  src: url(./fonts/OpenSans-Bold.ttf);
+}
+
+
+@font-face {
+  font-family: "worksans";
+  src: url(./fonts/WorkSans.ttf);
+}

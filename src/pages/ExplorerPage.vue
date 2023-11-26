@@ -41,31 +41,38 @@ function update_timer() {
 </script>
 
 <template>
-  <q-page class="q-ma-md q-gutter-y-sm">
-    <q-card flat class="row">
-      <q-input filled class="col q-mr-md"> </q-input>
+  <q-page class="row bg-image q-pa-sm justify-center">
+    <div class="">
+      <q-card square flat class="row">
+        <q-input square filled class="col"> </q-input>
 
-      <q-btn size="md" flat icon="fa-solid fa-paper-plane">
-        <q-tooltip>Send request</q-tooltip>
-      </q-btn>
-
-      <q-btn size="md" flat>
-        <q-circular-progress
-          :value="reload_percentage"
-          size="xs"
+        <q-btn
           color="secondary"
-        />
-        <q-tooltip>Reload every {{ timeout / 1000 }}s</q-tooltip>
-      </q-btn>
-    </q-card>
-    <q-spinner-cube
-      v-if="!data"
-      class="full-width q-ma-md"
-      size="xl"
-      color="secondary"
-    />
+          square
+          size="md"
+          icon="fa-solid fa-paper-plane"
+        >
+          <q-tooltip>Send request</q-tooltip>
+        </q-btn>
 
-    <ExplorerTable v-else :data="data" />
+        <q-btn size="md" flat square>
+          <q-circular-progress
+            :value="reload_percentage"
+            size="sm"
+            color="white"
+          />
+          <q-tooltip>Reload every {{ timeout / 1000 }}s</q-tooltip>
+        </q-btn>
+      </q-card>
+      <q-spinner-cube
+        v-if="!data"
+        class="full-width q-ma-md"
+        size="xl"
+        color="secondary"
+      />
+
+      <ExplorerTable class="q-mt-sm" v-else :data="data" />
+    </div>
   </q-page>
 </template>
 

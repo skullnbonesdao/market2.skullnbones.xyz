@@ -14,14 +14,7 @@ const pros = defineProps(['tab']);
 
 const accounts = ref();
 
-const visibleColumns = ref([
-  'name',
-  'account',
-  'tyoe',
-  'mint',
-  'action',
-  'amount',
-]);
+const visibleColumns = ref(['name', 'type', 'action', 'amount']);
 
 const columns = [
   {
@@ -167,15 +160,15 @@ function tab_filter_data() {
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            <q-avatar size="md">
-              <AsssetIcon
-                size="md"
-                :url="'sa_files/webp/' + props.row.info.mint + '.webp'"
-              />
-            </q-avatar>
+            <AsssetIcon
+              size="xl"
+              :url="'sa_files/webp/' + props.row.info.mint + '.webp'"
+            />
           </q-td>
-          <q-td key="name" class="text-h6" :props="props">
-            {{ props.row.staratlas.name ?? '-' }}
+          <q-td key="name" :props="props">
+            <div class="text-subtitle1">
+              {{ props.row.staratlas.name ?? '-' }}
+            </div>
           </q-td>
 
           <q-td key="type" :props="props">
@@ -197,7 +190,7 @@ function tab_filter_data() {
           <q-td key="decimals" :props="props">
             {{ props.row.info.tokenAmount?.decimals }}
           </q-td>
-          <q-td key="amount" class="text-overline" :props="props">
+          <q-td key="amount" class="text-subtitle1 text-bold" :props="props">
             <div
               :class="
                 props.row.info.tokenAmount?.uiAmount == 0 ? 'text-yellow' : ''

@@ -11,9 +11,9 @@ import { useGlobalStore } from 'stores/globalStore';
 </script>
 
 <template>
-  <q-page class="q-ma-sm q-gutter-y-sm">
+  <q-page class="q-gutter-y-sm">
     <MarketHeader />
-    <div class="row">
+    <div class="row q-ma-sm">
       <div class="col q-gutter-y-sm">
         <TVChartContainer
           v-if="useGlobalUserStore().selected_nft.symbol"

@@ -28,7 +28,7 @@ watch(
 </script>
 
 <template>
-  <q-btn color="secondary" v-if="data?.length" class="row items-center">
+  <q-btn color="primary" v-if="data?.length" class="row items-center">
     <div class="col q-pr-xs">{{ data[0].price }}</div>
     <CurrencyIcon
       style="height: 20px; width: 20px"

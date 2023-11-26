@@ -11,6 +11,7 @@ export type Trade = {
     id: string;
     maker?: string | null;
     price?: number | null;
+    seller?: string | null;
     side?: string | null;
     signature?: string | null;
     size?: number | null;

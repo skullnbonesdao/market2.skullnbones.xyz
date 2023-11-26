@@ -26,7 +26,7 @@ function filterFn(val, update) {
 </script>
 
 <template>
-  <q-card class="row items-center q-px-sm" flat>
+  <q-card class="row items-center q-px-sm" flat square>
     <q-select
       class="col text-h6"
       borderless

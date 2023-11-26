@@ -3,6 +3,12 @@ import { useGlobalUserStore } from '../stores/globalUserStore';
 import { onMounted, ref } from 'vue';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import AccountWalletAccountsTable from 'components/wallet/WalletAccountsTable.vue';
+import {
+  useWallet,
+  WalletConnectButton,
+  WalletMultiButton,
+} from 'solana-wallets-vue';
+import WalletAccountInput from 'components/wallet/WalletAccountInput.vue';
 
 const tab_selected = ref('all');
 
@@ -12,8 +18,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-page class="q-ma-sm">
+  <q-page class="row bg-image q-pa-sm justify-center">
     <div>
+      <WalletAccountInput class="q-mb-sm" />
       <q-tabs align="justify" v-model="tab_selected">
         <q-tab name="all" label="All" class="bg-secondary" />
         <q-tab
@@ -29,7 +36,7 @@ onMounted(async () => {
         <q-spinner-cube class="row" color="primary" size="3rem" />
         <q-space />
       </div>
-      <AccountWalletAccountsTable :tab="tab_selected" />
+      <AccountWalletAccountsTable :tab="tab_selected" dark />
       <!--    <AccountWalletAccountsToken />-->
     </div>
   </q-page>

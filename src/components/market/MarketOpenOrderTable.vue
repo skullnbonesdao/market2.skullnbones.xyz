@@ -138,7 +138,7 @@ async function close_order(order: Order) {
 </script>
 
 <template>
-  <q-card flat>
+  <q-card flat class="">
     <q-spinner-cube
       v-if="!open_orders?.length"
       class="full-width q-ma-md"
@@ -221,7 +221,7 @@ async function close_order(order: Order) {
 
           <q-td key="actions" :props="props">
             <q-btn
-              color="primary"
+              color="secondary"
               size="xs"
               icon="cancel"
               @click="close_order(props.row)"

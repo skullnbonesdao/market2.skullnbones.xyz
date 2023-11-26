@@ -91,15 +91,15 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
     },
   },
   actions: {
-    async update_accounts() {
+    async update_accounts(wallet: PublicKey | undefined = undefined) {
       this.is_loading = true;
       this.token_accounts = [];
 
-      if (useWallet().publicKey.value) {
+      if (useWallet().publicKey.value || wallet) {
         this.token_accounts = [];
         this.token_accounts = (
           await useGlobalStore().connection.getParsedTokenAccountsByOwner(
-            useWallet().publicKey.value!,
+            wallet ? wallet : useWallet().publicKey.value!,
             {
               programId: TOKEN_PROGRAM_ID,
             }

@@ -17,7 +17,7 @@ import { handle_confirmation } from 'stores/handle_confirmation';
 const show_modal = ref(false);
 
 const props = defineProps(['mint', 'decimals']);
-const input_receiver = ref('6AzZCoxBrJnfWejYZmqcdKUvzdG6yTbRLyuqVYizHWy4');
+const input_receiver = ref('');
 const input_amount = ref(0);
 
 async function send_token() {

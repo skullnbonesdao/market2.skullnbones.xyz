@@ -10,46 +10,83 @@ function myTweak(offset: any) {
 </script>
 
 <template>
-  <q-page class="col bg-image items-center q-pa-md">
-    <q-img class="logo" src="logo.png" fit="contain" height="20vh" />
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">Disclaimer</div>
-        <div class="text-subtitle2">Last updated: November 25, 2023</div>
-      </q-card-section>
+  <q-page class="row bg-image q-pa-sm justify-center">
+    <div>
+      <q-img class="logo" src="logo.png" fit="contain" height="20vh" />
+      <q-card flat style="width: 50vw">
+        <q-card-section>
+          <div class="text-h6">Disclaimer</div>
+          <div class="text-subtitle2">Last updated: November 25, 2023</div>
+        </q-card-section>
 
-      <q-separator dark inset />
+        <q-separator dark inset />
 
-      <q-card-section>
-        Skull&amp;Bones operates the market.skullnbones.xyz website, which
-        provides the SERVICE.
-      </q-card-section>
+        <q-card-section>
+          This disclaimer governs your use of the third-party services provided
+          by RogueMarket. By accessing and using these services, you agree to
+          the terms and conditions outlined in this disclaimer. Please read this
+          disclaimer carefully before using our services.
+        </q-card-section>
 
-      <q-card-section>
-        We are doing our best to prepare the content of this site. However,
-        RogueMarket cannot warranty the expressions and suggestions of the
-        contents, as well as its accuracy. In addition, to the extent permitted
-        by the law, RogueMarket shall not be responsible for any losses and/or
-        damages due to the usage of the information on our website. Our
-        Disclaimer was generated with the help of the WebTerms Disclaimer
-        Generator
-      </q-card-section>
+        <q-card-section>
+          <div class="text-h6">Third-Party Services</div>
+          RogueMarket offers certain services that involve third-party
+          providers. These services may include but are not limited to
+          API/RPC/Webserver. These third-party services are subject to their own
+          terms of use and privacy policies, which you should review before
+          using those services.
+        </q-card-section>
 
-      <q-card-section>
-        By using our website, you hereby consent to our disclaimer and agree to
-        its terms.
-      </q-card-section>
+        <q-card-section>
+          <div class="text-h6">Third-Party Links</div>
+          RogueMarket may include links to third-party websites or resources.
+          These links are provided for your convenience and do not imply
+          endorsement or approval by RogueMarket. We have no control over the
+          content, availability, or security of these external websites.
+        </q-card-section>
 
-      <q-card-section>
-        The links contained on our website may lead to external sites, which are
-        provided for convenience only. Any information or statements that
-        appeared in these sites are not sponsored, endorsed, or otherwise
-        approved by RogueMarket. For these external sites, RogueMarket cannot be
-        held liable for the availability of, or the content located on or
-        through it. Plus, any losses or damages occurred from using these
-        contents or the internet generally.
-      </q-card-section>
-    </q-card>
+        <q-card-section>
+          <div class="text-h6">No Endorsement or Warranty</div>
+          We do not guarantee the accuracy, completeness, reliability, or
+          suitability of the content, services, or products provided by
+          third-party websites. RogueMarket disclaims any liability for any
+          damages or losses incurred as a result of your use of third-party
+          links.
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-h6">Limitation of Liability</div>
+          In no event shall RogueMarket be liable for any direct, indirect,
+          incidental, consequential, or special damages arising out of or in any
+          way connected with the use of the third-party services. This includes
+          but is not limited to loss or damage of data, interruption of
+          business, or any other pecuniary loss, even if advised of the
+          possibility of such damages.
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-h6">User Responsibility</div>
+          It is your responsibility to ensure that your use of the third-party
+          services complies with all applicable laws and regulations. You
+          acknowledge and agree that RogueMarket is not responsible for any
+          misuse or violation of third-party terms by you.
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-h6">Changes to Disclaimer</div>
+          RogueMarket reserves the right to modify or update this disclaimer at
+          any time without prior notice. It is your responsibility to review
+          this disclaimer periodically for changes. Continued use of our
+          services after the posting of any changes constitutes acceptance of
+          those changes.
+        </q-card-section>
+
+        <q-card-section>
+          By using our website, you hereby consent to our disclaimer and agree
+          to its terms.
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 

@@ -106,10 +106,13 @@ const miniState = ref(true);
       <!--        </div>-->
       <!--      </div>-->
 
-      <div class="absolute-bottom items-center row q-mb-sm">
-        <q-space />
-        <q-badge :label="display_version" />
-        <q-space />
+      <div
+        class="col absolute-bottom items-center justify-center row q-mb-sm q-gutter-y-sm"
+      >
+        <div v-if="!miniState">Driven by</div>
+        <q-img src="streamingfast.png" />
+
+        <q-badge class="" :label="display_version" />
       </div>
     </q-drawer>
 
