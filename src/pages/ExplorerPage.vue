@@ -41,7 +41,7 @@ function update_timer() {
 </script>
 
 <template>
-  <q-page class="row bg-image q-pa-sm justify-center">
+  <q-page class="row bg-image-dark q-pa-sm justify-center">
     <div class="">
       <q-card square flat class="row">
         <q-input square filled class="col"> </q-input>

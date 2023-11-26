@@ -7,13 +7,15 @@ import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 import PirceElement from 'components/elements/PirceElement.vue';
 import RarityBadge from 'components/elements/RarityBadge.vue';
 import MarketTrendElement from 'components/elements/MarketTrendElement.vue';
+import { useGlobalStore } from 'stores/globalStore';
+import { useGlobalUserStore } from 'stores/globalUserStore';
 
 const pagination = ref({
   rowsPerPage: 0,
 });
 
 const filter = ref();
-
+const is_loading = ref(true);
 const columns = [
   {
     name: 'image',
@@ -131,13 +133,19 @@ watch(
 );
 
 async function prepare_data() {
+  is_loading.value = true;
   data.value = [];
+
+  const prices_usdc = await useGlobalStore().api_client.trades.getPrices(
+    CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint ?? 'none'
+  );
+  const prices_atlas = await useGlobalStore().api_client.trades.getPrices(
+    CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint ?? 'none'
+  );
 
   for (const d of useGlobalStaratlasAPIStore().raw.filter(
     (r) => r.attributes.itemType == itemType_selected.value
   )) {
-    console.log();
-
     data.value.push({
       name: d.name.toString(),
       mint: d.mint.toString(),
@@ -146,23 +154,11 @@ async function prepare_data() {
       url: 'sa_files/webp/' + d.mint.toString() + '.webp',
       market: {
         atlas:
-          // (
-          //   await useGlobalStore().api_client.trades.getTrades(
-          //     CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint,
-          //     d.mint,
-          //     1
-          //   )
-          // )[0]?.price ?? undefined,
-          0,
+          prices_atlas.find((p) => p.asset == d.mint.toString())?.price ??
+          undefined,
         usdc:
-          // (
-          //   await useGlobalStore().api_client.trades.getTrades(
-          //     CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint,
-          //     d.mint,
-          //     1
-          //   )
-          // )[0]?.price ?? undefined,
-          0,
+          prices_usdc.find((p) => p.asset == d.mint.toString())?.price ??
+          undefined,
       },
       orderbok: {
         buy: {
@@ -202,6 +198,7 @@ async function prepare_data() {
       (a, b) => (a.orderbok.buy.usdc ?? 0) - (b.orderbok.buy.usdc ?? 0)
     );
   }
+  is_loading.value = false;
 }
 function calc_spread(buy: number, sell: number) {
   return buy - sell < 0 ? ((buy - sell) / sell).toFixed(2) + '%' : 0;
@@ -210,7 +207,7 @@ function calc_spread(buy: number, sell: number) {
 </script>
 
 <template>
-  <q-page class="row bg-image q-pa-sm justify-center">
+  <q-page class="row bg-image-dark q-pa-sm justify-center">
     <div>
       <q-tabs align="justify" v-model="itemType_selected">
         <q-tab
@@ -221,7 +218,14 @@ function calc_spread(buy: number, sell: number) {
         />
       </q-tabs>
 
+      <div v-if="is_loading" class="row">
+        <q-space />
+        <q-spinner-cube class="row" color="primary" size="3rem" />
+        <q-space />
+      </div>
+
       <q-table
+        v-else
         flat
         bordered
         title="Treats"

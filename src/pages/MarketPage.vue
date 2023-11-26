@@ -11,7 +11,7 @@ import { useGlobalStore } from 'stores/globalStore';
 </script>
 
 <template>
-  <q-page class="q-gutter-y-sm">
+  <q-page class="q-gutter-y-sm bg-image-dark">
     <MarketHeader />
     <div class="row q-ma-sm">
       <div class="col q-gutter-y-sm">
@@ -33,4 +33,4 @@ import { useGlobalStore } from 'stores/globalStore';
   </q-page>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

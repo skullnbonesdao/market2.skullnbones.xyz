@@ -14,26 +14,6 @@ export class TradesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @param mintAssets
-     * @param mintCurrency
-     * @returns Price Get current market prices
-     * @throws ApiError
-     */
-    public getPrice(
-        mintAssets: Array<string>,
-        mintCurrency: string,
-    ): CancelablePromise<Array<Price>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/get_price',
-            query: {
-                'mint_assets': mintAssets,
-                'mint_currency': mintCurrency,
-            },
-        });
-    }
-
-    /**
      * @param mintCurrency
      * @param mintAsset
      * @param timespan
@@ -52,6 +32,26 @@ export class TradesService {
                 'mint_currency': mintCurrency,
                 'mint_asset': mintAsset,
                 'timespan': timespan,
+            },
+        });
+    }
+
+    /**
+     * @param mintCurrency
+     * @param mintAsset
+     * @returns Price Get prices for currency
+     * @throws ApiError
+     */
+    public getPrices(
+        mintCurrency: string,
+        mintAsset?: string | null,
+    ): CancelablePromise<Array<Price>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/get_prices',
+            query: {
+                'mint_currency': mintCurrency,
+                'mint_asset': mintAsset,
             },
         });
     }
@@ -98,23 +98,6 @@ export class TradesService {
                 'by': by,
                 'search': search,
                 'limit': limit,
-            },
-        });
-    }
-
-    /**
-     * @param mintAssets
-     * @returns Trade List todos successfully
-     * @throws ApiError
-     */
-    public vecTest(
-        mintAssets: Array<string>,
-    ): CancelablePromise<Array<Trade>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/vec_test',
-            path: {
-                'mint_assets': mintAssets,
             },
         });
     }

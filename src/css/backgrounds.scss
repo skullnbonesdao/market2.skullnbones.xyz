@@ -1,0 +1,13 @@
+.bg-image {
+  background-image: url(public/background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.bg-image-dark{
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+  url(public/background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+}

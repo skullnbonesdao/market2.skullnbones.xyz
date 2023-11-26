@@ -10,7 +10,7 @@ function myTweak(offset: any) {
 </script>
 
 <template>
-  <q-page class="row bg-image q-pa-sm justify-center">
+  <q-page class="row bg-image-dark q-pa-sm justify-center">
     <div>
       <q-img class="logo" src="logo.png" fit="contain" height="20vh" />
       <q-card flat style="width: 50vw">

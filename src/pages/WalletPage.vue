@@ -18,7 +18,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-page class="row bg-image q-pa-sm justify-center">
+  <q-page class="row q-pa-sm bg-image-dark justify-center">
     <div>
       <WalletAccountInput class="q-mb-sm" />
       <q-tabs align="justify" v-model="tab_selected">

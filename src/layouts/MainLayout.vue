@@ -30,7 +30,7 @@ const miniState = ref(true);
 </script>
 
 <template>
-  <q-layout view="lHh Lpr lff" class="">
+  <q-layout view="lHh Lpr lff" class="bg-image">
     <q-header class="row q-pa-xs">
       <div class="row full-width items-center" style="padding-right: 0">
         <!--        <q-btn-->
@@ -122,10 +122,4 @@ const miniState = ref(true);
   </q-layout>
 </template>
 
-<style>
-.bg-image {
-  background-image: url(public/background.webp);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-</style>
+<style></style>

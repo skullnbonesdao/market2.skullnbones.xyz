@@ -8,6 +8,7 @@ import { useGlobalUserStore } from 'stores/globalUserStore';
 import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 import 'src/css/scrollbars.css';
 import 'src/css/fonts.css';
+import 'src/css/backgrounds.scss';
 
 useGlobalStore().update_connection();
 useQuasar().dark.set(useGlobalStore().is_dark);
