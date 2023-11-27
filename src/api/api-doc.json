@@ -15,37 +15,6 @@
           "cursor"
         ],
         "operationId": "get_cursor",
-        "parameters": [
-          {
-            "name": "mint_currency",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "mint_asset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true,
-              "minimum": 0
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Request cursors",
@@ -226,7 +195,7 @@
         "operationId": "search",
         "parameters": [
           {
-            "name": "by",
+            "name": "search_option",
             "in": "query",
             "required": true,
             "schema": {
@@ -239,8 +208,7 @@
                 "taker",
                 "maker_and_taker"
               ]
-            },
-            "example": "Asset"
+            }
           },
           {
             "name": "search",
@@ -594,7 +562,7 @@
         "properties": {
           "block_num": {
             "type": "integer",
-            "format": "int32"
+            "format": "int64"
           }
         }
       },

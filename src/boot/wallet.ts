@@ -8,6 +8,7 @@ import {
   SolflareWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { boot } from 'quasar/wrappers';
+import VueApexCharts from 'vue3-apexcharts';
 
 export default boot(({ app }) => {
   // something to do
@@ -17,6 +18,7 @@ export default boot(({ app }) => {
   };
 
   app.use(SolanaWallets, walletOptions);
+  app.use(VueApexCharts);
 
   console.log('[booted] Wallet');
 });

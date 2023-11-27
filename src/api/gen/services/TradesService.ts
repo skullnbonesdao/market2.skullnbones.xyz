@@ -80,14 +80,14 @@ export class TradesService {
     }
 
     /**
-     * @param by
+     * @param searchOption
      * @param search
      * @param limit
      * @returns Trade Get current market price changes
      * @throws ApiError
      */
     public search(
-        by: 'signature' | 'asset' | 'currency' | 'maker' | 'taker' | 'maker_and_taker',
+        searchOption: 'signature' | 'asset' | 'currency' | 'maker' | 'taker' | 'maker_and_taker',
         search: string,
         limit?: number | null,
     ): CancelablePromise<Array<Trade>> {
@@ -95,7 +95,7 @@ export class TradesService {
             method: 'GET',
             url: '/search',
             query: {
-                'by': by,
+                'search_option': searchOption,
                 'search': search,
                 'limit': limit,
             },

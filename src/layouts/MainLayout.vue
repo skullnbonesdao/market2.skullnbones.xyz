@@ -14,10 +14,10 @@ import { useGlobalStore } from 'stores/globalStore';
 const links = computed(() => {
   let data = [
     { icon: 'fa-solid fa-house', text: 'Home', to: '/' },
-    { icon: 'fa-solid fa-arrow-trend-up', text: 'Market', to: '/market' },
-    { icon: 'fa-solid fa-compass', text: 'Explorer', to: '/explorer' },
-    { icon: 'fa-solid fa-table', text: 'Table', to: '/table' },
+    { icon: 'fa-solid fa-arrow-trend-up', text: 'Market-UI', to: '/market' },
+    { icon: 'fa-solid fa-table', text: 'Market-Table', to: '/table' },
     { icon: 'fa-solid fa-wallet', text: 'Wallet', to: '/wallet' },
+    { icon: 'fa-solid fa-compass', text: 'Explorer', to: '/explorer' },
     { icon: 'fa-solid fa-circle-info', text: 'About', to: '/about' },
   ];
 
