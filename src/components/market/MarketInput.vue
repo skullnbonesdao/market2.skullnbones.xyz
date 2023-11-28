@@ -52,7 +52,8 @@ async function create_order(side: OrderSide) {
   try {
     const signature = await useWallet().sendTransaction(
       tx.transaction,
-      useGlobalStore().connection as Connection
+      useGlobalStore().connection as Connection,
+      { signers: tx.signers }
     );
     await handle_confirmation(signature);
   } catch (err) {
