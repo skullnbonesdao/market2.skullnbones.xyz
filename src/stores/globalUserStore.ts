@@ -35,6 +35,7 @@ export interface I_NFTMap {
 
 export const useGlobalUserStore = defineStore('globalUserStore', {
   state: () => ({
+    input_wallet: '',
     selected_nft: {} as I_MarketAsset,
     token_accounts: [],
     nft_accounts: [],

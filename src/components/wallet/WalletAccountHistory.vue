@@ -1,24 +1,44 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useGlobalStore } from 'stores/globalStore';
 import WalletAccountHistoryTable from 'components/wallet/WalletAccountHistoryTable.vue';
 import { Trade } from 'src/api/gen';
 import { CURRENCIES, E_Currency } from 'stores/const';
 
 import '../../css/apexcharts.scss';
-import { colors } from 'quasar';
+import { useWallet } from 'solana-wallets-vue';
+import { useGlobalUserStore } from 'stores/globalUserStore';
 
 const limit = 100;
 const data = ref<Trade[]>();
 const series = ref<any[]>([]);
 
-const is_loading = ref(true);
+const is_loading = ref(false);
+
+watch(
+  () => useWallet().publicKey.value,
+  async () => {
+    await update(useWallet().publicKey.value!.toString());
+  }
+);
+
+watch(
+  () => useGlobalUserStore().input_wallet,
+  async () => {
+    await update(useGlobalUserStore().input_wallet);
+  }
+);
 
 onMounted(async () => {
+  if (useGlobalUserStore().input_wallet)
+    await update(useGlobalUserStore().input_wallet);
+});
+
+async function update(pubkey: string) {
   is_loading.value = true;
   data.value = await useGlobalStore().api_client.trades.search(
     'maker_and_taker',
-    '38s5kQmKd4qSQKQcfLabSqbrxEbuhryUgQMEfb5TCwMt',
+    pubkey,
     limit
   );
   series.value.push({
@@ -40,7 +60,7 @@ onMounted(async () => {
       .map((t) => [t.timestamp, t.price, t.volume]),
   });
   is_loading.value = false;
-});
+}
 
 const chartOptions = {
   colors: ['#3976ea', '#b2b2b2'],
@@ -83,22 +103,28 @@ const chartOptions = {
   <q-card flat>
     <div v-if="is_loading" class="row">
       <q-space />
-      <q-spinner-cube class="row" color="primary" size="3rem" />
+      <q-spinner-cube class="row q-pa-sm" color="primary" size="3rem" />
       <q-space />
     </div>
+    <div v-if="data">
+      <apexchart
+        class="chart"
+        type="bubble"
+        height="350"
+        :options="chartOptions"
+        :series="series"
+        v-if="!is_loading"
+      ></apexchart>
 
-    <apexchart
-      class="chart"
-      type="bubble"
-      height="350"
-      :options="chartOptions"
-      :series="series"
-      v-if="!is_loading"
-    ></apexchart>
-
-    <WalletAccountHistoryTable v-if="!is_loading" :data="data" />
-    <div class="text-center text-orange-4 text-weight-thin text-right q-mr-md">
-      Limited to: {{ limit }}
+      <WalletAccountHistoryTable v-if="!is_loading" :data="data" />
+      <div
+        class="text-center text-orange-4 text-weight-thin text-right q-mr-md"
+      >
+        Limited to: {{ limit }}
+      </div>
+    </div>
+    <div v-else-if="!is_loading" class="text-center text-body2 q-pa-sm">
+      No data
     </div>
   </q-card>
 </template>

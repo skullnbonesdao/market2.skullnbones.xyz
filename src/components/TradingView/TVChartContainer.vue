@@ -147,7 +147,6 @@ onUnmounted(() => {
 watch(
   () => useGlobalUserStore().selected_nft.symbol,
   () => {
-    console.log('trigger');
     chartWidget.remove();
     chartWidget = null;
     create_chart();

@@ -3,11 +3,7 @@ import { useGlobalUserStore } from '../stores/globalUserStore';
 import { onMounted, ref } from 'vue';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import AccountWalletAccountsTable from 'components/wallet/WalletAccountsTable.vue';
-import {
-  useWallet,
-  WalletConnectButton,
-  WalletMultiButton,
-} from 'solana-wallets-vue';
+
 import WalletAccountInput from 'components/wallet/WalletAccountInput.vue';
 import WalletAccountHistory from 'components/wallet/WalletAccountHistory.vue';
 
@@ -49,8 +45,6 @@ onMounted(async () => {
       />
 
       <WalletAccountHistory v-if="tab_selected_parent == 'activity'" />
-
-      <!--    <AccountWalletAccountsToken />-->
     </div>
   </q-page>
 </template>

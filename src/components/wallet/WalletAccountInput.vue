@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import { PublicKey } from '@solana/web3.js';
+import { useWallet } from 'solana-wallets-vue';
 
 const input_wallet = ref('');
+
+watch(
+  () => useWallet().publicKey.value,
+  () => {
+    useGlobalUserStore().input_wallet = useWallet().publicKey.value!.toString();
+  }
+);
 
 async function update_wallet_from_input() {
   if (input_wallet.value.length)
@@ -28,7 +36,11 @@ async function update_wallet_from_input() {
     </q-input>
 
     <q-btn
-      @click="update_wallet_from_input().then(() => {})"
+      @click="
+        update_wallet_from_input().then(() => {
+          useGlobalUserStore().input_wallet = input_wallet;
+        })
+      "
       color="secondary"
       square
       size="md"

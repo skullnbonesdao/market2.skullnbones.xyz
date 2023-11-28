@@ -5,9 +5,10 @@ import { useGlobalUserStore } from 'stores/globalUserStore';
 import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
 import { CURRENCIES } from 'stores/const';
 
-const data = ref();
+const data = ref([{ price: '0' }]);
 
 onMounted(async () => {
+  data.value[0].price = 0;
   data.value = await useGlobalStore().api_client.trades.getTrades(
     useGlobalUserStore().selected_nft.mint_pair,
     useGlobalUserStore().selected_nft.mint_asset,
@@ -16,8 +17,9 @@ onMounted(async () => {
 });
 
 watch(
-  () => useGlobalUserStore().selected_nft,
+  () => useGlobalUserStore().selected_nft.symbol,
   async () => {
+    data.value[0].price = 0;
     data.value = await useGlobalStore().api_client.trades.getTrades(
       useGlobalUserStore().selected_nft.mint_pair,
       useGlobalUserStore().selected_nft.mint_asset,
@@ -32,7 +34,7 @@ watch(
     <div class="col q-pr-xs">{{ data[0].price }}</div>
     <CurrencyIcon
       style="height: 20px; width: 20px"
-      :currency="CURRENCIES.find((c) => c.mint == data[0].currency)"
+      :currency="useGlobalUserStore().selected_nft.currency"
     />
     <q-tooltip transition-show="scale" transition-hide="scale">
       Last traded price

@@ -34,8 +34,7 @@ onBeforeRouteUpdate((to, from) => {
 <template>
   <q-page class="q-gutter-y-sm" v-if="useGlobalStore().is_done">
     <MarketHeader />
-
-    <div class="row q-ma-sm items-center">
+    <div class="row q-ma-sm items-stretch">
       <div class="col q-gutter-y-sm">
         <TVChartContainer
           v-if="useGlobalUserStore().selected_nft"

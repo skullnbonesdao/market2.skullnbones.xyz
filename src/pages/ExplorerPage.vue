@@ -11,11 +11,11 @@ const timeout = 60000;
 const reload_percentage = ref(0);
 const loop = ref();
 
-async function load_trades() {
+const load_trades = async () => {
   await useGlobalStore()
     .api_client.trades.getTrades(null, null, 50)
     .then((d) => (data.value = d));
-}
+};
 
 onMounted(async () => {
   await load_trades();

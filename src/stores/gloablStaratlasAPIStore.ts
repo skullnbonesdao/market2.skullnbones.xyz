@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
-import { Connection, PublicKey } from '@solana/web3.js';
-import { useLocalStorage } from '@vueuse/core';
 import { I_MarketAsset, I_StarAtlasNFT, ItemType } from 'stores/I_StarAtlasNFT';
 import axios from 'axios';
-import { CURRENCIES } from 'stores/const';
+import { CURRENCIES, E_Currency } from 'stores/const';
 
 export const STARATLASAPI_URL = 'https://galaxy.staratlas.com/nfts';
 
@@ -28,7 +26,10 @@ export const useGlobalStaratlasAPIStore = defineStore(
 
         this.nfts = [];
         data.forEach((d) => {
-          CURRENCIES.forEach((c) => {
+          CURRENCIES.filter(
+            (c) => c.type == E_Currency.ATLAS || c.type == E_Currency.USDC
+          )
+          .forEach((c) => {
             this.nfts.push({
               symbol: d.symbol + c.symbol,
               img_path: `sa_files/webp/${d.mint}.webp`,

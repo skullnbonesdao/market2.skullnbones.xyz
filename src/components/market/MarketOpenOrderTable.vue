@@ -5,7 +5,7 @@ import {
 } from 'stores/globalFactoryStore';
 import { GmClientService, Order, OrderSide } from '@staratlas/factory';
 import { useGlobalStore } from 'stores/globalStore';
-import { useWallet } from 'solana-wallets-vue';
+import { useWallet, WalletMultiButton } from 'solana-wallets-vue';
 import { onMounted, ref, watch } from 'vue';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { CURRENCIES } from 'stores/const';
@@ -138,7 +138,7 @@ async function close_order(order: Order) {
 </script>
 
 <template>
-  <q-card flat class="">
+  <q-card v-if="useWallet().publicKey.value" flat class="">
     <q-spinner-cube
       v-if="!open_orders?.length"
       class="full-width q-ma-md"
@@ -230,6 +230,9 @@ async function close_order(order: Order) {
         </q-tr>
       </template>
     </q-table>
+  </q-card>
+  <q-card v-else flat class="row items-center justify-center">
+    <WalletMultiButton dark />
   </q-card>
 </template>
 

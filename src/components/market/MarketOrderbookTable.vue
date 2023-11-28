@@ -64,7 +64,7 @@ function get_orderbook_data() {
 }
 
 watch(
-  () => useGlobalUserStore().selected_nft,
+  () => useGlobalUserStore().selected_nft.symbol,
   () => {
     get_orderbook_data();
   }
@@ -123,34 +123,8 @@ watch(
       selection="single"
       v-model:selected="selected_order"
       virtual-scroll
-      :virtual-scroll-item-size="48"
       :virtual-scroll-sticky-size-start="48"
     >
     </q-table>
   </div>
 </template>
-
-<style lang="sass">
-.my-sticky-dynamic
-  /* height or max-height is important */
-
-  .q-table__top,
-  .q-table__bottom,
-  thead tr:first-child th /* bg color is important for th; just specify one */
-    background-color: $primary
-
-  thead tr th
-    position: sticky
-    z-index: 1
-  /* this will be the loading indicator */
-  thead tr:last-child th
-    /* height of all previous header rows */
-    top: 48px
-  thead tr:first-child th
-    top: 0
-
-  /* prevent scrolling behind sticky top row on focus */
-  tbody
-    /* height of all previous header rows */
-    scroll-margin-top: 48px
-</style>
