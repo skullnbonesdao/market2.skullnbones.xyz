@@ -9,7 +9,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/market',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/MarketPage.vue') }],
+    children: [
+      { path: ':symbol', component: () => import('pages/MarketPage.vue') },
+    ],
   },
   {
     path: '/explorer',

@@ -20,6 +20,7 @@ export const SERVICE_FEE = 100000;
 
 export const useGlobalStore = defineStore('globalstore', {
   state: () => ({
+    is_done: false,
     is_dark: useLocalStorage('dark_saved', false),
     rpc_selected: useLocalStorage('rpc_selected', RPC_NETWORKS[0]),
     settings: useLocalStorage('settings', {

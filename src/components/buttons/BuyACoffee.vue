@@ -1,10 +1,109 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useWallet } from 'solana-wallets-vue';
+import { Notify } from 'quasar';
+import { FEE_WALLET, useGlobalStore } from 'stores/globalStore';
+import { CURRENCIES, E_Currency } from 'stores/const';
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from '@solana/web3.js';
+
+import { handle_confirmation } from 'stores/handle_confirmation';
+import {
+  createAssociatedTokenAccountInstruction,
+  createTransferCheckedInstruction,
+} from '@solana/spl-token';
 
 const show_modal = ref(false);
 const selected_currency = ref('ATLAS');
 const options = ref(['ATLAS', 'POLIS', 'SOL']);
-const input_amount = ref(0);
+const input_amount = ref<number>(0);
+const is_loading = ref(false);
+
+async function send_donation() {
+  is_loading.value = true;
+
+  if (!useWallet().publicKey.value) {
+    Notify.create({
+      color: 'yellow',
+      textColor: 'black',
+      message: 'Wallet not connected!',
+    });
+    return;
+  }
+
+  const tx = new Transaction();
+
+  switch (CURRENCIES.find((c) => c.symbol == selected_currency.value)?.type) {
+    case E_Currency.SOL:
+      tx.add(
+        SystemProgram.transfer({
+          fromPubkey: useWallet().publicKey.value!,
+          toPubkey: new PublicKey(FEE_WALLET),
+          lamports: input_amount.value * LAMPORTS_PER_SOL,
+        })
+      );
+      break;
+    default:
+      const ata = (
+        await useGlobalStore().connection.getParsedTokenAccountsByOwner(
+          useWallet().publicKey.value!,
+          {
+            mint: new PublicKey(
+              CURRENCIES.find((c) => c.symbol == selected_currency.value)!.mint
+            ),
+          }
+        )
+      ).value[0];
+
+      const ata_fee = (
+        await useGlobalStore().connection.getParsedTokenAccountsByOwner(
+          FEE_WALLET,
+          {
+            mint: new PublicKey(
+              CURRENCIES.find((c) => c.symbol == selected_currency.value)!.mint
+            ),
+          }
+        )
+      ).value[0];
+
+      console.log(ata);
+      console.log(ata_fee);
+
+      tx.add(
+        createTransferCheckedInstruction(
+          ata.pubkey,
+          new PublicKey(ata.account.data.parsed.info.mint.toString()),
+          ata_fee.pubkey,
+          useWallet().publicKey.value,
+          BigInt(
+            input_amount.value *
+              Math.pow(10, ata.account.data.parsed.info.tokenAmount.decimals)
+          ),
+          ata.account.data.parsed.info.tokenAmount.decimals
+        )
+      );
+      break;
+  }
+  try {
+    const signature = await useWallet().sendTransaction(
+      tx,
+      useGlobalStore().connection as Connection
+    );
+    await handle_confirmation(signature);
+  } catch (err) {
+    Notify.create({
+      color: 'red',
+      message: `${err}`,
+      timeout: 5000,
+    });
+  }
+  is_loading.value = false;
+}
 </script>
 
 <template>
@@ -61,13 +160,14 @@ const input_amount = ref(0);
             square
             color="primary"
             icon="send"
+            @click="send_donation()"
           />
         </div>
       </q-card-section>
 
       <q-card-section class="col items-center">
         <div class="text-center text-grey-6">
-          rmmWw3yt47PysDGd86G1qgVACFkt6Nd4SoLQ38fejEV
+          {{ FEE_WALLET.toString() }}
         </div>
       </q-card-section>
     </q-card>

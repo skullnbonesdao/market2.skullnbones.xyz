@@ -8,7 +8,9 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
 </script>
 
 <template>
-  <q-btn flat square icon="settings" @click="show_modal = true"> </q-btn>
+  <q-btn flat square icon="fa-solid fa-sliders" @click="show_modal = true">
+  </q-btn>
+
   <q-dialog v-model="show_modal">
     <q-card class="q-pa-sm">
       <q-toolbar>

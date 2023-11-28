@@ -8,7 +8,7 @@ import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 
 const data = ref();
 const timeout = 60000;
-const reload_percentage = ref(100);
+const reload_percentage = ref(0);
 const loop = ref();
 
 async function load_trades() {
@@ -18,6 +18,8 @@ async function load_trades() {
 }
 
 onMounted(async () => {
+  await load_trades();
+
   loop.value = setInterval(update_timer, 1000);
 });
 
@@ -26,9 +28,9 @@ onBeforeUnmount(() => {
   loop.value = null;
 });
 
-function update_timer() {
+async function update_timer() {
   if (reload_percentage.value >= 100) {
-    load_trades().then(() => {
+    await load_trades().then(() => {
       reload_percentage.value = 0;
     });
   } else {

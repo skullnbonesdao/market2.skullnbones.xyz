@@ -8,11 +8,19 @@ export interface I_Currency {
   img_path: string;
 }
 export enum E_Currency {
-  ATLAS,
+  SOL,
   USDC,
+  ATLAS,
+  POLIS,
 }
 
 export const CURRENCIES = [
+  {
+    name: 'Solana',
+    symbol: 'SOL',
+    type: E_Currency.SOL,
+    img_path: 'currencies/SOL.webp',
+  },
   {
     name: 'USDC',
     symbol: 'USDC',
@@ -26,5 +34,12 @@ export const CURRENCIES = [
     type: E_Currency.ATLAS,
     mint: 'ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx',
     img_path: 'currencies/ATLAS.webp',
+  },
+  {
+    name: 'Polis',
+    symbol: 'POLIS',
+    type: E_Currency.POLIS,
+    mint: 'poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk',
+    img_path: 'currencies/POLIS.webp',
   },
 ] as I_Currency[];

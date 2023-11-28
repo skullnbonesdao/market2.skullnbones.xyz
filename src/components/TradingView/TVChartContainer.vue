@@ -17,7 +17,7 @@ const props = defineProps({
   symbol: {
     //default: 'AAPL',
     default: 'PX4USDC',
-    //default: useGlobalUserStore().selected_nft.symbol,
+    // default: useGlobalUserStore().selected_nft.symbol,
     type: String,
   },
   interval: {
@@ -73,7 +73,7 @@ let chartWidget;
 function create_chart() {
   const widgetOptions = {
     theme: props.theme,
-    symbol: props.symbol,
+    symbol: useGlobalUserStore().selected_nft.symbol,
     datafeed: new UDFCompatibleDatafeed(props.datafeedUrl),
     interval: props.interval,
     container: chartContainer.value,
@@ -147,6 +147,7 @@ onUnmounted(() => {
 watch(
   () => useGlobalUserStore().selected_nft.symbol,
   () => {
+    console.log('trigger');
     chartWidget.remove();
     chartWidget = null;
     create_chart();

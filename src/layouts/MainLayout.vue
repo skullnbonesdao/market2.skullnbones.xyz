@@ -10,11 +10,16 @@ import SettingsButton from 'components/buttons/SettingsButton.vue';
 
 import { version } from 'src/../package.json';
 import { useGlobalStore } from 'stores/globalStore';
+import { useGlobalUserStore } from 'stores/globalUserStore';
 
 const links = computed(() => {
   let data = [
     { icon: 'fa-solid fa-house', text: 'Home', to: '/' },
-    { icon: 'fa-solid fa-arrow-trend-up', text: 'Market-UI', to: '/market' },
+    {
+      icon: 'fa-solid fa-arrow-trend-up',
+      text: 'Market-UI',
+      to: '/market/' + useGlobalUserStore().selected_nft.symbol,
+    },
     { icon: 'fa-solid fa-table', text: 'Market-Table', to: '/table' },
     { icon: 'fa-solid fa-wallet', text: 'Wallet', to: '/wallet' },
     { icon: 'fa-solid fa-compass', text: 'Explorer', to: '/explorer' },
@@ -73,6 +78,20 @@ onMounted(async () => {
         </q-toolbar-title>
         <TpsElement />
         <BuyACoffee />
+
+        <q-btn
+          flat
+          icon="fa-brands fa-discord"
+          target="_blank"
+          href="https://discord.gg/m6e5UfwCjM"
+        />
+        <q-btn
+          flat
+          icon="fa-brands fa-github"
+          target="_blank"
+          href="https://github.com/skullnbonesdao/market.skullnbones.xyz"
+        />
+
         <!--        <SwitchThemeButton />-->
 
         <SettingsButton />
@@ -133,6 +152,7 @@ onMounted(async () => {
           Driven by
         </div>
         <q-img src="streamingfast.png" />
+
         <q-linear-progress :value="sync_status" :size="miniState ? '' : '25px'">
           <div v-if="!miniState" class="absolute-full flex flex-center">
             <q-badge :label="(sync_status * 100).toFixed(2) + '%'" />
