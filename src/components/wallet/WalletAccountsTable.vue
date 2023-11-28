@@ -113,7 +113,12 @@ function tab_filter_data() {
 </script>
 
 <template>
-  <div>
+  <q-card flat>
+    <div v-if="useGlobalUserStore().is_loading" class="row">
+      <q-space />
+      <q-spinner-cube class="row" color="primary" size="3rem" />
+      <q-space />
+    </div>
     <q-table
       color="primary"
       dark
@@ -214,7 +219,7 @@ function tab_filter_data() {
         </q-tr>
       </template>
     </q-table>
-  </div>
+  </q-card>
 </template>
 
 <style scoped lang="sass"></style>

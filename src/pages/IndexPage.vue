@@ -10,7 +10,7 @@ function myTweak(offset: any) {
 </script>
 
 <template>
-  <q-page :style-fn="myTweak" class="row">
+  <q-page :style-fn="myTweak" class="row bg-image">
     <q-img class="q-ma-sm logo" src="logo.png" fit="contain" height="60vh" />
   </q-page>
 </template>

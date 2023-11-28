@@ -72,7 +72,13 @@ function filterFn(val, update) {
     <q-separator class="q-ma-md" vertical />
     <MarketPiriceElement class="q-card" />
     <q-separator class="q-ma-md" vertical />
-    <div>Volume</div>
+    <q-btn
+      color="secondary"
+      flat
+      icon="fa-solid fa-repeat"
+      @click="useGlobalUserStore().switch_currency()"
+    />
+
     <q-separator />
   </q-card>
 </template>

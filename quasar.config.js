@@ -52,7 +52,7 @@ module.exports = configure(function (/* ctx */) {
     build: {
       target: {
         // browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-        browser: ['chrome87'],
+        browser: ['esnext', 'chrome87', 'firefox78'],
         node: 'node16',
       },
 

@@ -9,14 +9,7 @@ import height = dom.height;
 
 const tab = ref('book');
 
-function myTweak(offset: any) {
-  // "offset" is a Number (pixels) that refers to the total
-  // height of header + footer that occupies on screen,
-  // based on the QLayout "view" prop configuration
-
-  // this is actually what the default style-fn does in Quasar
-  return { minHeight: offset ? `calc(100vh - ${offset}px)` : '100vh' };
-}
+defineProps(['container_height']);
 </script>
 
 <template>
@@ -41,14 +34,8 @@ function myTweak(offset: any) {
         </q-tooltip>
       </q-tab>
     </q-tabs>
-
     <q-separator />
-    <q-tab-panels
-      style="max-height: calc(100vh - 45vh)"
-      v-model="tab"
-      animated
-      class="text-bold"
-    >
+    <q-tab-panels v-model="tab" animated class="text-bold">
       <q-tab-panel name="book" class="q-pa-none">
         <q-spinner-cube
           v-if="useGlobalFactoryStore().is_loading"
@@ -56,7 +43,8 @@ function myTweak(offset: any) {
           size="xl"
           color="secondary"
         />
-        <MarketOrderbookTable v-else />
+
+        <MarketOrderbookTable :height="container_height" v-else />
       </q-tab-panel>
 
       <!--    <q-tab-panel name="depth">-->
@@ -66,6 +54,7 @@ function myTweak(offset: any) {
 
       <q-tab-panel name="history" class="q-pa-none">
         <MarketTradesHistory
+          :height="container_height"
           :mint_currency="useGlobalUserStore().selected_nft.mint_pair"
           :mint_asset="useGlobalUserStore().selected_nft.mint_asset"
         />

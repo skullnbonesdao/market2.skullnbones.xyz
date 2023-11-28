@@ -160,6 +160,5 @@ watch(
 
 <style>
 .TVChartContainer {
-  height: calc(70vh);
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import 'src/css/wallet_connect.css';
 import { WalletMultiButton } from 'solana-wallets-vue';
 import SwitchThemeButton from 'components/buttons/SwitchThemeButton.vue';
@@ -27,17 +27,30 @@ const links = computed(() => {
 const sync_status = ref();
 const display_version = ref(version);
 const drawer = ref(true);
-const miniState = ref(true);
+const miniState = ref(!useGlobalStore().settings.always_show_drawer);
+
+function toggle_drawer() {
+  if (!useGlobalStore().settings.always_show_drawer)
+    miniState.value = !miniState.value;
+}
+
+watch(
+  () => useGlobalStore().settings.always_show_drawer,
+  () => {
+    if (useGlobalStore().settings.always_show_drawer) miniState.value = false;
+    else miniState.value = true;
+  }
+);
 
 onMounted(async () => {
   const block_hight = await useGlobalStore().connection.getBlockHeight();
   const cursor = await useGlobalStore().api_client.cursor.getCursor();
-  sync_status.value = (cursor[0].block_num / block_hight).toFixed(4);
+  sync_status.value = cursor[0].block_num / block_hight;
 });
 </script>
 
 <template>
-  <q-layout view="lHh Lpr lff" class="bg-image">
+  <q-layout view="lHh Lpr lff" class="bg-image-dark">
     <q-header class="row q-pa-xs">
       <div class="row full-width items-center" style="padding-right: 0">
         <!--        <q-btn-->
@@ -72,8 +85,8 @@ onMounted(async () => {
       show-if-above
       v-model="drawer"
       :mini="miniState"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
+      @mouseover="toggle_drawer()"
+      @mouseout="toggle_drawer()"
       :width="200"
       bordered
       :breakpoint="500"
@@ -122,7 +135,7 @@ onMounted(async () => {
         <q-img src="streamingfast.png" />
         <q-linear-progress :value="sync_status" :size="miniState ? '' : '25px'">
           <div v-if="!miniState" class="absolute-full flex flex-center">
-            <q-badge :label="sync_status * 100 + '%'" />
+            <q-badge :label="(sync_status * 100).toFixed(2) + '%'" />
           </div>
         </q-linear-progress>
 

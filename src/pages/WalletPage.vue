@@ -21,8 +21,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-page class="row q-pa-sm bg-image-dark justify-center">
-    <div>
+  <q-page class="row q-pa-sm justify-center">
+    <div style="width: 80vw">
       <WalletAccountInput class="q-mb-sm" />
       <q-tabs align="justify" v-model="tab_selected_parent">
         <q-tab name="account" label="Accounts" />
@@ -42,11 +42,6 @@ onMounted(async () => {
         />
       </q-tabs>
 
-      <div v-if="useGlobalUserStore().is_loading" class="row">
-        <q-space />
-        <q-spinner-cube class="row" color="primary" size="3rem" />
-        <q-space />
-      </div>
       <AccountWalletAccountsTable
         v-if="tab_selected_parent == 'account'"
         :tab="tab_selected"

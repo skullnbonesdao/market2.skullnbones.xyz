@@ -26,8 +26,14 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
 
       <q-card-section class="text-subtitle1">
         <q-toggle
-          label="Enable Grid Orders"
-          v-model="useGlobalStore().enable_grid_orders"
+          class="full-width"
+          label="Enable grid-rders"
+          v-model="useGlobalStore().settings.enable_grid_orders"
+        />
+        <q-toggle
+          class="full-width"
+          label="Always show drawer"
+          v-model="useGlobalStore().settings.always_show_drawer"
         />
       </q-card-section>
 

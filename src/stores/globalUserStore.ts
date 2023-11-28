@@ -1,20 +1,14 @@
 import { defineStore } from 'pinia';
-import {
-  AccountInfo,
-  Connection,
-  ParsedAccountData,
-  PublicKey,
-} from '@solana/web3.js';
-import { useLocalStorage } from '@vueuse/core';
+import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
 import { I_MarketAsset, I_StarAtlasNFT } from 'stores/I_StarAtlasNFT';
 import { useGlobalStore } from 'stores/globalStore';
 import { I_AccountParsedInfo } from 'stores/interfaces/I_AccountParsedInfo';
 import { I_Token } from 'stores/interfaces/I_TokenList';
 import { useWallet } from 'solana-wallets-vue';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import axios from 'axios';
 import { I_AccountNFT } from 'stores/interfaces/I_AccountNFT';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
+import { CURRENCIES, E_Currency } from 'stores/const';
 
 export interface I_TokenMap {
   pubkey: string;
@@ -108,51 +102,26 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
       }
       this.is_loading = false;
     },
-    async update_accounts_nft(force = false) {
-      if (useWallet().publicKey.value || !this.nft_map.length || force) {
-        this.is_loading = true;
-        this.nft_in_wallet = [];
 
-        this.nft_map = [];
-        this.nft_in_wallet = (await getParsedNftAccountsByOwner({
-          publicAddress: useWallet().publicKey.value!.toString(),
-          connection: useGlobalStore().connection as Connection,
-        })) as I_AccountNFT[];
-
-        for (const meta of this.nft_in_wallet) {
-          const largestAccounts =
-            await useGlobalStore().connection.getTokenLargestAccounts(
-              new PublicKey(meta.mint)
-            );
-          const largestAccountInfo =
-            await useGlobalStore().connection.getParsedAccountInfo(
-              largestAccounts.value[0].address
-            );
-
-          const info = largestAccountInfo.value.data.parsed
-            .info as I_AccountParsedInfo;
-
-          this.nft_map.push({
-            pubkey: largestAccounts.value[0].address.toString(),
-            account: largestAccountInfo.value,
-            info: info,
-            meta: meta,
-            data: await fetch_data_url(meta.data.uri),
-          });
-        }
+    switch_currency() {
+      switch (this.selected_nft.currency.type) {
+        case E_Currency.ATLAS:
+          this.selected_nft = useGlobalStaratlasAPIStore().nfts.find(
+            (a) =>
+              a.mint_asset == this.selected_nft.mint_asset &&
+              a.mint_pair ==
+                CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
+          );
+          break;
+        case E_Currency.USDC:
+          this.selected_nft = useGlobalStaratlasAPIStore().nfts.find(
+            (a) =>
+              a.mint_asset == this.selected_nft.mint_asset &&
+              a.mint_pair ==
+                CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
+          );
+          break;
       }
-      this.is_loading = false;
     },
   },
 });
-
-async function fetch_data_url(url: string) {
-  try {
-    return await axios.get(url).then((resp) => {
-      return resp.data;
-    });
-  } catch (err) {
-    console.warn(err);
-    return undefined;
-  }
-}

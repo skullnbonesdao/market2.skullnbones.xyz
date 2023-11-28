@@ -207,7 +207,7 @@ function calc_spread(buy: number, sell: number) {
 </script>
 
 <template>
-  <q-page class="row bg-image-dark q-pa-sm justify-center">
+  <q-page class="row q-pa-sm justify-center">
     <div>
       <q-tabs align="justify" v-model="itemType_selected">
         <q-tab

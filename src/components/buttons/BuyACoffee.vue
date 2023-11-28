@@ -4,6 +4,7 @@ import { ref } from 'vue';
 const show_modal = ref(false);
 const selected_currency = ref('ATLAS');
 const options = ref(['ATLAS', 'POLIS', 'SOL']);
+const input_amount = ref(0);
 </script>
 
 <template>
@@ -47,8 +48,20 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
             :options="options"
             label="Currency"
           />
-          <q-input filled square class="col" label="Amount" />
-          <q-btn square color="primary" icon="send" />
+          <q-input
+            filled
+            square
+            class="col"
+            label="Amount"
+            type="number"
+            v-model="input_amount"
+          />
+          <q-btn
+            :disable="input_amount <= 0"
+            square
+            color="primary"
+            icon="send"
+          />
         </div>
       </q-card-section>
 

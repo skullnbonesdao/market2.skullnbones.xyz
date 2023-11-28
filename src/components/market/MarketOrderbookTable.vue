@@ -7,6 +7,12 @@ import { Order } from '@staratlas/factory';
 import MarketOrderFillOption from 'components/market/MarketOrderFillOption.vue';
 import { CURRENCIES } from 'stores/const';
 
+const props = defineProps({
+  height: {
+    default: '100px',
+  },
+});
+
 const pagination = ref({
   rowsPerPage: 0,
 });
@@ -81,8 +87,9 @@ watch(
 
   <div class="row">
     <q-table
+      :style="'height : ' + height"
       flat
-      class="buy col"
+      class="buy col my-sticky-dynamic"
       dense
       square
       :pagination="pagination"
@@ -93,6 +100,9 @@ watch(
       hide-bottom
       selection="single"
       v-model:selected="selected_order"
+      virtual-scroll
+      :virtual-scroll-item-size="48"
+      :virtual-scroll-sticky-size-start="48"
     >
     </q-table>
 
@@ -100,9 +110,10 @@ watch(
 
     <q-table
       flat
+      :style="'height : ' + height"
       dense
       square
-      class="sell col"
+      class="sell col my-sticky-dynamic"
       :pagination="pagination"
       :rows-per-page-options="[0]"
       :rows="sell_orders"
@@ -111,9 +122,35 @@ watch(
       hide-bottom
       selection="single"
       v-model:selected="selected_order"
+      virtual-scroll
+      :virtual-scroll-item-size="48"
+      :virtual-scroll-sticky-size-start="48"
     >
     </q-table>
   </div>
 </template>
 
-<style scoped></style>
+<style lang="sass">
+.my-sticky-dynamic
+  /* height or max-height is important */
+
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th /* bg color is important for th; just specify one */
+    background-color: $primary
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  /* this will be the loading indicator */
+  thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
+  thead tr:first-child th
+    top: 0
+
+  /* prevent scrolling behind sticky top row on focus */
+  tbody
+    /* height of all previous header rows */
+    scroll-margin-top: 48px
+</style>

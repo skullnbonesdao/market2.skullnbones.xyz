@@ -14,7 +14,7 @@ const pagination = ref({
   rowsPerPage: 0,
 });
 
-const props = defineProps(['mint_asset', 'mint_currency']);
+const props = defineProps(['mint_asset', 'mint_currency', 'height']);
 
 const columns = ref([
   {
@@ -67,7 +67,7 @@ onMounted(async () => {
   data.value = await useGlobalStore().api_client.trades.getTrades(
     props.mint_currency,
     props.mint_asset,
-    100
+    50
   );
 });
 
@@ -77,7 +77,7 @@ watch(
     data.value = await useGlobalStore().api_client.trades.getTrades(
       props.mint_currency,
       props.mint_asset,
-      100
+      50
     );
   }
 );
@@ -85,6 +85,7 @@ watch(
 
 <template>
   <q-table
+    :style="'height : ' + height"
     :rows="data"
     dense
     square
@@ -160,16 +161,13 @@ watch(
 </template>
 
 <style lang="sass">
-.my-sticky-virtscroll-table
+.my-sticky-dynamic
   /* height or max-height is important */
-  //height: 50vh
 
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th /* bg color is important for th; just specify one */
     background-color: $primary
-    height: 32px
-
 
   thead tr th
     position: sticky
@@ -177,7 +175,7 @@ watch(
   /* this will be the loading indicator */
   thead tr:last-child th
     /* height of all previous header rows */
-    top: 50px
+    top: 48px
   thead tr:first-child th
     top: 0
 
@@ -186,4 +184,3 @@ watch(
     /* height of all previous header rows */
     scroll-margin-top: 48px
 </style>
->

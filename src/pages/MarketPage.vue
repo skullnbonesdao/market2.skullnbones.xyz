@@ -4,38 +4,42 @@ import MarketHeader from 'components/market/MarketHeader.vue';
 import MarketOrders from 'components/market/MarketOrders.vue';
 import MarketInput from 'components/market/MarketInput.vue';
 import { useGlobalUserStore } from '../stores/globalUserStore';
-import { Dark } from 'quasar';
+import { Dark, dom } from 'quasar';
 import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 import MarketInputGrid from 'components/market/MarketInputGrid.vue';
 import { useGlobalStore } from 'stores/globalStore';
+import { useElementSize } from '@vueuse/core';
+import { computed, ref } from 'vue';
 
-function myTweak(offset: any) {
-  // "offset" is a Number (pixels) that refers to the total
-  // height of header + footer that occupies on screen,
-  // based on the QLayout "view" prop configuration
+// const { height, width } = dom;
 
-  // this is actually what the default style-fn does in Quasar
-  return { minHeight: offset ? `calc(100vh - ${offset}px)` : '100vh' };
-}
+const market_orders_height = computed(() => {
+  if (useGlobalStore().settings.enable_grid_orders) {
+    return 'calc(100vh - 70vh)';
+  }
+  return 'calc(100vh - 46vh)';
+});
 </script>
 
 <template>
-  <q-page :style="myTweak" class="q-gutter-y-sm bg-image-dark">
+  <q-page class="q-gutter-y-sm">
     <MarketHeader />
+
     <div class="row q-ma-sm">
       <div class="col q-gutter-y-sm">
         <TVChartContainer
+          style="height: calc(100vh - 25vh)"
           v-if="useGlobalUserStore().selected_nft.symbol"
-          class="col"
+          class="col flex"
           :symbol="useGlobalUserStore().selected_nft.symbol"
         />
-        <MarketOpenOrderTable />
+        <MarketOpenOrderTable class="col" />
       </div>
 
       <div class="col-3 q-ml-sm q-gutter-y-sm">
         <MarketInput />
-        <MarketInputGrid v-if="useGlobalStore().enable_grid_orders" />
-        <MarketOrders class="col" />
+        <MarketInputGrid v-if="useGlobalStore().settings.enable_grid_orders" />
+        <MarketOrders :container_height="market_orders_height" class="col" />
       </div>
     </div>
   </q-page>

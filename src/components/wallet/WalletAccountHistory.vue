@@ -8,13 +8,18 @@ import { CURRENCIES, E_Currency } from 'stores/const';
 import '../../css/apexcharts.scss';
 import { colors } from 'quasar';
 
+const limit = 100;
 const data = ref<Trade[]>();
 const series = ref<any[]>([]);
+
+const is_loading = ref(true);
+
 onMounted(async () => {
+  is_loading.value = true;
   data.value = await useGlobalStore().api_client.trades.search(
     'maker_and_taker',
     '38s5kQmKd4qSQKQcfLabSqbrxEbuhryUgQMEfb5TCwMt',
-    100
+    limit
   );
   series.value.push({
     name: 'USDC',
@@ -34,14 +39,19 @@ onMounted(async () => {
       )
       .map((t) => [t.timestamp, t.price, t.volume]),
   });
+  is_loading.value = false;
 });
 
 const chartOptions = {
-  colors: ['#F44336', '#E91E63', '#9C27B0'],
+  colors: ['#3976ea', '#b2b2b2'],
 
   chart: {
     height: 350,
     type: 'bubble',
+    toolbar: {
+      show: false,
+    },
+    foreColor: '#ffffff',
   },
   dataLabels: {
     enabled: false,
@@ -58,21 +68,11 @@ const chartOptions = {
       title: {
         text: 'USDC',
       },
-      labels: {
-        style: {
-          colors: ['#ffffff'],
-        },
-      },
     },
     {
       opposite: true,
       title: {
         text: 'ATLAS',
-      },
-      labels: {
-        style: {
-          colors: ['#ffffff'],
-        },
       },
     },
   ],
@@ -80,22 +80,33 @@ const chartOptions = {
 </script>
 
 <template>
-  <q-card flat style="width: 50vw">
+  <q-card flat>
+    <div v-if="is_loading" class="row">
+      <q-space />
+      <q-spinner-cube class="row" color="primary" size="3rem" />
+      <q-space />
+    </div>
+
     <apexchart
       class="chart"
       type="bubble"
       height="350"
       :options="chartOptions"
       :series="series"
+      v-if="!is_loading"
     ></apexchart>
 
-    <WalletAccountHistoryTable :data="data" />
+    <WalletAccountHistoryTable v-if="!is_loading" :data="data" />
+    <div class="text-center text-orange-4 text-weight-thin text-right q-mr-md">
+      Limited to: {{ limit }}
+    </div>
   </q-card>
 </template>
 
 <style scoped class="scss">
 .chart {
-  color: #a41f1f;
+  display: flex;
+  color: #000000;
   background: transparent;
   @include palette($my_dark_palette);
 }
