@@ -6,6 +6,7 @@ import { ref, watch } from 'vue';
 import { Order } from '@staratlas/factory';
 import MarketOrderFillOption from 'components/market/MarketOrderFillOption.vue';
 import { CURRENCIES } from 'stores/const';
+import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 
 const props = defineProps({
   height: {
@@ -46,8 +47,12 @@ function get_orderbook_data() {
 
   buy_orders.value = useGlobalFactoryStore()
     .order_book_service.getBuyOrdersByCurrencyAndItem(
-      useGlobalUserStore().selected_nft.mint_pair,
-      useGlobalUserStore().selected_nft.mint_asset
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_pair ?? '',
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_asset ?? ''
     )
     .sort((a, b) => {
       return b.uiPrice - a.uiPrice;
@@ -55,8 +60,12 @@ function get_orderbook_data() {
 
   sell_orders.value = useGlobalFactoryStore()
     .order_book_service.getSellOrdersByCurrencyAndItem(
-      useGlobalUserStore().selected_nft.mint_pair,
-      useGlobalUserStore().selected_nft.mint_asset
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_pair ?? '',
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_asset ?? ''
     )
     .sort((a, b) => {
       return a.uiPrice - b.uiPrice;
@@ -64,7 +73,7 @@ function get_orderbook_data() {
 }
 
 watch(
-  () => useGlobalUserStore().selected_nft.symbol,
+  () => useGlobalUserStore().selected_symbol,
   () => {
     get_orderbook_data();
   }
@@ -80,7 +89,7 @@ watch(
   <div class="row items-center q-px-sm bg-primary">
     <div class="text-overline">BUY</div>
     <div class="text-center col text-subtitle2">
-      {{ (sell_orders[0].uiPrice - buy_orders[0].uiPrice).toFixed(4) }}
+      {{ (sell_orders[0]?.uiPrice - buy_orders[0]?.uiPrice).toFixed(4) }}
     </div>
     <div class="text-overline">SELL</div>
   </div>

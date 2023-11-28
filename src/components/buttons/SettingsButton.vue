@@ -37,6 +37,11 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
           label="Always show drawer"
           v-model="useGlobalStore().settings.always_show_drawer"
         />
+        <q-toggle
+          class="full-width"
+          label="Load TradingView Chart"
+          v-model="useGlobalStore().settings.enable_tv_chart"
+        />
       </q-card-section>
 
       <q-card-section> </q-card-section>

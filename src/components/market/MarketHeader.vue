@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import PairIcon from 'components/elements/PairIcon.vue';
 import MarketPiriceElement from 'components/market/MarketPiriceElement.vue';
+import { CURRENCIES } from 'stores/const';
 
 const selected = ref(null);
 const options = ref(useGlobalStaratlasAPIStore().nfts);
@@ -33,18 +34,30 @@ function filterFn(val, update) {
       use-input
       input-debounce="0"
       @filter="filterFn"
-      v-model="useGlobalUserStore().selected_nft"
+      v-model="useGlobalUserStore().selected_symbol"
       :options="options"
       :display-value="`${
-        useGlobalUserStore().selected_nft
-          ? useGlobalUserStore().selected_nft.name
+        useGlobalUserStore().selected_symbol
+          ? useGlobalUserStore().selected_symbol
           : '*none*'
       }`"
     >
       <template v-slot:prepend>
         <PairIcon
-          :asset_image_url="useGlobalUserStore().selected_nft.img_path"
-          :currency="useGlobalUserStore().selected_nft.currency"
+          :asset_image_url="
+            useGlobalStaratlasAPIStore().nfts.find(
+              (n) => n.symbol == useGlobalUserStore().selected_symbol
+            )?.img_path
+          "
+          :currency="
+            CURRENCIES.find(
+              (c) =>
+                c.mint ==
+                useGlobalStaratlasAPIStore().nfts.find(
+                  (n) => n.symbol == useGlobalUserStore().selected_symbol
+                )?.mint_pair
+            )
+          "
         />
       </template>
 

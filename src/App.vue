@@ -9,30 +9,20 @@ import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 import 'src/css/scrollbars.css';
 import 'src/css/fonts.css';
 import 'src/css/backgrounds.scss';
+import { I_MarketAsset } from 'stores/I_StarAtlasNFT';
 
+useQuasar().dark.set(true);
+useGlobalStore();
 useGlobalStore().update_connection();
-useQuasar().dark.set(useGlobalStore().is_dark);
-
-useGlobalStaratlasAPIStore()
-  .update()
-  .then(() => {
-    useGlobalUserStore().selected_nft = useGlobalStaratlasAPIStore().nfts.find(
-      (n) => n.symbol === 'PX5USDC'
-    );
-  });
+useGlobalUserStore();
 
 onMounted(async () => {
   await useGlobalFactoryStore().init();
   await useGlobalStore().load_token_list();
+  await useGlobalStaratlasAPIStore().update();
+
   useGlobalStore().is_done = true;
 });
-
-watch(
-  () => Dark.isActive,
-  () => {
-    useGlobalStore().is_dark = Dark.isActive;
-  }
-);
 </script>
 
 <template>

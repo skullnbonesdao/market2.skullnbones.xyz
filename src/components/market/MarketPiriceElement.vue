@@ -4,25 +4,34 @@ import { useGlobalStore } from 'stores/globalStore';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
 import { CURRENCIES } from 'stores/const';
+import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 
 const data = ref([{ price: '0' }]);
 
 onMounted(async () => {
   data.value[0].price = 0;
   data.value = await useGlobalStore().api_client.trades.getTrades(
-    useGlobalUserStore().selected_nft.mint_pair,
-    useGlobalUserStore().selected_nft.mint_asset,
+    useGlobalStaratlasAPIStore().nfts.find(
+      (n) => n.symbol == useGlobalUserStore().selected_symbol
+    )?.mint_pair,
+    useGlobalStaratlasAPIStore().nfts.find(
+      (n) => n.symbol == useGlobalUserStore().selected_symbol
+    )?.mint_asset,
     1
   );
 });
 
 watch(
-  () => useGlobalUserStore().selected_nft.symbol,
+  () => useGlobalUserStore().selected_symbol,
   async () => {
     data.value[0].price = 0;
     data.value = await useGlobalStore().api_client.trades.getTrades(
-      useGlobalUserStore().selected_nft.mint_pair,
-      useGlobalUserStore().selected_nft.mint_asset,
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_pair,
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_asset,
       1
     );
   }
@@ -34,7 +43,15 @@ watch(
     <div class="col q-pr-xs">{{ data[0].price }}</div>
     <CurrencyIcon
       style="height: 20px; width: 20px"
-      :currency="useGlobalUserStore().selected_nft.currency"
+      :currency="
+        CURRENCIES.find(
+          (c) =>
+            c.mint ==
+            useGlobalStaratlasAPIStore().nfts.find(
+              (n) => n.symbol == useGlobalUserStore().selected_symbol
+            )?.mint_pair
+        )
+      "
     />
     <q-tooltip transition-show="scale" transition-hide="scale">
       Last traded price

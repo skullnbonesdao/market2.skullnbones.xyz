@@ -9,6 +9,7 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { I_AccountNFT } from 'stores/interfaces/I_AccountNFT';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import { CURRENCIES, E_Currency } from 'stores/const';
+import { useLocalStorage } from '@vueuse/core/index';
 
 export interface I_TokenMap {
   pubkey: string;
@@ -36,7 +37,7 @@ export interface I_NFTMap {
 export const useGlobalUserStore = defineStore('globalUserStore', {
   state: () => ({
     input_wallet: '',
-    selected_nft: {} as I_MarketAsset,
+    selected_symbol: useLocalStorage('selected_symbol', 'PX4USDC'),
     token_accounts: [],
     nft_accounts: [],
     nft_in_wallet: [] as I_AccountNFT[],
@@ -105,22 +106,32 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
     },
 
     switch_currency() {
-      switch (this.selected_nft.currency.type) {
+      switch (
+        useGlobalStaratlasAPIStore().nfts.find(
+          (n) => n.symbol == this.selected_symbol
+        )?.currency.type
+      ) {
         case E_Currency.ATLAS:
-          this.selected_nft = useGlobalStaratlasAPIStore().nfts.find(
+          this.selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
             (a) =>
-              a.mint_asset == this.selected_nft.mint_asset &&
+              a.mint_asset ==
+                useGlobalStaratlasAPIStore().nfts.find(
+                  (n) => n.symbol == this.selected_symbol
+                )?.mint_asset &&
               a.mint_pair ==
                 CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
-          );
+          )?.symbol;
           break;
         case E_Currency.USDC:
-          this.selected_nft = useGlobalStaratlasAPIStore().nfts.find(
+          this.selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
             (a) =>
-              a.mint_asset == this.selected_nft.mint_asset &&
+              a.mint_asset ==
+                useGlobalStaratlasAPIStore().nfts.find(
+                  (n) => n.symbol == this.selected_symbol
+                )?.mint_asset &&
               a.mint_pair ==
                 CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
-          );
+          )?.symbol;
           break;
       }
     },

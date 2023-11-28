@@ -11,6 +11,9 @@ import SettingsButton from 'components/buttons/SettingsButton.vue';
 import { version } from 'src/../package.json';
 import { useGlobalStore } from 'stores/globalStore';
 import { useGlobalUserStore } from 'stores/globalUserStore';
+import { useRoute } from 'vue-router';
+import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
+import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 
 const links = computed(() => {
   let data = [
@@ -18,7 +21,7 @@ const links = computed(() => {
     {
       icon: 'fa-solid fa-arrow-trend-up',
       text: 'Market-UI',
-      to: '/market/' + useGlobalUserStore().selected_nft.symbol,
+      to: '/market/' + useGlobalUserStore().selected_symbol ?? '',
     },
     { icon: 'fa-solid fa-table', text: 'Market-Table', to: '/table' },
     { icon: 'fa-solid fa-wallet', text: 'Wallet', to: '/wallet' },

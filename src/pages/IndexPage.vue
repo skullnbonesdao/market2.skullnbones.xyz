@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGlobalUserStore } from '../stores/globalUserStore';
+
 function myTweak(offset: any) {
   // "offset" is a Number (pixels) that refers to the total
   // height of header + footer that occupies on screen,

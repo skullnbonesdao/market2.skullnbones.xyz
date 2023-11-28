@@ -32,6 +32,7 @@ watch(
 onMounted(async () => {
   if (useGlobalUserStore().input_wallet)
     await update(useGlobalUserStore().input_wallet);
+  else await update(useWallet().publicKey.value!.toString());
 });
 
 async function update(pubkey: string) {
@@ -123,9 +124,7 @@ const chartOptions = {
         Limited to: {{ limit }}
       </div>
     </div>
-    <div v-else-if="!is_loading" class="text-center text-body2 q-pa-sm">
-      No data
-    </div>
+    <div v-else class="text-center text-body2 q-pa-sm">No data</div>
   </q-card>
 </template>
 

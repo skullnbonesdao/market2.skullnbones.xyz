@@ -7,6 +7,7 @@ import { useGlobalUserStore } from 'stores/globalUserStore';
 import { dom } from 'quasar';
 import height = dom.height;
 import { WalletMultiButton } from 'solana-wallets-vue';
+import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 
 const tab = ref('book');
 
@@ -56,8 +57,16 @@ defineProps(['container_height']);
       <q-tab-panel name="history" class="q-pa-none">
         <MarketTradesHistory
           :height="container_height"
-          :mint_currency="useGlobalUserStore().selected_nft.mint_pair"
-          :mint_asset="useGlobalUserStore().selected_nft.mint_asset"
+          :mint_currency="
+            useGlobalStaratlasAPIStore().nfts.find(
+              (n) => n.symbol == useGlobalUserStore().selected_symbol
+            )?.mint_pair
+          "
+          :mint_asset="
+            useGlobalStaratlasAPIStore().nfts.find(
+              (n) => n.symbol == useGlobalUserStore().selected_symbol
+            )?.mint_asset
+          "
         />
       </q-tab-panel>
     </q-tab-panels>

@@ -88,7 +88,7 @@ watch(
 );
 
 async function get_open_orders() {
-  if (useWallet().publicKey) {
+  if (useWallet().publicKey.value) {
     open_orders.value = [];
 
     let gmClient = new GmClientService();

@@ -9,8 +9,8 @@ import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 import MarketInputGrid from 'components/market/MarketInputGrid.vue';
 import { useGlobalStore } from 'stores/globalStore';
 import { useElementSize } from '@vueuse/core';
-import { computed, ref } from 'vue';
-import { onBeforeRouteUpdate } from 'vue-router';
+import { computed, onMounted, ref, watch } from 'vue';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import { I_MarketAsset } from 'stores/I_StarAtlasNFT';
 import MarketInfo from 'components/market/MarketInfo.vue';
@@ -24,23 +24,53 @@ const market_orders_height = computed(() => {
   }
   return 'calc(100vh - 46vh)';
 });
-onBeforeRouteUpdate((to, from) => {
-  useGlobalUserStore().selected_nft = useGlobalStaratlasAPIStore().nfts.find(
-    (n) => n.symbol.toString() == to.params.symbol.toString()
-  ) as I_MarketAsset;
+
+const temp_symbol = computed(() => {
+  return useGlobalStaratlasAPIStore().nfts.find(
+    (n) =>
+      n.symbol.toString() == useRoute().params.symbol.toString().toUpperCase()
+  )!.symbol;
+});
+
+// watch(
+//   () => temp_symbol.value,
+//   () => {
+//     if (useGlobalUserStore().selected_symbol != temp_symbol.value)
+//       useGlobalUserStore().selected_symbol =
+//         useGlobalStaratlasAPIStore().nfts.find(
+//           (n) =>
+//             n.symbol.toString() ==
+//             useRoute().params.symbol.toString().toUpperCase()
+//         )!.symbol;
+//   }
+// );
+
+onBeforeRouteUpdate(() => {
+  useGlobalUserStore().selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
+    (n) =>
+      n.symbol.toString() == useRoute().params.symbol.toString().toUpperCase()
+  )!.symbol;
 });
 </script>
 
 <template>
   <q-page class="q-gutter-y-sm" v-if="useGlobalStore().is_done">
-    <MarketHeader />
-    <div class="row q-ma-sm items-stretch">
-      <div class="col q-gutter-y-sm">
+    <MarketHeader style="height: 6vh" />
+
+    <div class="row q-ma-sm">
+      <div class="col q-gutter-y-sm no-wra">
         <TVChartContainer
-          v-if="useGlobalUserStore().selected_nft"
-          style="height: calc(100vh - 25vh)"
+          v-if="
+            useGlobalUserStore().selected_symbol &&
+            useGlobalStore().settings.enable_tv_chart
+          "
+          :symbol="useGlobalUserStore().selected_symbol"
+          style="height: calc(100vh - 20vh - 6vh)"
         />
-        <MarketOpenOrderTable />
+
+        <q-scroll-area style="height: calc(100vh - 81vh - 6vh)">
+          <MarketOpenOrderTable />
+        </q-scroll-area>
       </div>
 
       <div class="col-3 q-ml-sm q-gutter-y-sm">
