@@ -64,7 +64,6 @@ onBeforeRouteUpdate(() => {
             useGlobalUserStore().selected_symbol &&
             useGlobalStore().settings.enable_tv_chart
           "
-          :symbol="useGlobalUserStore().selected_symbol"
           style="height: calc(100vh - 20vh - 6vh)"
         />
 

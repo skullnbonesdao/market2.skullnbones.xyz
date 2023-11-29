@@ -73,7 +73,7 @@ let chartWidget;
 function create_chart() {
   const widgetOptions = {
     theme: props.theme,
-    symbol: props.symbol,
+    symbol: useGlobalUserStore().selected_symbol,
     datafeed: new UDFCompatibleDatafeed(props.datafeedUrl),
     interval: props.interval,
     container: chartContainer.value,
