@@ -32,19 +32,6 @@ const temp_symbol = computed(() => {
   )!.symbol;
 });
 
-// watch(
-//   () => temp_symbol.value,
-//   () => {
-//     if (useGlobalUserStore().selected_symbol != temp_symbol.value)
-//       useGlobalUserStore().selected_symbol =
-//         useGlobalStaratlasAPIStore().nfts.find(
-//           (n) =>
-//             n.symbol.toString() ==
-//             useRoute().params.symbol.toString().toUpperCase()
-//         )!.symbol;
-//   }
-// );
-
 onBeforeRouteUpdate(() => {
   useGlobalUserStore().selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
     (n) =>

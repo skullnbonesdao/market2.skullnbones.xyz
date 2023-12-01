@@ -4,43 +4,51 @@ import { ref } from 'vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import PairIcon from 'components/elements/PairIcon.vue';
 import MarketPiriceElement from 'components/market/MarketPiriceElement.vue';
-import { CURRENCIES } from 'stores/const';
+import { CURRENCIES, E_Currency } from 'stores/const';
+import AsssetIcon from 'components/elements/AsssetIcon.vue';
+import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
+import { useGlobalStore } from '../../stores/globalStore';
 
 const selected = ref(null);
-const options = ref(useGlobalStaratlasAPIStore().nfts);
+const options = ref(useGlobalStaratlasAPIStore().raw);
 
 function filterFn(val, update) {
   if (val === '') {
     update(() => {
-      options.value = useGlobalStaratlasAPIStore().nfts;
+      options.value = useGlobalStaratlasAPIStore().raw;
     });
     return;
   }
 
   update(() => {
     const needle = val.toLowerCase();
-    options.value = useGlobalStaratlasAPIStore().nfts.filter((v) =>
+    options.value = useGlobalStaratlasAPIStore().raw.filter((v) =>
       v.name.toLowerCase().includes(needle)
     );
   });
+}
+
+function update_symbol(name: string, symbol: string) {
+  useGlobalUserStore().selected_symbol = name + symbol;
+}
+
+function new_value(d) {
+  console.log(d);
 }
 </script>
 
 <template>
   <q-card class="row items-center q-px-sm" flat square>
     <q-select
+      square
       class="col text-h6"
       borderless
       use-input
+      behavior="dialog"
       input-debounce="0"
       @filter="filterFn"
-      v-model="useGlobalUserStore().selected_symbol"
+      @new-value="new_value"
       :options="options"
-      :display-value="`${
-        useGlobalUserStore().selected_symbol
-          ? useGlobalUserStore().selected_symbol
-          : '*none*'
-      }`"
     >
       <template v-slot:prepend>
         <PairIcon
@@ -59,6 +67,25 @@ function filterFn(val, update) {
             )
           "
         />
+        <q-separator vertical class="q-ma-sm" />
+        <div>
+          <div class="text-h6">
+            {{
+              useGlobalUserStore().selected_symbol
+                ? useGlobalUserStore().selected_symbol
+                : '*none*'
+            }}
+          </div>
+          <div class="text-subtitle1">
+            {{
+              useGlobalUserStore().selected_symbol
+                ? useGlobalStaratlasAPIStore().nfts.find(
+                    (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+                  ).name
+                : '*none*'
+            }}
+          </div>
+        </div>
       </template>
 
       <template v-slot:append>
@@ -67,15 +94,68 @@ function filterFn(val, update) {
 
       <template v-slot:option="scope">
         <q-item v-bind="scope.itemProps">
-          <q-item-section avatar
-            ><PairIcon
-              :asset_image_url="scope.opt.img_path"
-              :currency="scope.opt.currency"
+          <q-item-section avatar>
+            <AsssetIcon
+              size="xl"
+              :url="
+                useGlobalStaratlasAPIStore().nfts.find(
+                  (n) => n.mint_asset == scope.opt.mint
+                )?.img_path
+              "
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ scope.opt.name }}</q-item-label>
-            <q-item-label caption>{{ scope.opt.symbol }}</q-item-label>
+            <div class="row">
+              <div
+                class="col"
+                @click="
+                  update_symbol(
+                    scope.opt.symbol,
+                    CURRENCIES.find((c) => c.type == E_Currency.USDC)!.symbol
+                  )
+                "
+              >
+                <q-item-label>{{ scope.opt.name }}</q-item-label>
+                <q-item-label caption>{{ scope.opt.symbol }}</q-item-label>
+              </div>
+              <div class="q-gutter-x-sm row" style="width: 400px">
+                <q-btn
+                  @click="
+                    update_symbol(
+                      scope.opt.symbol,
+                      CURRENCIES.find((c) => c.type == E_Currency.USDC)!.symbol
+                    )
+                  "
+                  class="col items-end justify-end"
+                  color="secondary"
+                >
+                  <div class="q-mr-md">{{ scope.opt.symbol }}USDC</div>
+
+                  <CurrencyIcon
+                    :currency="
+                      CURRENCIES.find((c) => c.type == E_Currency.USDC)
+                    "
+                  />
+                </q-btn>
+                <q-btn
+                  @click="
+                    update_symbol(
+                      scope.opt.symbol,
+                      CURRENCIES.find((c) => c.type == E_Currency.ATLAS)!.symbol
+                    )
+                  "
+                  class="col items-end justify-end"
+                  color="secondary"
+                >
+                  <div class="q-mr-md">{{ scope.opt.symbol }}ATLAS</div>
+                  <CurrencyIcon
+                    :currency="
+                      CURRENCIES.find((c) => c.type == E_Currency.ATLAS)
+                    "
+                  />
+                </q-btn>
+              </div>
+            </div>
           </q-item-section>
         </q-item>
       </template>

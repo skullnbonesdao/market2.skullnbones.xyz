@@ -40,7 +40,7 @@ watch(
 
 <template>
   <q-btn color="primary" v-if="data?.length" class="row items-center">
-    <div class="col q-pr-xs">{{ data[0].price }}</div>
+    <div class="col q-pr-xs">{{ data[0]?.price ?? 0 }}</div>
     <CurrencyIcon
       style="height: 20px; width: 20px"
       :currency="

@@ -9,6 +9,7 @@ import { useGlobalUserStore } from 'stores/globalUserStore';
 import { handle_confirmation } from 'stores/handle_confirmation';
 import { Notify } from 'quasar';
 import { handle_wallet_connected } from 'stores/handle_wallet_connected';
+import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 
 const tab1 = ref('buy');
 
@@ -34,15 +35,27 @@ async function create_order(side: OrderSide) {
   const price = await gmClient.getBnPriceForCurrency(
     useGlobalStore().connection as Connection,
     input_price.value,
-    new PublicKey(useGlobalUserStore().selected_nft.mint_pair),
+    new PublicKey(
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )!.mint_pair
+    ),
     GM_PROGRAM_ID
   );
 
   const tx = await gmClient.getInitializeOrderTransaction(
     useGlobalStore().connection as Connection,
     useWallet().publicKey.value!,
-    new PublicKey(useGlobalUserStore().selected_nft.mint_asset),
-    new PublicKey(useGlobalUserStore().selected_nft.mint_pair),
+    new PublicKey(
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )!.mint_asset
+    ),
+    new PublicKey(
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )!.mint_pair
+    ),
     input_amount.value,
     price,
     GM_PROGRAM_ID,
