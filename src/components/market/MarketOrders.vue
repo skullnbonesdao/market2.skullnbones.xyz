@@ -32,7 +32,12 @@ defineProps(['container_height']);
       </q-tab>
     </q-tabs>
     <q-separator />
-    <q-tab-panels v-model="tab" animated class="text-bold">
+    <q-tab-panels
+      v-model="tab"
+      animated
+      class="text-bold"
+      :style="'height: ' + container_height"
+    >
       <q-tab-panel name="book" class="q-pa-none">
         <q-spinner-cube
           v-if="useGlobalFactoryStore().is_loading"

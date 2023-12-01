@@ -96,7 +96,6 @@ watch(
 
   <div class="row">
     <q-table
-      :style="'height : ' + height"
       flat
       class="buy col my-sticky-dynamic"
       dense
@@ -119,7 +118,6 @@ watch(
 
     <q-table
       flat
-      :style="'height : ' + height"
       dense
       square
       class="sell col my-sticky-dynamic"
