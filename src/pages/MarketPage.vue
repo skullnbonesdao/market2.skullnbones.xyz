@@ -41,11 +41,10 @@ onBeforeRouteUpdate(() => {
 </script>
 
 <template>
-  <q-page class="q-gutter-y-sm" v-if="useGlobalStore().is_done">
-    <MarketHeader style="height: 6vh" />
-
-    <div class="row q-ma-sm">
-      <div class="col q-gutter-y-sm no-wra">
+  <q-page class="" v-if="useGlobalStore().is_done">
+    <MarketHeader />
+    <div class="row q-gutter-x-xs q-pa-xs">
+      <div class="col no-wra fit q-gutter-y-xs">
         <TVChartContainer
           v-if="
             useGlobalUserStore().selected_symbol &&
@@ -54,12 +53,11 @@ onBeforeRouteUpdate(() => {
           style="height: calc(100vh - 20vh - 6vh)"
         />
 
-        <q-scroll-area style="height: calc(100vh - 81vh - 6vh)">
+        <q-scroll-area style="height: calc(100vh - 85vh)">
           <MarketOpenOrderTable />
         </q-scroll-area>
       </div>
-
-      <div class="col-3 q-ml-sm q-gutter-y-sm">
+      <div class="col-3 q-gutter-y-xs">
         <!--        <MarketInfo />-->
         <MarketInput />
         <MarketInputGrid v-if="useGlobalStore().settings.enable_grid_orders" />
