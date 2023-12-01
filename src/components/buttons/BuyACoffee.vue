@@ -116,23 +116,21 @@ async function send_donation() {
   >
   </q-btn>
   <q-dialog v-model="show_modal">
-    <q-card class="q-pa-sm">
+    <q-card flat class="q-pa-sm">
       <q-toolbar>
-        <q-avatar>
-          <img src="logo.png" />
+        <q-avatar size="xl">
+          <q-img src="rm_logo.png" />
         </q-avatar>
 
         <q-toolbar-title
-          ><span class="text-weight-bold">RogueMarket</span>
-          Donation</q-toolbar-title
-        >
+          ><span class="text-weight-bold">RogueMarket</span> Donation
+        </q-toolbar-title>
 
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
       <q-card-section class="text-subtitle1">
-        Hey mate! <br />Love the ad-free, tracker-free experience on
-        RogueMarket? <br />
+        Hey mate! <br />Love the experience on RogueMarket? <br />
         Help us keep it that way! <br />
         Your support ensures everyone can trade freely. ❤️
       </q-card-section>

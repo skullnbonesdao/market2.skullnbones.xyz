@@ -82,10 +82,6 @@ async function create_order(side: OrderSide) {
 
 <template>
   <q-card flat class="">
-    <div class="q-pt-xs">
-      <div class="text-center text-subtitle1">Order</div>
-      <q-separator />
-    </div>
     <q-tabs v-model="tab1" indicator-color="transparent">
       <q-tab :class="tab1 == 'buy' ? 'buy' : ''" name="buy" label="Buy" />
       <q-separator vertical />

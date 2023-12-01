@@ -39,55 +39,55 @@ function new_value(d) {
 
 <template>
   <q-card class="row items-center q-px-sm" flat square>
+    <div class="row items-center">
+      <PairIcon
+        size="lg"
+        :asset_image_url="
+          useGlobalStaratlasAPIStore().nfts.find(
+            (n) => n.symbol == useGlobalUserStore().selected_symbol
+          )?.img_path
+        "
+        :currency="
+          CURRENCIES.find(
+            (c) =>
+              c.mint ==
+              useGlobalStaratlasAPIStore().nfts.find(
+                (n) => n.symbol == useGlobalUserStore().selected_symbol
+              )?.mint_pair
+          )
+        "
+      />
+      <q-separator vertical class="q-ma-sm" />
+      <div>
+        <div class="text-h6">
+          {{
+            useGlobalUserStore().selected_symbol
+              ? useGlobalUserStore().selected_symbol
+              : '*none*'
+          }}
+        </div>
+        <div class="text-subtitle1">
+          {{
+            useGlobalUserStore().selected_symbol
+              ? useGlobalStaratlasAPIStore().nfts.find(
+                  (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+                ).name
+              : '*none*'
+          }}
+        </div>
+      </div>
+    </div>
+
     <q-select
-      square
-      class="col text-h6"
-      borderless
+      dense
+      filled
+      class="col text-h6 q-ya-xs q-ml-md"
       use-input
-      behavior="dialog"
       input-debounce="0"
       @filter="filterFn"
       @new-value="new_value"
       :options="options"
     >
-      <template v-slot:prepend>
-        <PairIcon
-          :asset_image_url="
-            useGlobalStaratlasAPIStore().nfts.find(
-              (n) => n.symbol == useGlobalUserStore().selected_symbol
-            )?.img_path
-          "
-          :currency="
-            CURRENCIES.find(
-              (c) =>
-                c.mint ==
-                useGlobalStaratlasAPIStore().nfts.find(
-                  (n) => n.symbol == useGlobalUserStore().selected_symbol
-                )?.mint_pair
-            )
-          "
-        />
-        <q-separator vertical class="q-ma-sm" />
-        <div>
-          <div class="text-h6">
-            {{
-              useGlobalUserStore().selected_symbol
-                ? useGlobalUserStore().selected_symbol
-                : '*none*'
-            }}
-          </div>
-          <div class="text-subtitle1">
-            {{
-              useGlobalUserStore().selected_symbol
-                ? useGlobalStaratlasAPIStore().nfts.find(
-                    (nft) => nft.symbol == useGlobalUserStore().selected_symbol
-                  ).name
-                : '*none*'
-            }}
-          </div>
-        </div>
-      </template>
-
       <template v-slot:append>
         <q-icon name="fa-solid fa-magnifying-glass" />
       </template>

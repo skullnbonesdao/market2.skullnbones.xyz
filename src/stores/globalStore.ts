@@ -8,11 +8,17 @@ import axios from 'axios';
 
 export const RPC_NETWORKS = [
   {
-    name: 'mainnet.alchemy',
-    url: 'https://solana-mainnet.g.alchemy.com/v2/hhh3czrJbOnssV11HBINkPZSe-HzR3Jy',
+    name: 'alchemy1',
+    url: import.meta.env.VITE_RPC_ALCHEMY_1,
   },
-  { name: 'mainnet.extrnode', url: 'https://solana-mainnet.rpc.extrnode.com' },
-  { name: 'devnet.ankr', url: 'https://rpc.ankr.com/solana_devnet' },
+  {
+    name: 'alchemy2',
+    url: import.meta.env.VITE_RPC_ALCHEMY_2,
+  },
+  {
+    name: 'alchemy3',
+    url: import.meta.env.VITE_RPC_ALCHEMY_3,
+  },
 ];
 
 export const FEE_WALLET = new PublicKey(import.meta.env.VITE_FEE_WALLET);

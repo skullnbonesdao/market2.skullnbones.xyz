@@ -1,10 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useGlobalStore } from 'stores/globalStore';
+import { ref, watch } from 'vue';
+import { RPC_NETWORKS, useGlobalStore } from 'stores/globalStore';
+import { Connection } from '@solana/web3.js';
 
 const show_modal = ref(false);
 const selected_currency = ref('ATLAS');
 const options = ref(['ATLAS', 'POLIS', 'SOL']);
+
+const rpc_name = ref(useGlobalStore().rpc_selected.name);
+const rpc_options = ref(RPC_NETWORKS.map((rpc) => rpc.name));
+
+watch(
+  () => rpc_name.value,
+  () => {
+    useGlobalStore().rpc_selected = RPC_NETWORKS.find(
+      (rpc) => rpc.name == rpc_name.value
+    )!;
+    useGlobalStore().connection = new Connection(
+      useGlobalStore().rpc_selected.url
+    );
+  }
+);
 </script>
 
 <template>
@@ -12,7 +28,7 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
   </q-btn>
 
   <q-dialog v-model="show_modal">
-    <q-card class="q-pa-sm">
+    <q-card flat class="q-pa-sm">
       <q-toolbar>
         <q-avatar>
           <img src="logo.png" />
@@ -29,7 +45,7 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
       <q-card-section class="text-subtitle1">
         <q-toggle
           class="full-width"
-          label="Enable grid-rders"
+          label="Enable grid-orders [beta]"
           v-model="useGlobalStore().settings.enable_grid_orders"
         />
         <q-toggle
@@ -41,6 +57,13 @@ const options = ref(['ATLAS', 'POLIS', 'SOL']);
           class="full-width"
           label="Load TradingView Chart"
           v-model="useGlobalStore().settings.enable_tv_chart"
+        />
+
+        <q-select
+          filled
+          v-model="rpc_name"
+          :options="rpc_options"
+          label="RPC"
         />
       </q-card-section>
 
