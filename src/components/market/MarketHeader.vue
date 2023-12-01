@@ -79,6 +79,7 @@ function new_value(d) {
     </div>
 
     <q-select
+      square
       dense
       filled
       class="col text-h6 q-ya-xs q-ml-md"

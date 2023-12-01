@@ -6,14 +6,13 @@ import AccountWalletAccountsTable from 'components/wallet/WalletAccountsTable.vu
 
 import WalletAccountInput from 'components/wallet/WalletAccountInput.vue';
 import WalletAccountHistory from 'components/wallet/WalletAccountHistory.vue';
+import { useGlobalStore } from 'stores/globalStore';
+import { CURRENCIES, E_Currency } from 'stores/const';
+import { Price } from 'src/api/gen';
 
 const tab_selected_parent = ref('account');
 
 const tab_selected = ref('all');
-
-onMounted(async () => {
-  await useGlobalUserStore().update_accounts();
-});
 </script>
 
 <template>

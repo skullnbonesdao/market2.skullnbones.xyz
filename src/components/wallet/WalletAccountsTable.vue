@@ -1,20 +1,29 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useWallet } from 'solana-wallets-vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
-
-import { Connection } from '@solana/web3.js';
 import AsssetIcon from 'components/elements/AsssetIcon.vue';
 import SolscanLink from 'components/buttons/SolscanLink.vue';
 
 import SendTokenButton from 'components/buttons/SendTokenButton.vue';
 import EditTokenButton from 'components/buttons/EditTokenButton.vue';
+import { Price } from 'src/api/gen';
+import { useGlobalStore } from 'stores/globalStore';
+import { CURRENCIES, E_Currency } from 'stores/const';
+import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
 
 const pros = defineProps(['tab']);
 
 const accounts = ref();
 
-const visibleColumns = ref(['name', 'type', 'action', 'amount']);
+const visibleColumns = ref([
+  'name',
+  'type',
+  'action',
+  'amount',
+  'market_usdc',
+  'market_atlas',
+]);
 
 const columns = [
   {
@@ -75,7 +84,18 @@ const columns = [
     sortable: true,
     field: (row) => row.info.tokenAmount?.uiAmount,
   },
-
+  {
+    name: 'market_usdc',
+    label: 'Market [USDC]',
+    align: 'right',
+    field: (row) => row.info.tokenAmount?.uiAmount,
+  },
+  {
+    name: 'market_atlas',
+    label: 'Market [ATLAS]',
+    align: 'right',
+    field: (row) => row.info.tokenAmount?.uiAmount,
+  },
   {
     label: '',
     align: 'right',
@@ -95,11 +115,19 @@ watch(
 );
 const pagination = ref({ rowsPerPage: 0 });
 
-// const table_data = computed(() => {
-//   if (pros.tab == 'all') {
-//     return useGlobalUserStore().get_account_map_staratlas;
-//   }
-// });
+const prices_usdc = ref<Price[]>([]);
+const prices_atlas = ref<Price[]>([]);
+
+onMounted(async () => {
+  prices_usdc.value = await useGlobalStore().api_client.trades.getPrices(
+    CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint ?? 'none'
+  );
+  prices_atlas.value = await useGlobalStore().api_client.trades.getPrices(
+    CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint ?? 'none'
+  );
+
+  await useGlobalUserStore().update_accounts();
+});
 
 function tab_filter_data() {
   if (pros.tab == 'all') {
@@ -202,6 +230,47 @@ function tab_filter_data() {
               "
             >
               {{ props.row.info.tokenAmount?.uiAmount.toFixed(0) }}
+            </div>
+          </q-td>
+
+          <q-td
+            key="market_usdc"
+            class="text-subtitle1 text-bold"
+            :props="props"
+          >
+            <div class="row items-center justify-end q-gutter-x-sm">
+              <div>
+                {{
+                  (
+                    (prices_usdc.find((c) => c.asset == props.row.info.mint)
+                      ?.price ?? 0) *
+                    props.row.info.tokenAmount?.uiAmount.toFixed(0)
+                  ).toFixed(2)
+                }}
+              </div>
+              <CurrencyIcon
+                :currency="CURRENCIES.find((c) => c.type == E_Currency.USDC)"
+              />
+            </div>
+          </q-td>
+          <q-td
+            key="market_atlas"
+            class="text-subtitle1 text-bold"
+            :props="props"
+          >
+            <div class="row items-center justify-end q-gutter-x-sm">
+              <div>
+                {{
+                  (
+                    (prices_atlas.find((c) => c.asset == props.row.info.mint)
+                      ?.price ?? 0) *
+                    props.row.info.tokenAmount?.uiAmount.toFixed(0)
+                  ).toFixed(2)
+                }}
+              </div>
+              <CurrencyIcon
+                :currency="CURRENCIES.find((c) => c.type == E_Currency.ATLAS)"
+              />
             </div>
           </q-td>
 
