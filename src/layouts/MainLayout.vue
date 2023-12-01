@@ -2,18 +2,12 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import 'src/css/wallet_connect.css';
 import { WalletMultiButton } from 'solana-wallets-vue';
-import SwitchThemeButton from 'components/buttons/SwitchThemeButton.vue';
-import { useQuasar } from 'quasar';
 import TpsElement from 'components/elements/TpsElement.vue';
 import BuyACoffee from 'components/buttons/BuyACoffee.vue';
 import SettingsButton from 'components/buttons/SettingsButton.vue';
-
 import { version } from 'src/../package.json';
 import { useGlobalStore } from 'stores/globalStore';
 import { useGlobalUserStore } from 'stores/globalUserStore';
-import { useRoute } from 'vue-router';
-import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
-import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
 
 const links = computed(() => {
   let data = [
@@ -51,9 +45,9 @@ watch(
 );
 
 onMounted(async () => {
-  const block_hight = await useGlobalStore().connection.getBlockHeight();
+  const block_height = await useGlobalStore().connection.getSlot();
   const cursor = await useGlobalStore().api_client.cursor.getCursor();
-  sync_status.value = cursor[0].block_num / block_hight;
+  sync_status.value = cursor[0].block_num / block_height;
 });
 </script>
 

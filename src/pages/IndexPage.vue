@@ -22,5 +22,6 @@ function myTweak(offset: any) {
   background-image: url(public/background.webp);
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
 }
 </style>

@@ -82,7 +82,6 @@ function create_chart() {
     locale: getLanguageFromURL() || 'en',
     disabled_features: [
       'use_localstorage_for_settings',
-
       'edit_buttons_in_legend',
       'left_toolbar',
       'timeframes_toolbar',
@@ -92,7 +91,7 @@ function create_chart() {
       'header_settings',
       'study_templates',
     ],
-    enabled_features: [''],
+    enabled_features: [],
     charts_storage_url: props.chartsStorageUrl,
     charts_storage_api_version: props.chartsStorageApiVersion,
     client_id: props.clientId,
@@ -112,6 +111,15 @@ function create_chart() {
 
   chartWidget.onChartReady(() => {
     chartWidget.headerReady().then(() => {
+      // chartWidget.activeChart().createStudy('MACD', false, false, {
+      //   in_0: 14,
+      //   in_1: 30,
+      //   in_3: 'close',
+      //   in_2: 9,
+      // });
+
+      chartWidget.activeChart().createStudy('Volume', true);
+
       // const button = chartWidget.createButton();
       //
       // button.setAttribute('title', 'Click to show a notification popup');
