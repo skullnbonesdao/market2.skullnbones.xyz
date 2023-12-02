@@ -13,12 +13,11 @@ function myTweak(offset: any) {
 
 <template>
   <q-page :style-fn="myTweak" class="row bg-image">
-    <q-img class="logo" src="logo.png" fit="contain" height="60vh">
-      <div class="absolute-bottom text-center text-h4 q-mx-md">
-        <div>Welcome to RogueMarket, we operate even when StarCom is not!</div>
-        <div class="text-h6 text-weight-light">by Skull&Bones</div>
-      </div>
-    </q-img>
+    <q-img class="logo" src="logo.png" fit="contain" height="60vh"> </q-img>
+    <div class="absolute-bottom text-center text-h4 q-pa-sm bg-primary">
+      <div>Welcome to RogueMarket, we operate even when StarCom is not!</div>
+      <div class="text-h6 text-weight-light">by Skull&Bones</div>
+    </div>
   </q-page>
 </template>
 
