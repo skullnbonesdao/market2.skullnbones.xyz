@@ -24,7 +24,7 @@ function myTweak(offset: any) {
 
 <style scoped>
 .bg-image {
-  background-image: url(public/background.webp);
+  background-image: url('/background.webp');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
