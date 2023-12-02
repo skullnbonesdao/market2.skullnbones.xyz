@@ -19,7 +19,6 @@ onMounted(async () => {
   await useGlobalFactoryStore().init();
   await useGlobalStore().load_token_list();
   await useGlobalStaratlasAPIStore().update();
-
   useGlobalStore().is_done = true;
 });
 </script>
