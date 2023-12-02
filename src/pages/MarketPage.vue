@@ -41,8 +41,8 @@ onBeforeRouteUpdate(() => {
 </script>
 
 <template>
-  <q-page class="bg-primary" v-if="useGlobalStore().is_done">
-    <MarketHeader />
+  <q-page class="bg-image-dark" v-if="useGlobalStore().is_done">
+    <MarketHeader class="q-mb-sm" />
     <div class="row q-gutter-x-xs q-pa-xs">
       <div class="col fit q-gutter-y-xs">
         <TVChartContainer
@@ -53,7 +53,7 @@ onBeforeRouteUpdate(() => {
           style="height: calc(100vh - 20vh - 6vh)"
         />
 
-        <q-scroll-area style="height: calc(100vh - 86vh)">
+        <q-scroll-area style="height: calc(100vh - 88vh)">
           <MarketOpenOrderTable />
         </q-scroll-area>
       </div>
