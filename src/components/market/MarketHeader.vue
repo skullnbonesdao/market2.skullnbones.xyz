@@ -12,7 +12,7 @@ import { useGlobalStore } from '../../stores/globalStore';
 const selected = ref(null);
 const options = ref(useGlobalStaratlasAPIStore().raw);
 
-function filterFn(val, update) {
+function filterFn(val: any, update: any) {
   if (val === '') {
     update(() => {
       options.value = useGlobalStaratlasAPIStore().raw;
@@ -30,10 +30,6 @@ function filterFn(val, update) {
 
 function update_symbol(name: string, symbol: string) {
   useGlobalUserStore().selected_symbol = name + symbol;
-}
-
-function new_value(d) {
-  console.log(d);
 }
 </script>
 

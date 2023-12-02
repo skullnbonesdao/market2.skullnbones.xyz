@@ -41,7 +41,7 @@ const columns = [
     align: 'center',
     sortable: true,
     style: 'width: 100px',
-    field: (row) => row.market.atlas,
+    field: (row: never) => row.market.atlas,
   },
 
   {
@@ -51,7 +51,7 @@ const columns = [
     align: 'center',
     sortable: true,
     style: 'width: 100px',
-    field: (row) => row.market.usdc,
+    field: (row: never) => row.market.usdc,
   },
 
   {
@@ -61,7 +61,7 @@ const columns = [
     align: 'right',
     sortable: true,
     style: 'width: 100px',
-    field: (row) => row.orderbok.buy.atlas,
+    field: (row: never) => row.orderbok.buy.atlas,
   },
   {
     name: 'buy_orders_usdc',
@@ -70,7 +70,7 @@ const columns = [
     align: 'right',
     sortable: true,
     style: 'width: 100px',
-    field: (row) => row.orderbok.buy.usdc,
+    field: (row: never) => row.orderbok.buy.usdc,
   },
   {
     name: 'spread',
@@ -87,7 +87,7 @@ const columns = [
     align: 'left',
     sortable: true,
     style: 'width: 100px',
-    field: (row) => row.orderbok.sell.atlas,
+    field: (row: never) => row.orderbok.sell.atlas,
   },
   {
     name: 'sell_orders_usdc',
@@ -96,7 +96,7 @@ const columns = [
     align: 'left',
     sortable: true,
     style: 'width: 100px',
-    field: (row) => row.orderbok.sell.usdc,
+    field: (row: never) => row.orderbok.sell.usdc,
   },
 ];
 
