@@ -10,7 +10,6 @@ import 'src/css/scrollbars.css';
 import 'src/css/fonts.css';
 import 'src/css/backgrounds.scss';
 import { I_MarketAsset } from 'stores/I_StarAtlasNFT';
-
 useQuasar().dark.set(true);
 useGlobalStore();
 useGlobalStore().update_connection();
