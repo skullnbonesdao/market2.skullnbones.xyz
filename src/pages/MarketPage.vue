@@ -3,40 +3,17 @@ import TVChartContainer from 'components/TradingView/TVChartContainer.vue';
 import MarketHeader from 'components/market/MarketHeader.vue';
 import MarketOrders from 'components/market/MarketOrders.vue';
 import MarketInput from 'components/market/MarketInput.vue';
-import { useGlobalUserStore } from '../stores/globalUserStore';
-import { Dark, dom } from 'quasar';
+import { useGlobalUserStore } from 'stores/globalUserStore';
 import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 import MarketInputGrid from 'components/market/MarketInputGrid.vue';
 import { useGlobalStore } from 'stores/globalStore';
-import { useElementSize } from '@vueuse/core';
-import { computed, onMounted, ref, watch } from 'vue';
-import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
-import { I_MarketAsset } from 'stores/I_StarAtlasNFT';
-import MarketInfo from 'components/market/MarketInfo.vue';
-import { useGlobalFactoryStore } from 'stores/globalFactoryStore';
-
-// const { height, width } = dom;
+import { computed } from 'vue';
 
 const market_orders_height = computed(() => {
   if (useGlobalStore().settings.enable_grid_orders) {
     return 'calc(100vh - 70vh)';
   }
   return 'calc(100vh - 46vh)';
-});
-
-const temp_symbol = computed(() => {
-  return useGlobalStaratlasAPIStore().nfts.find(
-    (n) =>
-      n.symbol.toString() == useRoute().params.symbol.toString().toUpperCase()
-  )!.symbol;
-});
-
-onBeforeRouteUpdate(() => {
-  useGlobalUserStore().selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
-    (n) =>
-      n.symbol.toString() == useRoute().params.symbol.toString().toUpperCase()
-  )!.symbol;
 });
 </script>
 
