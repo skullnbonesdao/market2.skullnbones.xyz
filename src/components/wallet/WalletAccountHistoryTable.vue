@@ -18,6 +18,20 @@ const props = defineProps(['data']);
 
 const columns = ref([
   {
+    name: 'timestamp',
+    label: 'Timestamp',
+    align: 'left',
+    field: 'timestamp',
+    sortable: true,
+  },
+
+  {
+    name: 'info',
+    align: 'left',
+    field: 'info',
+    sortable: true,
+  },
+  {
     name: 'side',
     label: 'Side',
     align: 'left',
@@ -25,19 +39,12 @@ const columns = ref([
     sortable: true,
   },
   {
-    name: 'info',
-    align: 'left',
-    field: 'info',
+    name: 'fee',
+    align: 'right',
+    label: 'Fee',
+    field: (row: any) => row.fee?.toFixed(2) ?? 0.0,
     sortable: true,
-    style: 'width: 50px',
   },
-  // {
-  //   name: 'fee',
-  //   align: 'right',
-  //   label: 'Fee',
-  //   field: (row: any) => row.fee?.toFixed(2) ?? 0.0,
-  //   sortable: true,
-  // },
   {
     name: 'size',
     align: 'right',
@@ -45,13 +52,13 @@ const columns = ref([
     field: 'volume',
     sortable: true,
   },
-  // {
-  //   name: 'volume',
-  //   align: 'right',
-  //   label: 'Volume',
-  //   field: 'volume',
-  //   sortable: true,
-  // },
+  {
+    name: 'volume',
+    align: 'right',
+    label: 'Volume',
+    field: 'volume',
+    sortable: true,
+  },
   {
     name: 'price',
     align: 'right',
@@ -77,11 +84,9 @@ const columns = ref([
     hide-bottom
   >
     <template v-slot:body="props">
-      <q-tr :props="props" :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
-        <q-td key="side" :props="props">
-          <q-badge :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
-            {{ props.row.side }}
-          </q-badge>
+      <q-tr :props="props">
+        <q-td key="timestamp" :props="props">
+          {{ props.row.timestamp }}
         </q-td>
 
         <q-td key="info" :props="props">
@@ -94,9 +99,15 @@ const columns = ref([
           ></q-btn>
         </q-td>
 
-        <!--        <q-td key="fee" :props="props">-->
-        <!--          {{ props.row.fee ?? 0 }}-->
-        <!--        </q-td>-->
+        <q-td key="side" :props="props">
+          <q-badge :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
+            {{ props.row.side }}
+          </q-badge>
+        </q-td>
+
+        <q-td key="fee" :props="props">
+          {{ ((props.row.fee / props.row.volume) * 100).toFixed(1) ?? 0 }}%
+        </q-td>
         <q-td key="size" :props="props">
           <div class="row items-center q-gutter-x-xs justify-end">
             <div>
@@ -110,17 +121,17 @@ const columns = ref([
           </div>
         </q-td>
 
-        <!--        <q-td key="volume" :props="props">-->
-        <!--          <div class="row items-center q-gutter-x-xs justify-end">-->
-        <!--            <div>-->
-        <!--              {{ props.row.volume ?? 0 }}-->
-        <!--            </div>-->
-        <!--            <CurrencyIcon-->
-        <!--              style="width: 14px; height: 14px"-->
-        <!--              :currency="CURRENCIES.find((c) => c.mint === props.row.currency)"-->
-        <!--            />-->
-        <!--          </div>-->
-        <!--        </q-td>-->
+        <q-td key="volume" :props="props">
+          <div class="row items-center q-gutter-x-xs justify-end">
+            <div>
+              {{ props.row.volume ?? 0 }}
+            </div>
+            <CurrencyIcon
+              style="width: 14px; height: 14px"
+              :currency="CURRENCIES.find((c) => c.mint === props.row.currency)"
+            />
+          </div>
+        </q-td>
 
         <q-td key="price" :props="props" class="">
           <div class="row items-center q-gutter-x-xs justify-end">

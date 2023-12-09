@@ -9,7 +9,7 @@ import '../../css/apexcharts.scss';
 import { useWallet } from 'solana-wallets-vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 
-const limit = 100;
+const limit = 1000000;
 const data = ref<Trade[]>();
 const series = ref<any[]>([]);
 
@@ -42,22 +42,48 @@ async function update(pubkey: string) {
     pubkey,
     limit
   );
+  series.value = [];
+
   series.value.push({
-    name: 'USDC',
+    name: 'USDC [buy]',
     data: data.value
       ?.filter(
         (t) =>
           t.currency == CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
       )
+      .filter((t) => t.side?.includes('BUY'))
       .map((t) => [t.timestamp, t.price, t.volume]),
   });
   series.value.push({
-    name: 'ATLAS',
+    name: 'USDC [sell]',
+    data: data.value
+      ?.filter(
+        (t) =>
+          t.currency == CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
+      )
+      .filter((t) => t.side?.includes('SELL'))
+      .map((t) => [t.timestamp, t.price, t.volume]),
+  });
+
+  series.value.push({
+    name: 'ATLAS [buy]',
     data: data.value
       ?.filter(
         (t) =>
           t.currency == CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
       )
+      .filter((t) => t.side?.includes('BUY'))
+      .map((t) => [t.timestamp, t.price, t.volume]),
+  });
+
+  series.value.push({
+    name: 'ATLAS [sell]',
+    data: data.value
+      ?.filter(
+        (t) =>
+          t.currency == CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
+      )
+      .filter((t) => t.side?.includes('SELL'))
       .map((t) => [t.timestamp, t.price, t.volume]),
   });
   is_loading.value = false;
@@ -91,10 +117,10 @@ const chartOptions = {
       },
     },
     {
-      opposite: true,
       title: {
         text: 'ATLAS',
       },
+      opposite: true,
     },
   ],
 };
@@ -110,7 +136,7 @@ const chartOptions = {
     <div v-if="data">
       <apexchart
         class="chart"
-        type="bubble"
+        type="scatter"
         height="350"
         :options="chartOptions"
         :series="series"
