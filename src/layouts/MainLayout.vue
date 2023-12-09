@@ -86,7 +86,7 @@ onMounted(async () => {
           flat
           icon="fa-brands fa-github"
           target="_blank"
-          href="https://github.com/skullnbonesdao/market.skullnbones.xyz"
+          href="https://github.com/skullnbonesdao/market2.skullnbones.xyz"
         />
 
         <!--        <SwitchThemeButton />-->
