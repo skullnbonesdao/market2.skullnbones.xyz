@@ -22,8 +22,10 @@ function filterFn(val: any, update: any) {
 
   update(() => {
     const needle = val.toLowerCase();
-    options.value = useGlobalStaratlasAPIStore().raw.filter((v) =>
-      v.name.toLowerCase().includes(needle)
+    options.value = useGlobalStaratlasAPIStore().raw.filter(
+      (v) =>
+        v.name.toLowerCase().includes(needle) ||
+        v.symbol.toLowerCase().includes(needle)
     );
   });
 }
@@ -82,7 +84,6 @@ function update_symbol(name: string, symbol: string) {
       use-input
       input-debounce="0"
       @filter="filterFn"
-      @new-value="new_value"
       :options="options"
     >
       <template v-slot:append>
