@@ -40,12 +40,13 @@ function update_symbol(name: string, symbol: string) {
     <q-select
       square
       dense
-      filled
+      standout
       class="col text-h6 bg-primary"
       use-input
       input-debounce="0"
       @filter="filterFn"
       :options="options"
+      model-value=""
     >
       <template v-slot:append>
         <q-icon name="fa-solid fa-magnifying-glass" />

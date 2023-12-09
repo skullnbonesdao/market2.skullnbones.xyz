@@ -55,7 +55,7 @@ watch(
 
 <template>
   <div
-    class="q-pa-xs q-ma-xs"
+    class="q-pa-xs q-ma-xs text-body2"
     :class="data[0]?.price_change_percentage > 0 ? 'buy' : 'sell'"
   >
     <div class="col text-center">
@@ -64,7 +64,9 @@ watch(
         {{ data[0]?.price_change_percentage?.toFixed(2) ?? '0.0' }}%
       </div>
 
-      <div v-if="!disable_timespan">{{ props.timespan.toUpperCase() }}</div>
+      <div v-if="!disable_timespan" class="text-caption">
+        {{ props.timespan.toUpperCase() }}
+      </div>
     </div>
 
     <q-tooltip>price change</q-tooltip>

@@ -22,20 +22,20 @@ const market_orders_height = computed(() => {
   <q-page class="q-pa-xs" v-if="useGlobalStore().is_done">
     <div class="row q-gutter-x-xs">
       <div class="col fit q-gutter-y-xs">
-        <MarketHeader class="q-mb-xs" />
         <TVChartContainer
           v-if="
             useGlobalUserStore().selected_symbol &&
             useGlobalStore().settings.enable_tv_chart
           "
-          style="height: calc(100vh - 20vh - 6vh)"
+          style="height: calc(100vh - 20vh - 3vh)"
         />
 
-        <q-scroll-area style="height: calc(100vh - 88vh)">
+        <q-scroll-area style="height: calc(100vh - 80vh - 3vh)">
           <MarketOpenOrderTable />
         </q-scroll-area>
       </div>
       <div class="col-3 q-gutter-y-xs">
+        <MarketHeader class="q-mb-xs" />
         <MarketInfo />
 
         <MarketInput />
