@@ -25,9 +25,11 @@ onMounted(async () => {
   useGlobalStore().is_done = true;
 
   console.log(route);
-  useGlobalUserStore().selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
-    (n) => n.symbol.toString() == route.params.symbol.toString().toUpperCase()
-  )!.symbol;
+  useGlobalUserStore().selected_symbol =
+    useGlobalStaratlasAPIStore().nfts.find(
+      (n) =>
+        n.symbol.toString() == route.params?.symbol?.toString().toUpperCase()
+    )?.symbol ?? useGlobalUserStore().selected_symbol;
 });
 </script>
 

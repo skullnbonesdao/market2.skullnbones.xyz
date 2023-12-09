@@ -5,30 +5,50 @@ import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import { PriceChange } from 'src/api/gen';
 
-const props = defineProps(['timespan']);
+const props = defineProps([
+  'timespan',
+  'asset',
+  'currency',
+  'disable_timespan',
+]);
 
 const data = ref<PriceChange[]>([]);
 
-async function get_chnage_price() {
-  data.value = await useGlobalStore().api_client.trades.getPriceChange(
-    useGlobalStaratlasAPIStore().nfts.find(
-      (n) => n.symbol == useGlobalUserStore().selected_symbol
-    )?.mint_pair ?? '',
-    useGlobalStaratlasAPIStore().nfts.find(
-      (n) => n.symbol == useGlobalUserStore().selected_symbol
-    )?.mint_asset ?? '',
-    props.timespan
-  );
+async function get_change_price() {
+  data.value = [];
+  if (props.asset && props.currency)
+    data.value = await useGlobalStore().api_client.trades.getPriceChange(
+      props.currency,
+      props.asset,
+      props.timespan
+    );
+  else
+    data.value = await useGlobalStore().api_client.trades.getPriceChange(
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_pair ?? '',
+      useGlobalStaratlasAPIStore().nfts.find(
+        (n) => n.symbol == useGlobalUserStore().selected_symbol
+      )?.mint_asset ?? '',
+      props.timespan
+    );
 }
 
 onMounted(async () => {
-  await get_chnage_price();
+  await get_change_price();
 });
 
 watch(
   () => useGlobalUserStore().selected_symbol,
   async () => {
-    await get_chnage_price();
+    await get_change_price();
+  }
+);
+
+watch(
+  () => props.timespan,
+  async () => {
+    await get_change_price();
   }
 );
 </script>
@@ -39,9 +59,12 @@ watch(
     :class="data[0]?.price_change_percentage > 0 ? 'buy' : 'sell'"
   >
     <div class="col text-center">
-      <div>{{ data[0]?.price_change_percentage?.toFixed(2) ?? '0.0' }}%</div>
+      <q-spinner-cube v-if="!data.length" size="xs" color="primary" />
+      <div v-else>
+        {{ data[0]?.price_change_percentage?.toFixed(2) ?? '0.0' }}%
+      </div>
 
-      <div>{{ props.timespan.toUpperCase() }}</div>
+      <div v-if="!disable_timespan">{{ props.timespan.toUpperCase() }}</div>
     </div>
 
     <q-tooltip>price change</q-tooltip>

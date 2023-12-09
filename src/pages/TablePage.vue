@@ -8,11 +8,13 @@ import PirceElement from 'components/elements/PirceElement.vue';
 import RarityBadge from 'components/elements/RarityBadge.vue';
 import MarketTrendElement from 'components/elements/MarketTrendElement.vue';
 import { useGlobalStore } from 'stores/globalStore';
-import { useGlobalUserStore } from 'stores/globalUserStore';
+import MarketPriceChangeElement from 'components/elements/MarketPriceChangeElement.vue';
 
 const pagination = ref({
   rowsPerPage: 0,
 });
+
+const timeframe_selected = ref('day');
 
 const filter = ref();
 const is_loading = ref(true);
@@ -40,7 +42,7 @@ const columns = [
     label: 'Market [ATLAS]',
     align: 'center',
     sortable: true,
-    style: 'width: 100px',
+
     field: (row: never) => row.market.atlas,
   },
 
@@ -50,7 +52,7 @@ const columns = [
     label: 'Market [USDC]',
     align: 'center',
     sortable: true,
-    style: 'width: 100px',
+
     field: (row: never) => row.market.usdc,
   },
 
@@ -237,6 +239,16 @@ function calc_spread(buy: number, sell: number) {
         :filter="filter"
       >
         <template v-slot:top>
+          <div class="text-body1 text-weight-light q-mr-md">Timeframe:</div>
+          <q-tabs dense v-model="timeframe_selected">
+            <q-tab
+              :name="itemType"
+              :label="itemType"
+              :key="itemType"
+              v-for="itemType in ['day', 'week', 'month', 'year']"
+            />
+          </q-tabs>
+
           <q-space />
           <q-input filled dense v-model="filter">
             <template v-slot:after>
@@ -265,11 +277,33 @@ function calc_spread(buy: number, sell: number) {
             </q-td>
 
             <q-td key="market_atlas" :props="props" class="">
-              <PirceElement label="ATLAS" :value="props.row.market?.atlas" />
+              <div class="row">
+                <PirceElement label="ATLAS" :value="props.row.market?.atlas" />
+                <MarketPriceChangeElement
+                  class="col"
+                  :timespan="timeframe_selected"
+                  :asset="props.row.mint"
+                  :currency="
+                    CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
+                  "
+                  disable_timespan="true"
+                />
+              </div>
             </q-td>
 
             <q-td key="market_usdc" :props="props" class="">
-              <PirceElement label="USDC" :value="props.row.market?.usdc" />
+              <div class="row">
+                <PirceElement label="USDC" :value="props.row.market?.usdc" />
+                <MarketPriceChangeElement
+                  class="col"
+                  :timespan="timeframe_selected"
+                  :asset="props.row.mint"
+                  :currency="
+                    CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
+                  "
+                  disable_timespan="true"
+                />
+              </div>
             </q-td>
 
             <q-td key="buy_orders_atlas" :props="props" class="buy">
