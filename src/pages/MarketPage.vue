@@ -8,19 +8,20 @@ import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 import MarketInputGrid from 'components/market/MarketInputGrid.vue';
 import { useGlobalStore } from 'stores/globalStore';
 import { computed } from 'vue';
+import MarketInfo from 'components/market/MarketInfo.vue';
 
 const market_orders_height = computed(() => {
   if (useGlobalStore().settings.enable_grid_orders) {
     return 'calc(100vh - 70vh)';
   }
-  return 'calc(100vh - 46vh)';
+  return 'calc(100vh - 70vh)';
 });
 </script>
 
 <template>
   <q-page class="bg-image-dark" v-if="useGlobalStore().is_done">
-    <MarketHeader class="q-mb-sm" />
-    <div class="row q-gutter-x-xs q-pa-xs">
+    <MarketHeader class="q-mb-xs" />
+    <div class="row q-gutter-x-xs">
       <div class="col fit q-gutter-y-xs">
         <TVChartContainer
           v-if="
@@ -35,8 +36,10 @@ const market_orders_height = computed(() => {
         </q-scroll-area>
       </div>
       <div class="col-3 q-gutter-y-xs">
-        <!--        <MarketInfo />-->
+        <MarketInfo />
+
         <MarketInput />
+
         <MarketInputGrid v-if="useGlobalStore().settings.enable_grid_orders" />
         <MarketOrders :container_height="market_orders_height" class="" />
       </div>

@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type PriceChange = {
-    asset?: string | null;
-    currency?: string | null;
-    price_change?: number | null;
+    close_price?: number | null;
+    open_price?: number | null;
+    price_change_percentage?: number | null;
 };
 

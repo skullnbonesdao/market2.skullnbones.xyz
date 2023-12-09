@@ -606,15 +606,17 @@
       "PriceChange": {
         "type": "object",
         "properties": {
-          "asset": {
-            "type": "string",
+          "close_price": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
-          "currency": {
-            "type": "string",
+          "open_price": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
-          "price_change": {
+          "price_change_percentage": {
             "type": "number",
             "format": "double",
             "nullable": true
