@@ -36,12 +36,12 @@ function update_symbol(name: string, symbol: string) {
 </script>
 
 <template>
-  <q-card class="row" flat square>
+  <div class="row">
     <q-select
       square
       dense
       filled
-      class="col text-h6 q-ma-xs"
+      class="col text-h6 bg-primary"
       use-input
       input-debounce="0"
       @filter="filterFn"
@@ -121,15 +121,14 @@ function update_symbol(name: string, symbol: string) {
     </q-select>
 
     <q-btn
-      class=""
+      square
       color="secondary"
-      flat
       icon="fa-solid fa-repeat"
       @click="useGlobalUserStore().switch_currency()"
     />
 
     <q-separator />
-  </q-card>
+  </div>
 </template>
 
 <style scoped></style>

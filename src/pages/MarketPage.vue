@@ -19,7 +19,7 @@ const market_orders_height = computed(() => {
 </script>
 
 <template>
-  <q-page class="bg-image-dark" v-if="useGlobalStore().is_done">
+  <q-page class="q-pa-xs" v-if="useGlobalStore().is_done">
     <div class="row q-gutter-x-xs">
       <div class="col fit q-gutter-y-xs">
         <MarketHeader class="q-mb-xs" />
