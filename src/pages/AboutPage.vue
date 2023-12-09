@@ -85,6 +85,13 @@ function myTweak(offset: any) {
           By using our website, you hereby consent to our disclaimer and agree
           to its terms.
         </q-card-section>
+
+        <q-card-section>
+          <div class="row">
+            <div class="col"></div>
+            <div>Contact us: skullandbonesdao@gmail.com</div>
+          </div>
+        </q-card-section>
       </q-card>
     </div>
   </q-page>
