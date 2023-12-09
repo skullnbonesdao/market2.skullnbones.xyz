@@ -119,6 +119,7 @@ onMounted(async () => {
       </div>
       <q-list padding>
         <q-item
+          active-class="bg-primary"
           :to="link.to"
           v-for="link in links"
           :key="link.text"
