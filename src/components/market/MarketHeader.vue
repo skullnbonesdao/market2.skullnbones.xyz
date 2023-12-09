@@ -36,51 +36,12 @@ function update_symbol(name: string, symbol: string) {
 </script>
 
 <template>
-  <q-card class="row items-center q-px-sm" flat square>
-    <div class="row items-center">
-      <PairIcon
-        size="lg"
-        :asset_image_url="
-          useGlobalStaratlasAPIStore().nfts.find(
-            (n) => n.symbol == useGlobalUserStore().selected_symbol
-          )?.img_path
-        "
-        :currency="
-          CURRENCIES.find(
-            (c) =>
-              c.mint ==
-              useGlobalStaratlasAPIStore().nfts.find(
-                (n) => n.symbol == useGlobalUserStore().selected_symbol
-              )?.mint_pair
-          )
-        "
-      />
-      <q-separator vertical class="q-ma-sm" />
-      <div>
-        <div class="text-h6">
-          {{
-            useGlobalUserStore().selected_symbol
-              ? useGlobalUserStore().selected_symbol
-              : '*none*'
-          }}
-        </div>
-        <div class="text-subtitle1">
-          {{
-            useGlobalUserStore().selected_symbol
-              ? useGlobalStaratlasAPIStore().nfts.find(
-                  (nft) => nft.symbol == useGlobalUserStore().selected_symbol
-                ).name
-              : '*none*'
-          }}
-        </div>
-      </div>
-    </div>
-
+  <q-card class="row" flat square>
     <q-select
       square
       dense
       filled
-      class="col text-h6 q-ya-xs q-ml-md"
+      class="col text-h6 q-ma-xs"
       use-input
       input-debounce="0"
       @filter="filterFn"
@@ -159,11 +120,8 @@ function update_symbol(name: string, symbol: string) {
       </template>
     </q-select>
 
-    <q-space />
-    <q-separator class="q-ma-md" vertical />
-    <MarketPiriceElement class="q-card" />
-    <q-separator class="q-ma-md" vertical />
     <q-btn
+      class=""
       color="secondary"
       flat
       icon="fa-solid fa-repeat"

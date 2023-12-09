@@ -11,6 +11,9 @@ import { format_address } from '../../stores/format_address';
 import { computed, onMounted, ref, watch } from 'vue';
 import { PublicKey } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { CURRENCIES } from 'stores/const';
+import PairIcon from 'components/elements/PairIcon.vue';
+import MarketPiriceElement from 'components/market/MarketPiriceElement.vue';
 
 const supply = ref();
 const holder = ref();
@@ -71,36 +74,59 @@ watch(
 
 <template>
   <q-card square flat class="q-pa-sm">
+    <div class="row items-center">
+      <PairIcon
+        size="xl"
+        :asset_image_url="
+          useGlobalStaratlasAPIStore().nfts.find(
+            (n) => n.symbol == useGlobalUserStore().selected_symbol
+          )?.img_path
+        "
+        :currency="
+          CURRENCIES.find(
+            (c) =>
+              c.mint ==
+              useGlobalStaratlasAPIStore().nfts.find(
+                (n) => n.symbol == useGlobalUserStore().selected_symbol
+              )?.mint_pair
+          )
+        "
+      />
+
+      <div class="col text-right">
+        <div class="text-h6">
+          {{
+            useGlobalUserStore().selected_symbol
+              ? useGlobalUserStore().selected_symbol
+              : '*none*'
+          }}
+        </div>
+        <div class="text-subtitle1">
+          {{
+            useGlobalUserStore().selected_symbol
+              ? useGlobalStaratlasAPIStore().nfts.find(
+                  (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+                ).name
+              : '*none*'
+          }}
+        </div>
+      </div>
+    </div>
+
     <div class="col">
-      <div class="row justify-between">
-        <div class="text-weight-light">Name</div>
-        <div class="text-body1">
-          {{
-            useGlobalStaratlasAPIStore().nfts.find(
-              (nft) => nft.symbol == useGlobalUserStore().selected_symbol
-            ).name
-          }}
-        </div>
+      <div class="row justify-between items-center">
+        <div class="text-weight-light">Price</div>
+
+        <MarketPiriceElement />
       </div>
-      <div class="row justify-between">
-        <div class="text-weight-light">Symbol</div>
-        <div class="text-body1">
-          {{
-            useGlobalStaratlasAPIStore().nfts.find(
-              (nft) => nft.symbol == useGlobalUserStore().selected_symbol
-            ).symbol
-          }}
-        </div>
-      </div>
+
       <div class="row justify-between">
         <div class="text-weight-light">Address</div>
-        <div class="text-body1">
+        <div style="font-size: x-small" class="text-body1">
           {{
-            format_address(
-              useGlobalStaratlasAPIStore().nfts.find(
-                (nft) => nft.symbol == useGlobalUserStore().selected_symbol
-              ).mint_asset
-            )
+            useGlobalStaratlasAPIStore().nfts.find(
+              (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+            ).mint_asset
           }}
         </div>
       </div>

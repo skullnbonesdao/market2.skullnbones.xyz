@@ -240,7 +240,7 @@ function calc_spread(buy: number, sell: number) {
       >
         <template v-slot:top>
           <div class="text-body1 text-weight-light q-mr-md">Timeframe:</div>
-          <q-tabs dense v-model="timeframe_selected">
+          <q-tabs active-bg-color="primary" dense v-model="timeframe_selected">
             <q-tab
               :name="itemType"
               :label="itemType"

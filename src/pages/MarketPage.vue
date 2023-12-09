@@ -20,9 +20,9 @@ const market_orders_height = computed(() => {
 
 <template>
   <q-page class="bg-image-dark" v-if="useGlobalStore().is_done">
-    <MarketHeader class="q-mb-xs" />
     <div class="row q-gutter-x-xs">
       <div class="col fit q-gutter-y-xs">
+        <MarketHeader class="q-mb-xs" />
         <TVChartContainer
           v-if="
             useGlobalUserStore().selected_symbol &&

@@ -39,8 +39,8 @@ watch(
 </script>
 
 <template>
-  <q-btn color="primary" v-if="data?.length" class="row items-center">
-    <div class="col q-pr-xs">{{ data[0]?.price ?? 0 }}</div>
+  <div v-if="data?.length" class="row items-center">
+    <div class="col q-pr-xs text-h6">{{ data[0]?.price ?? 0 }}</div>
     <CurrencyIcon
       style="height: 20px; width: 20px"
       :currency="
@@ -56,7 +56,7 @@ watch(
     <q-tooltip transition-show="scale" transition-hide="scale">
       Last traded price
     </q-tooltip>
-  </q-btn>
+  </div>
 </template>
 
 <style scoped></style>

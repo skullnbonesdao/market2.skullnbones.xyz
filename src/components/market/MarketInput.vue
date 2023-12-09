@@ -82,10 +82,20 @@ async function create_order(side: OrderSide) {
 
 <template>
   <q-card square flat class="">
-    <q-tabs v-model="tab1" indicator-color="transparent">
-      <q-tab :class="tab1 == 'buy' ? 'buy' : ''" name="buy" label="Buy" />
+    <q-tabs id="tabs_buy_sell" v-model="tab1" indicator-color="transparent">
+      <q-tab
+        id="tab_buy"
+        :class="tab1 == 'buy' ? 'buy' : ''"
+        name="buy"
+        label="Buy"
+      />
       <q-separator vertical />
-      <q-tab :class="tab1 == 'sell' ? 'sell' : ''" name="sell" label="Sell" />
+      <q-tab
+        id="tab_sell"
+        :class="tab1 == 'sell' ? 'sell' : ''"
+        name="sell"
+        label="Sell"
+      />
     </q-tabs>
 
     <q-separator />
@@ -93,6 +103,7 @@ async function create_order(side: OrderSide) {
     <div class="col q-pa-sm q-gutter-y-xs">
       <div>
         <q-input
+          id="input_price"
           dense
           square
           filled
@@ -103,6 +114,7 @@ async function create_order(side: OrderSide) {
       </div>
       <div>
         <q-input
+          id="input_amount"
           dense
           square
           filled
@@ -112,6 +124,7 @@ async function create_order(side: OrderSide) {
         />
       </div>
       <q-btn
+        id="create_order_btn"
         :loading="is_loading"
         @click="create_order(tab1 == 'buy' ? OrderSide.Buy : OrderSide.Sell)"
         square
