@@ -82,7 +82,12 @@ async function create_order(side: OrderSide) {
 
 <template>
   <q-card square flat class="">
-    <q-tabs id="tabs_buy_sell" v-model="tab1" indicator-color="transparent">
+    <q-tabs
+      class="q-px-sm q-pt-sm"
+      id="tabs_buy_sell"
+      v-model="tab1"
+      indicator-color="transparent"
+    >
       <q-tab
         id="tab_buy"
         :class="tab1 == 'buy' ? 'buy' : ''"
@@ -97,8 +102,6 @@ async function create_order(side: OrderSide) {
         label="Sell"
       />
     </q-tabs>
-
-    <q-separator />
 
     <div class="col q-pa-sm q-gutter-y-xs">
       <div>
