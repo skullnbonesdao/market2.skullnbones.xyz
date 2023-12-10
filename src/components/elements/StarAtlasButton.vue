@@ -10,7 +10,7 @@ const props = defineProps(['mint']);
     :href="'https://play.staratlas.com/market/' + mint"
   >
     <q-avatar size="xs">
-      <q-img src="currencies/ATLAS.webp" />
+      <q-img src="currencies/POLIS.webp" />
     </q-avatar>
 
     <q-tooltip>view on staratlas.com</q-tooltip>

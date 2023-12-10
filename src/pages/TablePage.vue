@@ -9,6 +9,9 @@ import RarityBadge from 'components/elements/RarityBadge.vue';
 import MarketTrendElement from 'components/elements/MarketTrendElement.vue';
 import { useGlobalStore } from 'stores/globalStore';
 import MarketPriceChangeElement from 'components/elements/MarketPriceChangeElement.vue';
+import SolscanButton from 'components/elements/SolscanButton.vue';
+import StarAtlasButton from 'components/elements/StarAtlasButton.vue';
+import MarketButton from 'components/elements/MarketButton.vue';
 
 const pagination = ref({
   rowsPerPage: 0,
@@ -100,6 +103,13 @@ const columns = [
     style: 'width: 100px',
     field: (row: never) => row.orderbok.sell.usdc,
   },
+  {
+    name: 'action',
+    required: true,
+    label: '',
+    align: 'left',
+    style: 'width: 100px',
+  },
 ];
 
 interface TableData {
@@ -126,6 +136,13 @@ const itemType_selected = ref<ItemType>(ItemType.Ship);
 onMounted(async () => {
   await prepare_data();
 });
+
+watch(
+  () => useGlobalStore().is_done,
+  async () => {
+    await prepare_data();
+  }
+);
 
 watch(
   () => itemType_selected.value,
@@ -376,6 +393,32 @@ function calc_spread(buy: number, sell: number) {
             <!--            />-->
             <!--          </div>-->
             <!--        </q-td>-->
+            <q-td key="action" :props="props">
+              <SolscanButton :mint="props.row.mint" />
+              <StarAtlasButton :mint="props.row.mint" />
+              <MarketButton
+                pair="ATLAS"
+                :symbol="
+                  useGlobalStaratlasAPIStore().nfts.find(
+                    (nft) =>
+                      nft.mint_asset == props.row.mint &&
+                      nft.mint_pair ==
+                        CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
+                  )?.symbol
+                "
+              />
+              <MarketButton
+                pair="USDC"
+                :symbol="
+                  useGlobalStaratlasAPIStore().nfts.find(
+                    (nft) =>
+                      nft.mint_asset == props.row.mint &&
+                      nft.mint_pair ==
+                        CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
+                  )?.symbol
+                "
+              />
+            </q-td>
           </q-tr>
         </template>
       </q-table>

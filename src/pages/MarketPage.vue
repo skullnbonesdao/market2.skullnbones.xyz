@@ -7,8 +7,14 @@ import { useGlobalUserStore } from 'stores/globalUserStore';
 import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 import MarketInputGrid from 'components/market/MarketInputGrid.vue';
 import { useGlobalStore } from 'stores/globalStore';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import MarketInfo from 'components/market/MarketInfo.vue';
+import { useRoute } from 'vue-router';
+
+onMounted(() => {
+  useGlobalUserStore().selected_symbol =
+    (useRoute().params.symbol as string) ?? 'PX4USDC';
+});
 
 const market_orders_height = computed(() => {
   if (useGlobalStore().settings.enable_grid_orders) {
