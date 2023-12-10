@@ -120,7 +120,7 @@ watch(
         <MarketPiriceElement />
       </div>
 
-      <div class="row justify-between">
+      <div class="row justify-between items-center">
         <div class="text-weight-light">Address</div>
         <div style="font-size: x-small" class="text-body1">
           {{
@@ -130,13 +130,13 @@ watch(
           }}
         </div>
       </div>
-      <div class="row justify-between">
+      <div class="row justify-between items-center">
         <div class="text-weight-light">Supply</div>
         <div class="text-body1">
           {{ supply }}
         </div>
       </div>
-      <div class="row justify-between">
+      <div class="row justify-between items-center">
         <div class="text-weight-light">Holders</div>
         <div class="text-subtitle1">
           {{ holder?.length }}
