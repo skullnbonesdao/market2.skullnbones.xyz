@@ -85,6 +85,7 @@ async function create_order(side: OrderSide) {
     <q-tabs
       class="q-px-sm q-pt-sm"
       id="tabs_buy_sell"
+      align="justify"
       v-model="tab1"
       indicator-color="transparent"
     >
@@ -94,7 +95,7 @@ async function create_order(side: OrderSide) {
         name="buy"
         label="Buy"
       />
-
+      <div class="q-mx-xs text-weight-thin">or</div>
       <q-tab
         id="tab_sell"
         :class="tab1 == 'sell' ? 'sell' : ''"

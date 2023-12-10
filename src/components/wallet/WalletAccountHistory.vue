@@ -53,6 +53,7 @@ async function update(pubkey: string) {
       )
       .filter((t) => t.side?.includes('BUY'))
       .map((t) => [t.timestamp, t.price, t.volume]),
+    axisName: 'USDC',
   });
   series.value.push({
     name: 'USDC [sell]',
@@ -63,6 +64,7 @@ async function update(pubkey: string) {
       )
       .filter((t) => t.side?.includes('SELL'))
       .map((t) => [t.timestamp, t.price, t.volume]),
+    axisName: 'USDC',
   });
 
   series.value.push({
@@ -90,7 +92,7 @@ async function update(pubkey: string) {
 }
 
 const chartOptions = {
-  colors: ['#3976ea', '#b2b2b2'],
+  colors: ['#3976ea', '#3976ea', '#b2b2b2', '#b2b2b2'],
 
   chart: {
     height: 350,
@@ -113,13 +115,28 @@ const chartOptions = {
   yaxis: [
     {
       title: {
-        text: 'USDC',
+        text: 'USDC [buy]',
       },
+      seriesName: 'USDC [buy]',
     },
     {
       title: {
-        text: 'ATLAS',
+        text: 'USDC [sell]',
       },
+      seriesName: 'USDC [sell]',
+    },
+    {
+      title: {
+        text: 'ATLAS [buy]',
+      },
+      seriesName: 'ATLAS [buy]',
+      opposite: true,
+    },
+    {
+      title: {
+        text: 'ATLAS [sell]',
+      },
+      seriesName: 'ATLAS [sell]',
       opposite: true,
     },
   ],
