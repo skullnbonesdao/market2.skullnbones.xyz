@@ -65,7 +65,7 @@ function update_symbol(name: string, symbol: string) {
             />
           </q-item-section>
           <q-item-section>
-            <div class="row">
+            <div class="row q-gutter-x-md">
               <div
                 class="col"
                 @click="

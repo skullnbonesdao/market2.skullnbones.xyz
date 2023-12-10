@@ -41,7 +41,7 @@ const market_orders_height = computed(() => {
         </q-scroll-area>
       </div>
       <q-card flat class="col-3 q-gutter-y-xs">
-        <MarketHeader class="q-mb-xs" />
+        <MarketHeader />
 
         <MarketInfo />
         <q-separator />
