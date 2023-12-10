@@ -15,7 +15,7 @@ defineProps(['container_height']);
 </script>
 
 <template>
-  <q-card flat square>
+  <q-card class="q-mt-none" flat square>
     <q-tabs v-model="tab">
       <q-tab name="book" label="Book">
         <q-tooltip transition-show="scale" transition-hide="scale">

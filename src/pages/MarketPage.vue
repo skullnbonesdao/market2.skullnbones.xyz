@@ -20,7 +20,7 @@ const market_orders_height = computed(() => {
   if (useGlobalStore().settings.enable_grid_orders) {
     return 'calc(100vh - 70vh)';
   }
-  return 'calc(100vh - 70vh)';
+  return 'calc(100vh - 74vh)';
 });
 </script>
 
@@ -40,15 +40,17 @@ const market_orders_height = computed(() => {
           <MarketOpenOrderTable />
         </q-scroll-area>
       </div>
-      <div class="col-3 q-gutter-y-xs">
+      <q-card flat class="col-3 q-gutter-y-xs">
         <MarketHeader class="q-mb-xs" />
+
         <MarketInfo />
-
+        <q-separator />
         <MarketInput />
-
+        <q-separator v-if="useGlobalStore().settings.enable_grid_orders" />
         <MarketInputGrid v-if="useGlobalStore().settings.enable_grid_orders" />
+        <q-separator />
         <MarketOrders :container_height="market_orders_height" class="" />
-      </div>
+      </q-card>
     </div>
   </q-page>
 

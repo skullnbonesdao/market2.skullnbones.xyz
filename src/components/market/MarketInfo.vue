@@ -131,6 +131,39 @@ watch(
         </div>
       </div>
       <div class="row justify-between items-center">
+        <div class="text-weight-light">Type</div>
+        <div class="text-body1">
+          {{
+            useGlobalStaratlasAPIStore()
+              .raw.find(
+                (raw) =>
+                  raw.mint ==
+                  useGlobalStaratlasAPIStore().nfts.find(
+                    (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+                  ).mint_asset
+              )
+              .attributes.itemType.toUpperCase()
+          }}
+        </div>
+      </div>
+      <div class="row justify-between items-center">
+        <div class="text-weight-light">Rarity</div>
+        <div class="text-body1">
+          {{
+            useGlobalStaratlasAPIStore()
+              .raw.find(
+                (raw) =>
+                  raw.mint ==
+                  useGlobalStaratlasAPIStore().nfts.find(
+                    (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+                  ).mint_asset
+              )
+              .attributes.rarity.toUpperCase()
+          }}
+        </div>
+      </div>
+
+      <div class="row justify-between items-center">
         <div class="text-weight-light">Supply</div>
         <div class="text-body1">
           {{ supply }}

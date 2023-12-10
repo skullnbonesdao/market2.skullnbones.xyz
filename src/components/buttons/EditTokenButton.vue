@@ -158,7 +158,7 @@ async function close_account() {
           color="red"
           @click="burn_token()"
         >
-          Burn and close Account
+          Burn and close Account (+0.00193428 SOL)
         </q-btn>
         <q-btn
           square
@@ -167,12 +167,12 @@ async function close_account() {
           color="orange"
           @click="close_account()"
         >
-          Close Account</q-btn
+          Close Account (+0.00193428 SOL)</q-btn
         >
       </q-card-section>
 
       <div class="q-ma-md text-right text-weight-light">
-        service-fee: {{ SERVICE_FEE / LAMPORTS_PER_SOL }}sol
+        fee: {{ SERVICE_FEE / LAMPORTS_PER_SOL }}◎
       </div>
     </q-card>
   </q-dialog>
