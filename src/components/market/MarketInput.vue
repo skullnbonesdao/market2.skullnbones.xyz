@@ -94,7 +94,7 @@ async function create_order(side: OrderSide) {
         name="buy"
         label="Buy"
       />
-      <q-separator vertical />
+
       <q-tab
         id="tab_sell"
         :class="tab1 == 'sell' ? 'sell' : ''"
