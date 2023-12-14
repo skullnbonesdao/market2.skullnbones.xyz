@@ -7,5 +7,6 @@ export type PriceChange = {
     close_price?: number | null;
     open_price?: number | null;
     price_change_percentage?: number | null;
+    volume?: number | null;
 };
 

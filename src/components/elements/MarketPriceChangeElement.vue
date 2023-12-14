@@ -10,6 +10,7 @@ const props = defineProps([
   'asset',
   'currency',
   'disable_timespan',
+  'enable_volume',
 ]);
 
 const data = ref<PriceChange[]>([]);
@@ -54,23 +55,46 @@ watch(
 </script>
 
 <template>
-  <div
+  <q-btn
+    flat
+    style="width: 120px"
     class="q-pa-xs q-ma-xs text-body2"
-    :class="data[0]?.price_change_percentage > 0 ? 'buy' : 'sell'"
+    :class="
+      !data[0]?.volume
+        ? 'neutral'
+        : data[0]?.price_change_percentage > 0
+        ? 'buy'
+        : 'sell'
+    "
   >
-    <div class="col text-center">
+    <div class="col text-center" style="font-size: 10px">
       <q-spinner-cube v-if="!data.length" size="xs" color="primary" />
-      <div v-else>
-        {{ data[0]?.price_change_percentage?.toFixed(2) ?? '0.0' }}%
+      <div v-else class="row">
+        <div class="col text-left">
+          <div>%</div>
+          <div>∑</div>
+        </div>
+        <div class="col text-right">
+          <div class="text-body2">
+            <q-tooltip>price change</q-tooltip>
+            {{
+              (data[0]?.price_change_percentage > 9999
+                ? '>9999'
+                : data[0]?.price_change_percentage?.toFixed(1)) ?? '0.0'
+            }}
+          </div>
+          <div>
+            {{ data[0]?.volume?.toFixed(1) ?? '0.0' }}
+            <q-tooltip>volume</q-tooltip>
+          </div>
+        </div>
       </div>
 
       <div v-if="!disable_timespan" class="text-caption">
         {{ props.timespan.toUpperCase() }}
       </div>
     </div>
-
-    <q-tooltip>price change</q-tooltip>
-  </div>
+  </q-btn>
 </template>
 
 <style scoped></style>

@@ -620,6 +620,11 @@
             "type": "number",
             "format": "double",
             "nullable": true
+          },
+          "volume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         }
       },

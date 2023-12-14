@@ -50,6 +50,14 @@ const columns = [
   },
 
   {
+    name: 'market_atlas_change',
+    required: true,
+    label: '',
+    align: 'center',
+    sortable: false,
+  },
+
+  {
     name: 'market_usdc',
     required: true,
     label: 'Market [USDC]',
@@ -57,6 +65,14 @@ const columns = [
     sortable: true,
 
     field: (row: never) => row.market.usdc,
+  },
+
+  {
+    name: 'market_usdc_change',
+    required: true,
+    label: '',
+    align: 'left',
+    sortable: false,
   },
 
   {
@@ -294,33 +310,36 @@ function calc_spread(buy: number, sell: number) {
             </q-td>
 
             <q-td key="market_atlas" :props="props" class="">
-              <div class="row">
-                <PirceElement label="ATLAS" :value="props.row.market?.atlas" />
-                <MarketPriceChangeElement
-                  class="col"
-                  :timespan="timeframe_selected"
-                  :asset="props.row.mint"
-                  :currency="
-                    CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
-                  "
-                  disable_timespan="true"
-                />
-              </div>
+              <PirceElement label="ATLAS" :value="props.row.market?.atlas" />
+            </q-td>
+
+            <q-td key="market_atlas_change" :props="props" class="">
+              <MarketPriceChangeElement
+                class="col"
+                :timespan="timeframe_selected"
+                :asset="props.row.mint"
+                :currency="
+                  CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
+                "
+                disable_timespan="true"
+                enable_volume="true"
+              />
             </q-td>
 
             <q-td key="market_usdc" :props="props" class="">
-              <div class="row">
-                <PirceElement label="USDC" :value="props.row.market?.usdc" />
-                <MarketPriceChangeElement
-                  class="col"
-                  :timespan="timeframe_selected"
-                  :asset="props.row.mint"
-                  :currency="
-                    CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
-                  "
-                  disable_timespan="true"
-                />
-              </div>
+              <PirceElement label="USDC" :value="props.row.market?.usdc" />
+            </q-td>
+            <q-td key="market_usdc_change" :props="props" class="">
+              <MarketPriceChangeElement
+                class="col"
+                :timespan="timeframe_selected"
+                :asset="props.row.mint"
+                :currency="
+                  CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
+                "
+                disable_timespan="true"
+                enable_volume="true"
+              />
             </q-td>
 
             <q-td key="buy_orders_atlas" :props="props" class="buy">
@@ -338,8 +357,8 @@ function calc_spread(buy: number, sell: number) {
               />
             </q-td>
 
-            <q-td key="spread" class="market" :props="props">
-              <q-btn class="text-caption" color="primary">
+            <q-td key="spread" class="" :props="props">
+              <div class="text-caption">
                 <div class="col">
                   <MarketTrendElement
                     :currency="
@@ -365,7 +384,7 @@ function calc_spread(buy: number, sell: number) {
                     "
                   />
                 </div>
-              </q-btn>
+              </div>
             </q-td>
 
             <q-td key="sell_orders_atlas" :props="props" class="sell">
