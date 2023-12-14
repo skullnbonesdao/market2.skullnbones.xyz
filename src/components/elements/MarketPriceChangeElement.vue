@@ -69,11 +69,7 @@ watch(
   >
     <div class="col text-center" style="font-size: 10px">
       <q-spinner-cube v-if="!data.length" size="xs" color="primary" />
-      <div v-else class="row">
-        <div class="col text-left">
-          <div>%</div>
-          <div>∑</div>
-        </div>
+      <div v-else class="row q-gutter-x-xs">
         <div class="col text-right">
           <div class="text-body2">
             <q-tooltip>price change</q-tooltip>
@@ -83,10 +79,16 @@ watch(
                 : data[0]?.price_change_percentage?.toFixed(1)) ?? '0.0'
             }}
           </div>
-          <div>
+          <div class="text-body2">
             {{ data[0]?.volume?.toFixed(1) ?? '0.0' }}
             <q-tooltip>volume</q-tooltip>
           </div>
+        </div>
+        <q-separator vertical></q-separator>
+
+        <div>
+          <div>%</div>
+          <div>∑</div>
         </div>
       </div>
 
