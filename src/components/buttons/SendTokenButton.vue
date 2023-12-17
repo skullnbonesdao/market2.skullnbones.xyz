@@ -14,10 +14,12 @@ import { useWallet } from 'solana-wallets-vue';
 import { Notify } from 'quasar';
 import { handle_confirmation } from 'stores/handle_confirmation';
 import { watchDebounced } from '@vueuse/core';
+import { format_address } from '../../stores/format_address';
+import AsssetIcon from 'components/elements/AsssetIcon.vue';
 
 const show_modal = ref(false);
 
-const props = defineProps(['mint', 'decimals', 'amount', 'disabled']);
+const props = defineProps(['mint', 'decimals', 'amount', 'disabled', 'name']);
 const input_receiver = ref('');
 const input_amount = ref(0);
 const input_slider = ref(0);
@@ -104,13 +106,12 @@ async function send_token() {
   <q-dialog v-model="show_modal">
     <q-card>
       <q-toolbar class="q-mt-md">
-        <q-avatar>
-          <q-icon name="send" />
-        </q-avatar>
+        <AsssetIcon size="xl" :url="'sa_files/webp/' + mint + '.webp'" />
 
-        <q-toolbar-title
-          ><span class="text-weight-bold">Send Token</span>
-          <div class="text-overline">{{ mint }}</div>
+        <q-toolbar-title>
+          <span class="text-weight-bold">Send Token</span>
+          <div class="text-body1">{{ name }}</div>
+          <div class="text-overline" style="width: 500px">{{ mint }}</div>
         </q-toolbar-title>
 
         <q-btn flat round dense icon="close" v-close-popup />

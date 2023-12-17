@@ -285,6 +285,7 @@ function tab_filter_data() {
               :mint="props.row.info.mint"
               :decimals="props.row.info.tokenAmount.decimals"
               :amount="props.row.info.tokenAmount.uiAmount"
+              :name="props.row.staratlas.name"
             />
           </q-td>
         </q-tr>
