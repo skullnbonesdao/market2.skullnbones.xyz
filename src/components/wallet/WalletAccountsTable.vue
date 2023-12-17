@@ -150,6 +150,34 @@ function tab_filter_data() {
     return data.filter((d) => d.info.tokenAmount.uiAmount != 0);
   else return data;
 }
+
+const total_usdc = computed(() => {
+  return tab_filter_data()
+    .map(
+      (d) =>
+        (prices_atlas.value.find(
+          (c) =>
+            c.asset == d.info.mint &&
+            c.currency ==
+              CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
+        )?.price ?? 0) * d.info.tokenAmount.uiAmount
+    )
+    .reduce((a, b) => a + b, 0);
+});
+
+const total_atlas = computed(() => {
+  return tab_filter_data()
+    .map(
+      (d) =>
+        (prices_atlas.value.find(
+          (c) =>
+            c.asset == d.info.mint &&
+            c.currency ==
+              CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
+        )?.price ?? 0) * d.info.tokenAmount.uiAmount
+    )
+    .reduce((a, b) => a + b, 0);
+});
 </script>
 
 <template>
@@ -363,6 +391,34 @@ function tab_filter_data() {
               :name="props.row.staratlas.name"
             />
           </q-td>
+        </q-tr>
+      </template>
+      <template v-slot:top-row>
+        <q-tr class="bg-primary">
+          <q-td colspan="100%">
+            <div class="row items-center text-right">
+              <div class="col text-h5">∑</div>
+              <div class="col-1 q-gutter-y-sm text-subtitle1">
+                <div class="row justify-end q-gutter-x-md items-center">
+                  {{ total_usdc.toFixed(2) }}
+                  <CurrencyIcon
+                    :currency="
+                      CURRENCIES.find((c) => c.type == E_Currency.USDC)
+                    "
+                  />
+                </div>
+                <div class="row justify-end q-gutter-x-md items-center">
+                  {{ total_atlas.toFixed(2) }}
+                  <CurrencyIcon
+                    :currency="
+                      CURRENCIES.find((c) => c.type == E_Currency.ATLAS)
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </q-td>
+          <q-tooltip>Total market value</q-tooltip>
         </q-tr>
       </template>
     </q-table>
