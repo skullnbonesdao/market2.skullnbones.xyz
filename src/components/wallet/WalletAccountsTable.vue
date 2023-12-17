@@ -16,6 +16,7 @@ const pros = defineProps(['tab']);
 
 const accounts = ref();
 
+const hide_zero = ref(false);
 const tabs_currencies = ref('all');
 
 const visibleColumns = ref([
@@ -135,13 +136,19 @@ onMounted(async () => {
 });
 
 function tab_filter_data() {
+  let data = [];
+
   if (pros.tab == 'all') {
-    return useGlobalUserStore().get_account_map_staratlas;
+    data = useGlobalUserStore().get_account_map_staratlas;
   } else {
-    return useGlobalUserStore().get_account_map_staratlas.filter(
+    data = useGlobalUserStore().get_account_map_staratlas.filter(
       (e) => e.staratlas.attributes.itemType?.toLowerCase() == pros.tab
     );
   }
+
+  if (hide_zero.value)
+    return data.filter((d) => d.info.tokenAmount.uiAmount != 0);
+  else return data;
 }
 </script>
 
@@ -177,7 +184,13 @@ function tab_filter_data() {
           <q-tab name="atlas" label="ATLAS" />
         </q-tabs>
         <q-space />
-
+        <q-toggle
+          color="secondary"
+          v-model="hide_zero"
+          label="Hide empty accounts"
+          left-label
+        />
+        <q-space />
         <q-select
           v-model="visibleColumns"
           multiple
@@ -203,7 +216,12 @@ function tab_filter_data() {
       </template>
 
       <template v-slot:body="props">
-        <q-tr :props="props">
+        <q-tr
+          :props="props"
+          :class="
+            props.row.info.tokenAmount?.uiAmount == 0 ? 'text-yellow' : ''
+          "
+        >
           <q-td key="image" :props="props">
             <AsssetIcon
               size="xl"
@@ -236,11 +254,7 @@ function tab_filter_data() {
             {{ props.row.info.tokenAmount?.decimals }}
           </q-td>
           <q-td key="amount" class="text-subtitle1 text-bold" :props="props">
-            <div
-              :class="
-                props.row.info.tokenAmount?.uiAmount == 0 ? 'text-yellow' : ''
-              "
-            >
+            <div>
               {{ props.row.info.tokenAmount?.uiAmount.toFixed(0) }}
             </div>
           </q-td>
