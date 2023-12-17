@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useWallet } from 'solana-wallets-vue';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import AsssetIcon from 'components/elements/AsssetIcon.vue';
@@ -16,13 +16,15 @@ const pros = defineProps(['tab']);
 
 const accounts = ref();
 
+const tabs_currencies = ref('all');
+
 const visibleColumns = ref([
   'name',
   'type',
   'action',
   'amount',
-  'market_usdc',
-  'market_atlas',
+  'market',
+  'value',
 ]);
 
 const columns = [
@@ -85,17 +87,19 @@ const columns = [
     field: (row) => row.info.tokenAmount?.uiAmount,
   },
   {
-    name: 'market_usdc',
-    label: 'Market [USDC]',
+    name: 'market',
+    label: 'Market',
     align: 'right',
     field: (row) => row.info.tokenAmount?.uiAmount,
   },
+
   {
-    name: 'market_atlas',
-    label: 'Market [ATLAS]',
+    name: 'value',
+    label: 'Value',
     align: 'right',
     field: (row) => row.info.tokenAmount?.uiAmount,
   },
+
   {
     label: '',
     align: 'right',
@@ -113,6 +117,7 @@ watch(
     await useGlobalUserStore().update_accounts();
   }
 );
+
 const pagination = ref({ rowsPerPage: 0 });
 
 const prices_usdc = ref<Price[]>([]);
@@ -164,6 +169,13 @@ function tab_filter_data() {
       <template v-slot:top="props">
         <div class="col-2 q-table__title">Accounts</div>
 
+        <q-space />
+
+        <q-tabs v-model="tabs_currencies" align="justify">
+          <q-tab name="all" label="ALL" class="bg-secondary" />
+          <q-tab name="usdc" label="USDC" />
+          <q-tab name="atlas" label="ATLAS" />
+        </q-tabs>
         <q-space />
 
         <q-select
@@ -233,18 +245,20 @@ function tab_filter_data() {
             </div>
           </q-td>
 
-          <q-td
-            key="market_usdc"
-            class="text-subtitle1 text-bold"
-            :props="props"
-          >
-            <div class="row items-center justify-end q-gutter-x-sm">
+          <q-td key="market" class="text-subtitle1 text-bold" :props="props">
+            <div
+              v-if="tabs_currencies != 'atlas'"
+              class="row items-center justify-end q-gutter-x-sm"
+            >
               <div>
                 {{
                   (
-                    (prices_usdc.find((c) => c.asset == props.row.info.mint)
-                      ?.price ?? 0) *
-                    props.row.info.tokenAmount?.uiAmount.toFixed(0)
+                    prices_usdc.find(
+                      (c) =>
+                        c.asset == props.row.info.mint &&
+                        c.currency ==
+                          CURRENCIES.find((c) => c.type == E_Currency.USDC).mint
+                    )?.price ?? 0
                   ).toFixed(2)
                 }}
               </div>
@@ -252,19 +266,66 @@ function tab_filter_data() {
                 :currency="CURRENCIES.find((c) => c.type == E_Currency.USDC)"
               />
             </div>
-          </q-td>
-          <q-td
-            key="market_atlas"
-            class="text-subtitle1 text-bold"
-            :props="props"
-          >
-            <div class="row items-center justify-end q-gutter-x-sm">
+            <q-separator v-if="tabs_currencies == 'all'" />
+            <div
+              v-if="tabs_currencies != 'usdc'"
+              class="row items-center justify-end q-gutter-x-sm"
+            >
               <div>
                 {{
                   (
-                    (prices_atlas.find((c) => c.asset == props.row.info.mint)
-                      ?.price ?? 0) *
-                    props.row.info.tokenAmount?.uiAmount.toFixed(0)
+                    prices_atlas.find(
+                      (c) =>
+                        c.asset == props.row.info.mint &&
+                        c.currency ==
+                          CURRENCIES.find((c) => c.type == E_Currency.ATLAS)
+                            .mint
+                    )?.price ?? 0
+                  ).toFixed(2)
+                }}
+              </div>
+              <CurrencyIcon
+                :currency="CURRENCIES.find((c) => c.type == E_Currency.ATLAS)"
+              />
+            </div>
+          </q-td>
+
+          <q-td key="value" class="text-subtitle1 text-bold" :props="props">
+            <div
+              v-if="tabs_currencies != 'atlas'"
+              class="row items-center justify-end q-gutter-x-sm"
+            >
+              <div>
+                {{
+                  (
+                    (prices_atlas.find(
+                      (c) =>
+                        c.asset == props.row.info.mint &&
+                        c.currency ==
+                          CURRENCIES.find((c) => c.type == E_Currency.USDC).mint
+                    )?.price ?? 0) * props.row.info.tokenAmount?.uiAmount
+                  ).toFixed(2)
+                }}
+              </div>
+              <CurrencyIcon
+                :currency="CURRENCIES.find((c) => c.type == E_Currency.USDC)"
+              />
+            </div>
+            <q-separator v-if="tabs_currencies == 'all'" />
+            <div
+              v-if="tabs_currencies != 'usdc'"
+              class="row items-center justify-end q-gutter-x-sm"
+            >
+              <div>
+                {{
+                  (
+                    (prices_atlas.find(
+                      (c) =>
+                        c.asset == props.row.info.mint &&
+                        c.currency ==
+                          CURRENCIES.find((c) => c.type == E_Currency.ATLAS)
+                            .mint
+                    )?.price ?? 0) * props.row.info.tokenAmount?.uiAmount
                   ).toFixed(2)
                 }}
               </div>
