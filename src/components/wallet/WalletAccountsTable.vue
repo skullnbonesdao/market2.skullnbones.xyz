@@ -281,8 +281,10 @@ function tab_filter_data() {
               :decimals="props.row.info.tokenAmount.decimals"
             />
             <SendTokenButton
+              :disabled="props.row.info.tokenAmount.uiAmount == 0"
               :mint="props.row.info.mint"
               :decimals="props.row.info.tokenAmount.decimals"
+              :amount="props.row.info.tokenAmount.uiAmount"
             />
           </q-td>
         </q-tr>

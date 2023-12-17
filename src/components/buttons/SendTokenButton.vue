@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useGlobalStore } from 'stores/globalStore';
 import { Connection, PublicKey, Transaction } from '@solana/web3.js';
 import {
@@ -13,13 +13,30 @@ import * as spl from '@solana/spl-token';
 import { useWallet } from 'solana-wallets-vue';
 import { Notify } from 'quasar';
 import { handle_confirmation } from 'stores/handle_confirmation';
+import { watchDebounced } from '@vueuse/core';
 
 const show_modal = ref(false);
 
-const props = defineProps(['mint', 'decimals']);
+const props = defineProps(['mint', 'decimals', 'amount', 'disabled']);
 const input_receiver = ref('');
 const input_amount = ref(0);
+const input_slider = ref(0);
 
+watchDebounced(
+  () => input_slider.value,
+  () => {
+    input_amount.value = parseFloat(
+      ((input_slider.value / 10) * props.amount).toFixed(props.decimals)
+    );
+  }
+);
+
+watchDebounced(
+  () => input_amount.value,
+  () => {
+    input_slider.value = ((input_amount.value / props.amount) * 100) / 10;
+  }
+);
 async function send_token() {
   const tx = new Transaction();
 
@@ -76,6 +93,7 @@ async function send_token() {
 
 <template>
   <q-btn
+    :disable="disabled"
     square
     color="secondary"
     size="sm"
@@ -102,16 +120,29 @@ async function send_token() {
         <div>
           <q-input filled square label="Receiver" v-model="input_receiver" />
         </div>
-        <div class="row">
-          <q-input
-            filled
-            square
-            class="col"
-            label="Amount"
-            v-model="input_amount"
-          />
+        <q-btn-group push class="row full-width">
+          <div class="col">
+            <q-input
+              filled
+              square
+              class="col"
+              label="Amount"
+              v-model="input_amount"
+              :hint="'Max: ' + amount"
+            />
+            <q-slider
+              class="q-px-lg"
+              v-model="input_slider"
+              :min="0"
+              :max="10"
+              color="secondary"
+              track-size="10px"
+              markers
+              :marker-labels="(val) => `${10 * val}%`"
+            />
+          </div>
           <q-btn square color="primary" icon="send" @click="send_token()" />
-        </div>
+        </q-btn-group>
       </q-card-section>
     </q-card>
   </q-dialog>
