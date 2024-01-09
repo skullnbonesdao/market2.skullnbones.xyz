@@ -70,6 +70,9 @@ watch(
     <div class="col text-center" style="font-size: 10px">
       <q-spinner-cube v-if="!data.length" size="xs" color="primary" />
       <div v-else class="row q-gutter-x-xs">
+        <div v-if="!disable_timespan" class="text-caption">
+          {{ props.timespan.toUpperCase() }}
+        </div>
         <div class="col text-right">
           <div class="text-body2">
             <q-tooltip>price change</q-tooltip>
@@ -90,10 +93,6 @@ watch(
           <div>%</div>
           <div>∑</div>
         </div>
-      </div>
-
-      <div v-if="!disable_timespan" class="text-caption">
-        {{ props.timespan.toUpperCase() }}
       </div>
     </div>
   </q-btn>
