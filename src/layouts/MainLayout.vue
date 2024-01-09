@@ -8,6 +8,7 @@ import SettingsButton from 'components/buttons/SettingsButton.vue';
 import { version } from 'src/../package.json';
 import { useGlobalStore } from 'stores/globalStore';
 import { useGlobalUserStore } from 'stores/globalUserStore';
+import JupiterModal from 'src/jupiter/JupiterModal.vue';
 
 const links = computed(() => {
   let data = [
@@ -73,8 +74,11 @@ onMounted(async () => {
           <!--            src="sa-powered_by_the_people.png"-->
           <!--          />-->
         </q-toolbar-title>
+
         <TpsElement />
         <BuyACoffee />
+
+        <JupiterModal />
 
         <q-btn
           flat
