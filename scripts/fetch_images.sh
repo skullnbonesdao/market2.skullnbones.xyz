@@ -1,6 +1,12 @@
 #!/usr/bin/bash
 
 path_to_copy_to="../public/sa_images/webp/"
+output_dir="./images"
+mkdir $output_dir
+mkdir "$output_dir/jpg"
+mkdir "$output_dir/jpg/low"
+mkdir "$output_dir/webp"
+
 
 echo "=== Fetching API ==="
 DATA=$(curl "https://galaxy.staratlas.com/nfts")
@@ -10,12 +16,6 @@ IMAGES_NAME=($(echo "$DATA" | jq -r ".[] | .mint"))
 
 
 echo "=== Downloading images ==="
-output_dir="./images"
-mkdir $output_dir
-mkdir "$output_dir/jpg"
-mkdir "$output_dir/jpg/low"
-mkdir "$output_dir/webp"
-
 for i in "${!IMAGES[@]}"; do
  echo "> Downloading: ${IMAGES[$i]}"
  curl "${IMAGES[$i]}" -o "$output_dir/jpg/${IMAGES_NAME[$i]}".jpg
