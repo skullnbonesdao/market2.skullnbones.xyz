@@ -9,6 +9,7 @@ import PairIcon from 'components/elements/PairIcon.vue';
 import { useQuasar } from 'quasar';
 import AsssetIcon from 'components/elements/AsssetIcon.vue';
 import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
+import { calc_passed_time_minutes } from '../../stores/calc_passed_time';
 
 const pagination = ref({
   rowsPerPage: 0,
@@ -18,6 +19,13 @@ const props = defineProps(['mint_asset', 'mint_currency', 'height']);
 
 const columns = ref([
   {
+    name: 'info',
+    align: 'left',
+    field: 'info',
+    sortable: true,
+    style: 'width: 50px',
+  },
+  {
     name: 'side',
     label: 'Side',
     align: 'left',
@@ -25,12 +33,13 @@ const columns = ref([
     sortable: true,
   },
   {
-    name: 'info',
+    name: 'time',
+    label: 'Before',
     align: 'left',
-    field: 'info',
+    field: 'time',
     sortable: true,
-    style: 'width: 50px',
   },
+
   // {
   //   name: 'fee',
   //   align: 'right',
@@ -100,12 +109,6 @@ watch(
   >
     <template v-slot:body="props">
       <q-tr :props="props" :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
-        <q-td key="side" :props="props">
-          <q-badge :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
-            {{ props.row.side }}
-          </q-badge>
-        </q-td>
-
         <q-td key="info" :props="props">
           <q-btn
             flat
@@ -115,6 +118,19 @@ watch(
             target="_blank"
           ></q-btn>
         </q-td>
+
+        <q-td key="side" :props="props">
+          <q-badge :class="props.row.side == 'BUY' ? 'buy' : 'sell'">
+            {{ props.row.side }}
+          </q-badge>
+        </q-td>
+        <q-td key="time" :props="props" class="text-caption">
+         <div>
+           -{{calc_passed_time_minutes(props.row.timestamp)}}
+         </div>
+        </q-td>
+
+
 
         <!--        <q-td key="fee" :props="props">-->
         <!--          {{ props.row.fee ?? 0 }}-->
