@@ -1,4 +1,4 @@
-# RogueMarket (market2.skullnbones.xyz)
+# RogueMarket (market.skullnbones.xyz v2)
 
 
 ## Install the dependencies
