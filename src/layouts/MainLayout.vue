@@ -48,7 +48,7 @@ watch(
 onMounted(async () => {
   const block_height = await useGlobalStore().connection.getSlot();
   const cursor = await useGlobalStore().api_client.cursor.getCursor();
-  sync_status.value = cursor[0].block_num / block_height;
+  sync_status.value = cursor[1].block_num / block_height;
 });
 </script>
 
