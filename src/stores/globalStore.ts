@@ -28,7 +28,7 @@ export const useGlobalStore = defineStore('globalstore', {
   state: () => ({
     is_done: false,
 
-    rpc_selected: useLocalStorage('rpc_selected_2', RPC_NETWORKS[0]),
+    rpc_selected: useLocalStorage('rpc_selected_3', RPC_NETWORKS[0]),
     settings: useLocalStorage('settings', {
       enable_grid_orders: false,
       always_show_drawer: false,
