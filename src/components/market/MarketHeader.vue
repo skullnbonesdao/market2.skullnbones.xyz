@@ -8,9 +8,12 @@ import { CURRENCIES, E_Currency } from 'stores/const';
 import AsssetIcon from 'components/elements/AsssetIcon.vue';
 import CurrencyIcon from 'components/elements/CurrencyIcon.vue';
 import { useGlobalStore } from '../../stores/globalStore';
+import { useRoute, useRouter } from 'vue-router';
 
 const selected = ref(null);
 const options = ref(useGlobalStaratlasAPIStore().raw);
+const $r = useRouter()
+
 
 function filterFn(val: any, update: any) {
   if (val === '') {
@@ -32,7 +35,10 @@ function filterFn(val: any, update: any) {
 
 function update_symbol(name: string, symbol: string) {
   useGlobalUserStore().selected_symbol = name + symbol;
+  $r.push({ path: `/market/${name + symbol}`})
 }
+
+
 </script>
 
 <template>

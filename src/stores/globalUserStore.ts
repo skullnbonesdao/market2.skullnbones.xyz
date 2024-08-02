@@ -120,7 +120,7 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
                 )?.mint_asset &&
               a.mint_pair ==
                 CURRENCIES.find((c) => c.type == E_Currency.USDC)?.mint
-          )?.symbol;
+          )?.symbol ?? "";
           break;
         case E_Currency.USDC:
           this.selected_symbol = useGlobalStaratlasAPIStore().nfts.find(
@@ -131,7 +131,7 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
                 )?.mint_asset &&
               a.mint_pair ==
                 CURRENCIES.find((c) => c.type == E_Currency.ATLAS)?.mint
-          )?.symbol;
+          )?.symbol ?? "";
           break;
       }
     },
