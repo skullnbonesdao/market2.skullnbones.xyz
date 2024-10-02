@@ -15,6 +15,7 @@ import { useGlobalStaratlasAPIStore } from '../../stores/gloablStaratlasAPIStore
 import { Notify } from 'quasar';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import { handle_confirmation } from 'stores/handle_confirmation';
+import { useRPCStore } from 'stores/rpcStore';
 
 const pagination = ref({
   rowsPerPage: 0,
@@ -94,7 +95,7 @@ async function get_open_orders() {
     let gmClient = new GmClientService();
 
     open_orders.value = await gmClient.getOpenOrdersForPlayer(
-      useGlobalStore().connection as Connection,
+      useRPCStore().connection as Connection,
       useWallet().publicKey.value!,
       GM_PROGRAM_ID
     );
@@ -114,7 +115,7 @@ async function close_order(order: Order) {
   let gmClient = new GmClientService();
 
   const tx = await gmClient.getCancelOrderTransaction(
-    useGlobalStore().connection as Connection,
+    useRPCStore().connection as Connection,
     new PublicKey(order.id),
     useWallet().publicKey.value!,
     GM_PROGRAM_ID
@@ -123,7 +124,7 @@ async function close_order(order: Order) {
   try {
     const signature = await useWallet().sendTransaction(
       tx.transaction,
-      useGlobalStore().connection as Connection
+      useRPCStore().connection as Connection
     );
     await handle_confirmation(signature);
     await get_open_orders();

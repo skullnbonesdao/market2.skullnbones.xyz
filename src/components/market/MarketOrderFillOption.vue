@@ -8,6 +8,7 @@ import { useGlobalStore } from 'stores/globalStore';
 import { Connection } from '@solana/web3.js';
 import { GM_PROGRAM_ID } from 'stores/globalFactoryStore';
 import { handle_confirmation } from 'stores/handle_confirmation';
+import { useRPCStore } from 'stores/rpcStore';
 
 const props = defineProps({
   order: {
@@ -38,7 +39,7 @@ async function fill_order() {
 
   if (props.order && input_size.value) {
     const tx = await gmClient.getCreateExchangeTransaction(
-      useGlobalStore().connection as Connection,
+      useRPCStore().connection as Connection,
       props.order,
       useWallet().publicKey.value!,
       input_size.value,
@@ -48,7 +49,7 @@ async function fill_order() {
     try {
       const signature = await useWallet().sendTransaction(
         tx.transaction,
-        useGlobalStore().connection
+        useRPCStore().connection as Connection
       );
       await handle_confirmation(signature);
     } catch (err) {

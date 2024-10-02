@@ -10,6 +10,7 @@ import { I_AccountNFT } from 'stores/interfaces/I_AccountNFT';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
 import { CURRENCIES, E_Currency } from 'stores/const';
 import { useLocalStorage } from '@vueuse/core/index';
+import { useRPCStore } from 'stores/rpcStore';
 
 export interface I_TokenMap {
   pubkey: string;
@@ -94,7 +95,7 @@ export const useGlobalUserStore = defineStore('globalUserStore', {
       if (useWallet().publicKey.value || wallet) {
         this.token_accounts = [];
         this.token_accounts = (
-          await useGlobalStore().connection.getParsedTokenAccountsByOwner(
+          await useRPCStore().connection.getParsedTokenAccountsByOwner(
             wallet ? wallet : useWallet().publicKey.value!,
             {
               programId: TOKEN_PROGRAM_ID,

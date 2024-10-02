@@ -21,6 +21,7 @@ import * as spl from '@solana/spl-token';
 import { useWallet } from 'solana-wallets-vue';
 import { Notify } from 'quasar';
 import { handle_confirmation } from 'stores/handle_confirmation';
+import { useRPCStore } from 'stores/rpcStore';
 
 const show_modal = ref(false);
 
@@ -65,7 +66,7 @@ async function burn_token() {
   try {
     const signature = await useWallet().sendTransaction(
       tx,
-      useGlobalStore().connection as Connection
+      useRPCStore().connection as Connection
     );
     await handle_confirmation(signature);
   } catch (err) {
@@ -105,7 +106,7 @@ async function close_account() {
   try {
     const signature = await useWallet().sendTransaction(
       tx,
-      useGlobalStore().connection as Connection
+      useRPCStore().connection as Connection
     );
     await handle_confirmation(signature);
   } catch (err) {

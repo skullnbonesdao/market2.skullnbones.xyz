@@ -1,26 +1,18 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { RPC_NETWORKS, useGlobalStore } from 'stores/globalStore';
+import {  useGlobalStore } from 'stores/globalStore';
 import { Connection } from '@solana/web3.js';
+import { useRPCStore } from 'stores/rpcStore';
+import { RPC_NETWORKS } from 'stores/interfaces/RPC_Networks';
+import RPCSelection from 'components/elements/RPCSelection.vue';
 
 const show_modal = ref(false);
 const selected_currency = ref('ATLAS');
 const options = ref(['ATLAS', 'POLIS', 'SOL']);
 
-const rpc_name = ref(useGlobalStore().rpc_selected.name);
+const rpc_name = ref(useRPCStore().rpc_selected.name);
 const rpc_options = ref(RPC_NETWORKS.map((rpc) => rpc.name));
 
-watch(
-  () => rpc_name.value,
-  () => {
-    useGlobalStore().rpc_selected = RPC_NETWORKS.find(
-      (rpc) => rpc.name == rpc_name.value
-    )!;
-    useGlobalStore().connection = new Connection(
-      useGlobalStore().rpc_selected.url
-    );
-  }
-);
 </script>
 
 <template>
@@ -58,13 +50,7 @@ watch(
           label="Load TradingView Chart"
           v-model="useGlobalStore().settings.enable_tv_chart"
         />
-
-        <q-select
-          filled
-          v-model="rpc_name"
-          :options="rpc_options"
-          label="RPC"
-        />
+        <RPCSelection/>
       </q-card-section>
 
       <q-card-section> </q-card-section>

@@ -10,6 +10,7 @@ import { handle_confirmation } from 'stores/handle_confirmation';
 import { Notify } from 'quasar';
 import { handle_wallet_connected } from 'stores/handle_wallet_connected';
 import { useGlobalStaratlasAPIStore } from 'stores/gloablStaratlasAPIStore';
+import { useRPCStore } from 'stores/rpcStore';
 
 const tab1 = ref('buy');
 
@@ -33,7 +34,7 @@ async function create_order(side: OrderSide) {
   let gmClient = new GmClientService();
 
   const price = await gmClient.getBnPriceForCurrency(
-    useGlobalStore().connection as Connection,
+    useRPCStore().connection as Connection,
     input_price.value,
     new PublicKey(
       useGlobalStaratlasAPIStore().nfts.find(
@@ -44,7 +45,7 @@ async function create_order(side: OrderSide) {
   );
 
   const tx = await gmClient.getInitializeOrderTransaction(
-    useGlobalStore().connection as Connection,
+    useRPCStore().connection as Connection,
     useWallet().publicKey.value!,
     new PublicKey(
       useGlobalStaratlasAPIStore().nfts.find(
@@ -65,7 +66,7 @@ async function create_order(side: OrderSide) {
   try {
     const signature = await useWallet().sendTransaction(
       tx.transaction,
-      useGlobalStore().connection as Connection,
+      useRPCStore().connection as Connection,
       { signers: tx.signers }
     );
     await handle_confirmation(signature);

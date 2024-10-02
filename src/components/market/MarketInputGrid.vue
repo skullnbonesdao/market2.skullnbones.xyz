@@ -11,6 +11,7 @@ import { Notify } from 'quasar';
 import { handle_wallet_connected } from 'stores/handle_wallet_connected';
 import MarketInputGridTable from 'components/market/MarketInputGridTable.vue';
 import { computed } from 'vue';
+import { useRPCStore } from 'stores/rpcStore';
 
 const tab1 = ref('buy');
 const is_loading = ref(false);
@@ -66,14 +67,14 @@ async function create_grid_order(side: OrderSide) {
 
   for (const order of orders.value) {
     const price = await gmClient.getBnPriceForCurrency(
-      useGlobalStore().connection as Connection,
+      useRPCStore().connection as Connection,
       order.price,
       new PublicKey(useGlobalUserStore().selected_nft.mint_pair),
       GM_PROGRAM_ID
     );
 
     const tx = await gmClient.getInitializeOrderTransaction(
-      useGlobalStore().connection as Connection,
+      useRPCStore().connection as Connection,
       useWallet().publicKey.value!,
       new PublicKey(useGlobalUserStore().selected_nft.mint_asset),
       new PublicKey(useGlobalUserStore().selected_nft.mint_pair),
@@ -88,7 +89,7 @@ async function create_grid_order(side: OrderSide) {
   try {
     const signature = await useWallet().sendTransaction(
       transaction,
-      useGlobalStore().connection as Connection
+      useRPCStore().connection as Connection
     );
     await handle_confirmation(signature);
   } catch (err) {
