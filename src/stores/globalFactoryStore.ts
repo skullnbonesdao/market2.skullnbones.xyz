@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { GmOrderbookService } from '@staratlas/factory';
 import { useGlobalStore } from 'stores/globalStore';
+import { useRPCStore } from 'stores/rpcStore';
 
 export const GM_PROGRAM_ID = new PublicKey(
   'traderDnaR5w6Tcoi3NFm53i48FTDNbGjBSZwWXDRrg'
@@ -10,7 +11,7 @@ export const useGlobalFactoryStore = defineStore('factoryStore', {
   state: () => ({
     is_loading: false,
     order_book_service: new GmOrderbookService(
-      useGlobalStore().connection as Connection,
+      useRPCStore().connection as Connection,
       new PublicKey(GM_PROGRAM_ID)
     ),
   }),

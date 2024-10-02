@@ -11,9 +11,10 @@ import 'src/css/fonts.css';
 import 'src/css/backgrounds.scss';
 import { I_MarketAsset } from 'stores/I_StarAtlasNFT';
 import { useRoute } from 'vue-router';
+import { useRPCStore } from 'stores/rpcStore';
 useQuasar().dark.set(true);
 useGlobalStore();
-useGlobalStore().update_connection();
+useRPCStore().update_connection();
 useGlobalUserStore();
 
 const route = useRoute();
@@ -24,7 +25,6 @@ onMounted(async () => {
   await useGlobalStaratlasAPIStore().update();
   useGlobalStore().is_done = true;
 
-  console.log(route);
   useGlobalUserStore().selected_symbol =
     useGlobalStaratlasAPIStore().nfts.find(
       (n) =>

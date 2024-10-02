@@ -9,6 +9,7 @@ import { version } from 'src/../package.json';
 import { useGlobalStore } from 'stores/globalStore';
 import { useGlobalUserStore } from 'stores/globalUserStore';
 import JupiterModal from 'src/jupiter/JupiterModal.vue';
+import { useRPCStore } from 'stores/rpcStore';
 
 const links = computed(() => {
   let data = [
@@ -46,7 +47,7 @@ watch(
 );
 
 onMounted(async () => {
-  const block_height = await useGlobalStore().connection.getSlot();
+  const block_height = await useRPCStore().connection.getSlot();
   const cursor = await useGlobalStore().api_client.cursor.getCursor();
   sync_status.value = cursor[1].block_num / block_height;
 });

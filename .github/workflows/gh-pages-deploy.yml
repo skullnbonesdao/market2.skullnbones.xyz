@@ -26,9 +26,12 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
           VITE_FEE_WALLET: ${{ secrets.VITE_FEE_WALLET }}
           VITE_SMB_API: ${{ secrets.VITE_SMB_API }}
-          VITE_RPC_ALCHEMY_1: ${{ secrets.VITE_RPC_ALCHEMY_1 }}
-          VITE_RPC_ALCHEMY_2: ${{ secrets.VITE_RPC_ALCHEMY_2 }}
-          VITE_RPC_ALCHEMY_3: ${{ secrets.VITE_RPC_ALCHEMY_3 }}
+          VITE_RPC_1_NAME: ${{ secrets.VITE_RPC_1_NAME }}
+          VITE_RPC_1_URL: ${{ secrets.VITE_RPC_1_URL }}
+          VITE_RPC_2_NAME: ${{ secrets.VITE_RPC_2_NAME }}
+          VITE_RPC_2_URL: ${{ secrets.VITE_RPC_1_URL }}
+          VITE_RPC_3_NAME: ${{ secrets.VITE_RPC_3_NAME }}
+          VITE_RPC_3_URL: ${{ secrets.VITE_RPC_1_URL }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

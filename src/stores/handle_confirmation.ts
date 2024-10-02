@@ -1,5 +1,6 @@
 import { useGlobalStore } from 'stores/globalStore';
 import { Notify } from 'quasar';
+import { useRPCStore } from 'stores/rpcStore';
 
 export async function handle_confirmation(signature: any) {
   const notif = Notify.create({
@@ -10,9 +11,9 @@ export async function handle_confirmation(signature: any) {
   });
 
   const latestBlockHash =
-    await useGlobalStore().connection.getLatestBlockhash();
+    await useRPCStore().connection.getLatestBlockhash();
 
-  await useGlobalStore().connection.confirmTransaction(
+  await useRPCStore().connection.confirmTransaction(
     {
       signature: signature,
       blockhash: latestBlockHash.blockhash,

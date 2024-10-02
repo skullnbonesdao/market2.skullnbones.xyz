@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { useGlobalStore } from 'stores/globalStore';
+
 import { computed, onMounted, ref } from 'vue';
+import { useRPCStore } from 'stores/rpcStore';
 
 const performance_samples = ref();
 const tps = ref(0);
 
 const update_tps = async function () {
   performance_samples.value =
-    await useGlobalStore().connection.getRecentPerformanceSamples(1);
+    await useRPCStore().connection.getRecentPerformanceSamples(1);
 
   tps.value = calc_tps(performance_samples.value);
   setTimeout(update_tps, 10000);

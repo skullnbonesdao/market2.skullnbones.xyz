@@ -14,6 +14,7 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { CURRENCIES } from 'stores/const';
 import PairIcon from 'components/elements/PairIcon.vue';
 import MarketPiriceElement from 'components/market/MarketPiriceElement.vue';
+import { useRPCStore } from 'stores/rpcStore';
 
 const supply = ref();
 const holder = ref();
@@ -21,7 +22,7 @@ const holder = ref();
 async function fetch_token_supply() {
   supply.value = 0;
   supply.value = (
-    await useGlobalStore().connection.getTokenSupply(
+    await useRPCStore().connection.getTokenSupply(
       new PublicKey(
         useGlobalStaratlasAPIStore().nfts.find(
           (nft) => nft.symbol == useGlobalUserStore().selected_symbol
@@ -34,7 +35,7 @@ async function fetch_token_supply() {
 async function fetch_token_holders() {
   holder.value = 0;
   holder.value = (
-    await useGlobalStore().connection.getParsedProgramAccounts(
+    await useRPCStore().connection.getParsedProgramAccounts(
       TOKEN_PROGRAM_ID,
       {
         filters: [

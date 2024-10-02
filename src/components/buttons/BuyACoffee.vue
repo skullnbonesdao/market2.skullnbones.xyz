@@ -17,6 +17,7 @@ import {
   createAssociatedTokenAccountInstruction,
   createTransferCheckedInstruction,
 } from '@solana/spl-token';
+import { useRPCStore } from 'stores/rpcStore';
 
 const show_modal = ref(false);
 const selected_currency = ref('ATLAS');
@@ -50,7 +51,7 @@ async function send_donation() {
       break;
     default:
       const ata = (
-        await useGlobalStore().connection.getParsedTokenAccountsByOwner(
+        await useRPCStore().connection.getParsedTokenAccountsByOwner(
           useWallet().publicKey.value!,
           {
             mint: new PublicKey(
@@ -61,7 +62,7 @@ async function send_donation() {
       ).value[0];
 
       const ata_fee = (
-        await useGlobalStore().connection.getParsedTokenAccountsByOwner(
+        await useRPCStore().connection.getParsedTokenAccountsByOwner(
           FEE_WALLET,
           {
             mint: new PublicKey(
@@ -92,7 +93,7 @@ async function send_donation() {
   try {
     const signature = await useWallet().sendTransaction(
       tx,
-      useGlobalStore().connection as Connection
+      useRPCStore().connection as Connection
     );
     await handle_confirmation(signature);
   } catch (err) {
