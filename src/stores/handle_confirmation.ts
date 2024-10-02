@@ -1,4 +1,3 @@
-import { useGlobalStore } from 'stores/globalStore';
 import { Notify } from 'quasar';
 import { useRPCStore } from 'stores/rpcStore';
 
