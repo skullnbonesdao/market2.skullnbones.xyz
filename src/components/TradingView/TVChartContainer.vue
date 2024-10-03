@@ -163,10 +163,11 @@ watch(
 </script>
 
 <template>
-  <div class="TVChartContainer" ref="chartContainer" />
+  <div class="TVChartContainer full-height" ref="chartContainer" />
 </template>
 
 <style>
 .TVChartContainer {
+
 }
 </style>
