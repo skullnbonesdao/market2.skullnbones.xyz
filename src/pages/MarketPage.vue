@@ -13,7 +13,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 onMounted(() => {
   if(useRoute().params.symbol)
-    useGlobalUserStore().selected_symbol = useRoute().params.sybol as string
+    useGlobalUserStore().selected_symbol = useRoute().params.symbol as string
   else
     useGlobalUserStore().selected_symbol = "PX4USDC"
   enable_chart.value = true;
