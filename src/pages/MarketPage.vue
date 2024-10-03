@@ -7,7 +7,7 @@ import { useGlobalUserStore } from 'stores/globalUserStore';
 import MarketOpenOrderTable from 'components/market/MarketOpenOrderTable.vue';
 import MarketInputGrid from 'components/market/MarketInputGrid.vue';
 import { useGlobalStore } from 'stores/globalStore';
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import MarketInfo from 'components/market/MarketInfo.vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -16,6 +16,7 @@ onMounted(() => {
     useGlobalUserStore().selected_symbol = useRoute().params.sybol as string
   else
     useGlobalUserStore().selected_symbol = "PX4USDC"
+  enable_chart.value = true;
 });
 
 
@@ -25,6 +26,8 @@ const market_orders_height = computed(() => {
   }
   return 'calc(100vh - 74vh)';
 });
+
+const enable_chart = ref(false);
 </script>
 
 <template>
@@ -33,8 +36,7 @@ const market_orders_height = computed(() => {
       <div class="col fit q-gutter-y-xs">
         <TVChartContainer
           v-if="
-            useGlobalUserStore().selected_symbol &&
-            useGlobalStore().settings.enable_tv_chart
+        enable_chart
           "
           style="height: calc(100vh - 20vh - 3vh)"
         />
