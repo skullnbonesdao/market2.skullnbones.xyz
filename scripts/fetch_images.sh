@@ -8,10 +8,10 @@ imagesDirWEBP="$outputDir/images/webp"
 
 
 
-mkdir "$outputDir"
-mkdir "$downloadDir"
-mkdir "$imagesDirJPG"
-mkdir "$imagesDirWEBP"
+mkdir -p "$outputDir"
+mkdir -p "$downloadDir"
+mkdir -p "$imagesDirJPG"
+mkdir -p "$imagesDirWEBP"
 
 
 echo "=== Fetching API ==="
@@ -22,7 +22,7 @@ IMAGES_NAME=($(echo "$DATA" | jq -r ".[] | .mint"))
 for i in "${!IMAGES[@]}"; do
    echo "> Downloading: ${IMAGES[$i]}"
    #curl -s "${IMAGES[$i]}" -o "$downloadDir/${IMAGES_NAME[$i]}".jpg &
-   curl "${IMAGES[$i]}" -o "$downloadDir/${IMAGES_NAME[$i]}".jpg
+   #curl "${IMAGES[$i]}" -o "$downloadDir/${IMAGES_NAME[$i]}".jpg
 done
 
 # Wait for all background tasks to complete

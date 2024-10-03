@@ -20,31 +20,29 @@ onMounted(() => {
 });
 
 
-const market_orders_height = computed(() => {
-  if (useGlobalStore().settings.enable_grid_orders) {
-    return 'calc(100vh - 70vh)';
-  }
-  return 'calc(100vh - 74vh)';
-});
+
 
 const enable_chart = ref(false);
 </script>
 
 <template>
-  <q-page class="q-pa-xs" v-if="useGlobalStore().is_done">
-    <div class="row q-gutter-x-xs">
-      <div class="col fit q-gutter-y-xs">
+  <q-page class=" full-height" v-if="useGlobalStore().is_done">
+    <div class="row q-gutter-xs full-height">
+      <div class="col  q-gutter-y-xs">
+        <!-- Chart Container takes the rest of the space after the table -->
         <TVChartContainer
-          v-if="
-        enable_chart
-          "
-          style="height: calc(100vh - 20vh - 3vh)"
+          v-if="enable_chart"
+          style="max-height: 75vh;"
+
         />
 
-        <q-scroll-area style="height: calc(100vh - 80vh - 3vh)">
+        <!-- Scrollable area for the MarketOpenOrderTable -->
+        <q-scroll-area class="full-height bg-primary" style="max-height: 19vh;">
           <MarketOpenOrderTable />
         </q-scroll-area>
       </div>
+
+      <!-- Market Info Card -->
       <q-card flat class="col-3 q-gutter-y-xs">
         <MarketHeader />
 
@@ -54,7 +52,7 @@ const enable_chart = ref(false);
         <q-separator v-if="useGlobalStore().settings.enable_grid_orders" />
         <MarketInputGrid v-if="useGlobalStore().settings.enable_grid_orders" />
         <q-separator />
-        <MarketOrders :container_height="market_orders_height" class="" />
+        <MarketOrders :container_height="'30vh'" />
       </q-card>
     </div>
   </q-page>

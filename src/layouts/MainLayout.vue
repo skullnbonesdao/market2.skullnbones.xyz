@@ -49,7 +49,7 @@ watch(
 onMounted(async () => {
   const block_height = await useRPCStore().connection.getSlot();
   const cursor = await useGlobalStore().api_client.cursor.getCursor();
-  sync_status.value = cursor[1].block_num / block_height;
+  sync_status.value = Math.max(...cursor.map(c => c.block_num)) / block_height;
 });
 </script>
 
