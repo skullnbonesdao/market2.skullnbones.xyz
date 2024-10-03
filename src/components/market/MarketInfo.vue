@@ -60,8 +60,12 @@ async function fetch_token_holders() {
 }
 
 onMounted(async () => {
-  await fetch_token_supply();
-  await fetch_token_holders();
+  try {
+    await fetch_token_supply();
+    await fetch_token_holders();
+  }catch (err) {
+    console.error("could not fetch holders or supply");
+  }
 });
 
 watch(
