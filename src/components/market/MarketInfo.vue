@@ -27,7 +27,8 @@ async function fetch_token_supply() {
         useGlobalStaratlasAPIStore().nfts.find(
           (nft) => nft.symbol == useGlobalUserStore().selected_symbol
         )?.mint_asset ?? ''
-      )
+      ),
+      'finalized'
     )
   ).value.uiAmount;
 }
@@ -35,25 +36,22 @@ async function fetch_token_supply() {
 async function fetch_token_holders() {
   holder.value = 0;
   holder.value = (
-    await useRPCStore().connection.getParsedProgramAccounts(
-      TOKEN_PROGRAM_ID,
-      {
-        filters: [
-          {
-            dataSize: 165,
+    await useRPCStore().connection.getParsedProgramAccounts(TOKEN_PROGRAM_ID, {
+      filters: [
+        {
+          dataSize: 165,
+        },
+        {
+          memcmp: {
+            offset: 0,
+            bytes:
+              useGlobalStaratlasAPIStore().nfts.find(
+                (nft) => nft.symbol == useGlobalUserStore().selected_symbol
+              )?.mint_asset ?? '',
           },
-          {
-            memcmp: {
-              offset: 0,
-              bytes:
-                useGlobalStaratlasAPIStore().nfts.find(
-                  (nft) => nft.symbol == useGlobalUserStore().selected_symbol
-                )?.mint_asset ?? '',
-            },
-          },
-        ],
-      }
-    )
+        },
+      ],
+    })
   ).filter(
     (account) => account.account.data.parsed.info.tokenAmount.uiAmount > 0
   );
@@ -63,8 +61,8 @@ onMounted(async () => {
   try {
     await fetch_token_supply();
     await fetch_token_holders();
-  }catch (err) {
-    console.error("could not fetch holders or supply");
+  } catch (err) {
+    console.error('could not fetch holders or supply');
   }
 });
 
