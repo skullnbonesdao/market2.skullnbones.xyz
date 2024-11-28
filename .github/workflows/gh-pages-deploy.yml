@@ -29,9 +29,9 @@ jobs:
           VITE_RPC_1_NAME: ${{ secrets.VITE_RPC_1_NAME }}
           VITE_RPC_1_URL: ${{ secrets.VITE_RPC_1_URL }}
           VITE_RPC_2_NAME: ${{ secrets.VITE_RPC_2_NAME }}
-          VITE_RPC_2_URL: ${{ secrets.VITE_RPC_1_URL }}
+          VITE_RPC_2_URL: ${{ secrets.VITE_RPC_2_URL }}
           VITE_RPC_3_NAME: ${{ secrets.VITE_RPC_3_NAME }}
-          VITE_RPC_3_URL: ${{ secrets.VITE_RPC_1_URL }}
+          VITE_RPC_3_URL: ${{ secrets.VITE_RPC_3_URL }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
