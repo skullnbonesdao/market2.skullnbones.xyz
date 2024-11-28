@@ -20,7 +20,7 @@
     "@quasar/icongenie": "^3.1.1",
     "@solana/spl-token": "^0.3.9",
     "@solana/wallet-adapter-wallets": "^0.19.23",
-    "@staratlas/factory": "^0.6.0",
+    "@staratlas/factory": "^0.7.1",
     "@vueuse/core": "^10.6.1",
     "apexcharts": "^3.44.0",
     "axios": "^1.2.1",

@@ -6,14 +6,12 @@ import { APIClient } from 'src/api/gen';
 import { I_Token, I_TokenList } from 'stores/interfaces/I_TokenList';
 import axios from 'axios';
 
-
 export const FEE_WALLET = new PublicKey(import.meta.env.VITE_FEE_WALLET);
 export const SERVICE_FEE = 100000;
 
 export const useGlobalStore = defineStore('globalstore', {
   state: () => ({
     is_done: false,
-
 
     settings: useLocalStorage('settings', {
       enable_grid_orders: false,
@@ -30,16 +28,15 @@ export const useGlobalStore = defineStore('globalstore', {
 
   getters: {},
   actions: {
-
     async load_token_list() {
-      axios
-        .get(
-          'https://cdn.jsdelivr.net/gh/solflare-wallet/token-list@latest/solana-tokenlist.json'
-        )
-        .then((response) => {
-          const data: I_TokenList = response.data;
-          this.token_list = data.tokens;
-        });
+      //axios
+      //  .get(
+      //    'https://cdn.jsdelivr.net/gh/solflare-wallet/token-list@latest/solana-tokenlist.json'
+      //  )
+      // .then((response) => {
+      //   const data: I_TokenList = response.data;
+      //   this.token_list = data.tokens;
+      // });
     },
   },
 });
